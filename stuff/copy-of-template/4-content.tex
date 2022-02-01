@@ -1,0 +1,136 @@
+\chapter{Reasonable Title for Main Content}\label{chap:content}
+
+This chapter holds your actual contributions. Depending on what you did in your project you might either use just one chapter describing your contributions or you use multiple ones -- think about this and consult your supervisor(s). Apart from the empirical evaluation (if there is any) -- is the main part of your work and thus the core of this document. In any case, give this chapter/these chapters a reasonable name\footnote{You may also rename the tex filename if you wish.} and explain clearly what you have done and how it builds upon or extends the closeliest related work.
+
+The following sections give additional advice that is specifically tailored to students who are new to either \LaTeX{} or scientific writing.
+
+
+
+\section{General Advice}
+
+\begin{itemize}
+ \item \textbf{Start early.} Writing a report is hard and takes time. More than you think. \emph{Hofstadter's Law:} ``It always takes longer than you expect, even when you take into account Hofstadter's Law.'' -- \emph{So start early!}
+ \item \textbf{Read and check your work!} First of all, please use a spellchecker! Each \LaTeX{} editor should support this, so please always turn it on. Secondly: Read your work \emph{carefully} and \emph{multiple times} before showing it to your supervisor. Your supervisor is surely happy to help you -- that's her/his/their job! But you will benefit from investing your time: Assume that her/his/their time investment is always the same $n$ -- so the more of this doesn't have to be invested for errors you could solve yourself, the more time can be invested for more important advice.
+ \item \textbf{Involve your supervisor!} Don't be afraid to reach out to your supervisor(s)! She/he (they) is (are) literally being paid to supervise you and help you succeed! :) So make sure you get what you need to be successful, don't hold back.
+\end{itemize}
+
+
+\pagebreak %
+\section{Building the PDF}
+
+\begin{itemize}
+  \item \textbf{Latexmk:} This very useful commandline tool works on all standard operating systems: Linux, macOS, and Windows. The installation overhead is minimal, and on Linux you probably have \emph{everything} already installed! Check it out here: \url{https://mg.readthedocs.io/latexmk.html} -- this is the preferred option since it's the most convenient and takes the least time to run, i.e., compile.
+  \item \textbf{makefile:} If you use Linux (and potentially macOS) you can use the provided makefile, which features five different functions.
+  \begin{itemize}
+    \item Executing ``make'' (i.e., executing that command in the project's folder) is the same as executing ``make mk''. This is nothing else than a shortcut for the Latexmk program, but with the required parameters. This is the preferred way since Latexmk ``magically'' knows what it has to do, i.e., what to compile and how often.
+    \item ``make mkonline'' is an extension of the above: it runs Latexmk in an online mode that compiles again after every single change that is saved; so you always see the newest version automatically without having to re-compile.
+    \item ``make all'' will compile the document multiple times (1 times bibtex, 4 times pdflatex). This makes sure that all references like links to page numbers and figures work correctly, and that all citations are correctly processed. Note that this is not required if you use any of the above options, as those are basically the ``state of the art'' and do the minimal amount of required work.
+    \item You may also call the script via ``make quick'', which compiles exactly once. This is much quicker than the last, but may not process all references correctly. Again, Latexmk is the preferred option. It even doesn't do anything if that's not required.
+    \item With ``make clear'' you can conveniently delete all temporary files. This is sometimes required if compilation fails (e.g., when you create wrong bibtex entries, which may be caused by non-supported symbols or commands).
+  \end{itemize}  
+\end{itemize}
+
+
+
+
+% the optional argument appears in the table of contents (TOC). Use that in case the *actual* title is too long 
+% and would therefore not look well.
+\section[Technical Advice for Writing Your Report]{Technical Advice (\LaTeX{} etc.), Rules for Writing Reports, and Scientific Advice}
+
+\begin{itemize}
+  \item \textbf{Watch Your Dots:} You need to ``escape'' all blanks following a dot that is not ending a sentence. E.g., the sentence ``This is 6 pt.\ project.''\ needs to be coded ``\verb!This is 6 pt.\ project.!'' as otherwise it looks as follows: ``This is 6 pt. project.''\ -- you see that in here the spacing after ``pt.''\ is wrong (i.e., way too large). This is because \LaTeX{} interprets each dot (with a following space) as one that ends a sentence -- after which more space is allocated. An escaped space in contrast produces a fixed space that doesn't get stretched. (Fun fact: when (mechanical) typewriters were still a thing, authors were hitting the space twice after each ``sentence-ending dot'' to produce exactly the behavior that \LaTeX{} does automatically.)
+  % for those who *really* want to do everything right: When you look at the code above you see that the escaping is used in even more situations than claimed in the PDF. It is also used after closing quotation marks that have a preceding dot. The reason is that in this situation 
+  
+  \item \textbf{Headlines/Titles:}
+  \begin{itemize}
+    \item Titles (chapters, sections, subsections) are capitalized according to specific rules. Basically everything is written capitalized except of some specific words (in, on, the, $\dots$). You can search for capitalization rules and even tools, which you might find useful to be consistent.
+    \item Also note that -- purely due to aesthetical reasons -- you should:
+      \begin{itemize}
+        \item Always have at least one line of ``glue text'' between the chapter title and the first section, i.e., anything that briefly introduces what comes next.
+        \item Never use exactly one section. If you use sections, there should be at least two -- because otherwise it's just pointless; you could (if you had just one section) just eliminate it as otherwise the chapter title should then already reflect the content.
+      \end{itemize}
+  \end{itemize}
+
+
+  \item \textbf{Appearance:} Don't forget that your work isn't parsed by a robot, but read by a human being. So make it pleasant for them, i.e., optically pleasing. Some examples:
+  \begin{itemize}
+    \item \emph{Page and Line Breaks:} If some headline ends up at the end of a page, that might look ugly. Consider adding \verb!\pagebreak! right before it to force placing it on the next page. That will likely look much nicer. In some rare cases you might want to do the same on a per-line basis, where you can use the \verb!\linebreak! command to enforce a linebreak at that position. In the same context the command \verb!\mbox{}! might be useful, which prevents a linebreak of the word(s) specified as argument.
+    \item \emph{Big Gaps in the Document:} Make sure that there are no huge gaps in the middle of your report/text, e.g.:
+    \begin{itemize}
+      \item For example, make sure that a chapter doesn't end with a single line on a new page, that's just ugly and thus careless. The same applies for the table of contents: If it happens to have so many entries (sections/subsections etc.) that it jumps to a next page just because of one or two lines/entries, then just search (e.g., using stackoverflow) how to reduce the space between the lines so that it fits. Show some effort.
+      \item Also make sure that when including figures or tables that there is no huge gap before them, that may happen depending on their size.
+    \end{itemize}
+    \item \emph{Respect Boundaries!} Another thing that's often done ``wrong'' regarding appearance is having expressions (mostly formulae) going over the allowed border. That is ugly and careless, so rephrase to prevent that. (That would even be strictly forbidden in the context of publishing a paper.)
+  \end{itemize}
+  Do all of this \emph{briefly before you hand in}, as all that depends on your final layout. Adding, changing, and removing text will of course change the appearance, so do all this in a very final step.
+  
+  
+  \item \textbf{Appearance of Mathematical Expressions and Algorithms:} This is \emph{not} a \LaTeX{} tutorial, so only frequent beginner's errors are being mentioned and abstract advice is provided. For an introduction to \LaTeX{} see the last list entry.
+  \begin{itemize}
+    
+    \item \emph{General advice:} If you are new to \LaTeX{} and need to write down a lot of formulae, theorems, or algorithms etc., spend a few minutes to at least scroll through the manuals of the respective standard packages -- this will already show you examples of the appearance of what you can do. Just search for the manuals for \verb!amsmath! (for equations), \verb!amsthm! (for theorems/propositions), and \verb!algorithm2e! (for algorithms).
+    
+    \item \emph{Variable names:} Very often, variable names will not be single letters, but \emph{words}, such as \emph{pre} for precondition or \emph{eff} for \emph{effects}. Since variables are usually used in math mode, there's the temptation to just write them in math mode. For example, one might write \verb!$\langle pre,eff\rangle$!, resulting into ``$\langle pre,eff\rangle$''. You hopefully see that this looks incredibly ugly -- because \LaTeX{} sets the text incorrectly. Instead, you should put it into math italics. To save you effort, you should define a new macro:
+    \begin{center}
+      \verb!\newcommand{\Pre} {\ensuremath{\mathit{pre}}}!\\
+      \verb!\newcommand{\Eff} {\ensuremath{\mathit{eff}}}!
+    \end{center}
+
+    With this you can now simply write \verb!$\langle \Pre,\Eff\rangle$!, which now results into $\langle \Pre,\Eff\rangle$, which looks exactly as it should. Do this for \emph{all} your variables to make sure they look nice. (This template includes the file macros.tex, which you can use for all your macros.)
+  \end{itemize}
+
+  
+  % the figures are put in here so that it can be moved around in the document more easily
+  % (since this way it's one line to move, otherwise it might be a large block of code)
+  \input{4-exampleGraphics}
+  
+  
+  \item \textbf{Graphics/Pictures:}
+  \begin{itemize}
+    \item The most important thing to know about graphics is that they ``float''. That is, \LaTeX{} decides where they should be placed, not you. You can of course influence that a bit (e.g., by the arguments for the figure environment, cf.~\url{https://tex.stackexchange.com/questions/39017/how-to-influence-the-position-of-float-environments-like-figure-and-table-in-lat}), depending on where you put the source code that includes the graphics, but \LaTeX{} will have the final word on where \emph{exactly} it will appear. Still, please make sure that your graphics appear at reasonable places so that reading the document remains being a pleasure. Anyway, that means that you will have to reference/cite each graphic. Thus, the reader will take a look at a graphic (i.e., figure) exactly when you reference it in the text, not when it's ``being seen''. (This also means that graphics/figures that are not referenced could and should be deleted from your work.)
+    \item In Figure~\ref{fig:graphicCaptionBelow} you see an example figure with its caption below -- which looks very ugly. Do that if the graphic is centered and wide enough. In contrast, Figure~\ref{fig:graphicCaptionAside} provides the caption next to the figure -- which in this case looks quite good since the graphic is portrait rather than landscape, i.e., now there are no white/lost spaces.
+  \end{itemize}
+
+  
+  \item \textbf{Colored Links:} By default you will see that all hyperlinks (e.g., to figures like Figure \ref{fig:graphicCaptionAside}, citations like by \cite{Smith2021Wubalubadubdub}, etc.) are colored. Personally, I (the author of this template) find that easier to read in the PDF than the alternative. The alternative is that hyperlinks are indicated by colored boxes that surround them (where the text itself remains black). You can choose between the two by the setting the option \verb!colorlinks = true! or \verb!colorlinks = false! in the hyperref definitions (where \verb!true! colors the words, whereas \verb!false! produces the box). Note a major difference between the two: The box is an annotation, so it's not visible when printing. If the text itself is colored then that's an actual text color, so it will appear as you see it in the PDF also in the printout. You can of course also change the colors.
+
+  
+  \item \textbf{Tables:} Standard \LaTeX{} tables don't look particularly pleasing. Thus, it's generally recommended to use the \verb!booktabs! package, which was designed to produce aesthetically pleasing tables. Table~\ref{tab:meatPrices} provides an example, taken from the official manual (slightly adapted). One of the most important rules: Do not use vertical lines. Note that the table caption appears on top. This is set on purpose to align with several publishers, who demand that captions for tables are \emph{above} tables, whereas those for figures (i.e., everything else: graphics, plots etc.)\ are \emph{below}.
+
+  \begin{table}[h] % the "h" means "here", so using that places it at a nicer position
+    \begin{tabular}{llr}
+      \toprule
+      \multicolumn{2}{c}{\textbf{Item}} \\
+      \cmidrule(r){1-2}
+      \textbf{Animal} & \textbf{Description} & \textbf{Price} (\$)\\
+      \midrule
+      Gnat            & per gram             & 13.65      \\
+                      & each                 & 0.01       \\
+      Gnu             & stuffed              & 92.50      \\
+      Emu             & stuffed              & 33.33      \\
+      Armadillo       & frozen               & 8.99       \\
+      \bottomrule
+    \end{tabular}
+  \caption{This table lists prices for different kinds of animal meat.\label{tab:meatPrices}}
+  \end{table}
+
+  
+  \item \textbf{Bibliography:} There are various points that you should consider when you add a publication into your bibtex file. The first basic rule is: \textbf{\emph{never blindly copy some bibtex entry from the internet}} -- most of them are of very poor quality. Instead, double-check each entry by hand via trustworthy sources, such as DBLP (\url{https://dblp.org/}), the publisher's webpage, or the websites by the authors. For each entry, consider the following:
+  \begin{itemize}
+    \item \emph{Correctness:} Is the type correct? For example, papers published in conferences should be ``inproceedings'', papers published in journals are ``article''. These are often wrong when using non-trustworthy internet sources. Also check the content like year, page numbers, etc.
+    \item \emph{Completeness:} Make sure that each entry contains all fields that are required (like authors, title, booktitle etc.) but also those that are ``usually specified''. The latter is hard for a beginner, so this is the recommendation: Also provide page numbers, publisher, year.
+    \item \emph{Consistency:} Make sure that the various entries are consistent to each other. For example, conference papers usually use acronyms. Make sure to either always add the respective acronym (preferred) or never. If you add it, add it always in the same way. E.g., don't add ``..., IJCAI-12'', ``... (IJCAI-12)'',\linebreak ``... (IJCAI '13)'', ``... (IJCAI 2015)'' -- use always the the systematicity. Likewise with the conference titles. For example, do not write ``Proceedings'' for one but ``Proc.'' for another. Stay consistent.
+  \end{itemize}
+  
+  
+  \item \textbf{Citing Papers:} In most cases, you place a citation right behind the respective proposition that you want to back up. Let's assume that the next citation backs up the sentence that you currently read \citep{Smith2021Wubalubadubdub}, it was thus plausible to put it exactly there -- and not at another position of this sentence. To use this kind of citation (that you put behind the respective proposition), you use the command \verb!citep{}!. However, if for some reason you need or wish to use the paper \emph{explicitly} within your sentence, then refer to its \emph{authors} (not the paper) using the \verb!cite{}! command. For example, I can claim that the work by \cite{Smith2021Wubalubadubdub} will be quite funny once it will have been done! This is just nicer than claiming that the work ``described in \citep{Smith2021Wubalubadubdub}'' will be influential. The reason is again consistency, because normally citations like the very first one (where everything is contained by parentheses, not just the year) are not objects of the sentence. So using them sometimes as objects and sometimes not would be inconsistent.
+
+  In addition to the commands \verb!citep{}! and \verb!cite{}!, \verb!\citeauthor{}! is sometimes useful. This just lists the author(s), but without the year. I.e., it's an alternative  to \verb!cite{}! that you should use when you want to mention the authors whereas you used similar citations before so that there is just no need to add the year again.
+  
+  Also note that you can easily cite multiple works with one command as shown in (the code of) this sentence \citep{Cooper2015SuperfluidVacuumTheory,Smith2021Wubalubadubdub}.
+
+  
+  \item \textbf{\LaTeX{} Issues?} One of the best sources for solving \LaTeX{} issues is \url{https://stackoverflow.com/}. In case your document doesn't compile, check out the log file and search for ``error'', often that points towards the problem quickly. I (the author of the template) recommend to use the ``online version'' of Latexmk (reminder: which you can execute by simply executing ``make mkonline''), because then the document recompiles every single time you save (and showing any error message in the terminal) -- so you should find your coding errors instantly since you know what you have done when the error was introduced. If the online mode fails, fix the error and enter a large X, compilation will then continue.
+
+  You might also want to take a look at a well-known \LaTeX{} introduction \citep{Oetiker2021LatexIntroduction}, which in the current version -- according to \citeauthor{Oetiker2021LatexIntroduction} -- takes ``only'' a bit more than two hours to work through.
+\end{itemize}
