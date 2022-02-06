@@ -1,0 +1,75 @@
+contents/ideas:
+
+Numbers are only provided for later reference.
+
+(1) 
+  Provide an overview of potential pros and cons of total vs. partial order.
+  pros of partial order:
+  * plan recognition: independent goals can be described in parallel (Daniel should be able to write something about that)
+  * partial order is more expressive (both in terms of plan existence and in terms of computational complexity) meaning that more problems can be expressed
+  * Domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered)
+  pros of total order:
+  * computational complexity is lower (fewer worst-case solving time)
+  * we can exploit specialized algorithms as well as heuristics. Note that heuristic design is comparably easy for total-order problems due to the missing interaction between tasks.
+
+(2)
+  Further advantages from having a compilation of PO into TO plans.
+  * We actually get another class of decidable partially ordered problems that's orthogonal to tail-recursive ones! (Because if the criterion 'matches', we know that the PO domain is equivalent to the resulting TO domain; the latter is decidable whereas the former is not.) 
+  * We can use more efficient algorithms and heuristics. 
+  
+(3) 
+  Formally define which possibilities we have to linearize a model:
+  * input: method with n linearizations; output: n new methods, one per linearization (careful: there are usually n=k! many linearizations if k is the number of plan steps in a method)
+  * input: method with n linearizations; output: m<n methods (i.e., we delete some linearizations; the interesting question is which!)
+  
+(4) 
+  Formally define solution preserving properties:
+  * all solutions remain (note that even if 1 method with n linearizations get transformed into all n methods, this question is still undecidable)
+  * at least one solution remains (again: undecidable)
+  * all optimal solutions remain
+  * at least one optimal solution remains
+  The report/work should answer which of these criteria is guaranteed for the translation that's investigated
+
+(5) 
+  Empirical Evaluation: 
+  (a) To prove that our technique is beneficial, we conduct a standard empirical evaluation on PO domains and compare the runtime PO planners vs. transformation + TO planners.
+  (b) We should also do an evaluation that shows how often the criterion works, i.e., in how many instances (per domain) we can say 'yes: translate!'
+  
+(6) 
+  Ideas and important notes for the main content/formalization of the criteria:
+  
+  [a] For the beginning it might be easiest how a primitive plan can linearized to a subset of all linearizations without losing any solutions. (For some tasks it will simply not matter where they are executed -- this should be formalized. That should essentially be the POCL or PO-all criterion [note that they are not equivalent: the PO criterion will find more linearizations; see Bercher & Olz, AAAI-2020] by selecting just any sequence. o the problem will be which of them select so that we don't lose anything upon upwards-propagation.)
+  
+  [b] Note that for any reasonable criterion, compound tasks might need some form of preconditions/effects associated to it (so that we don't have to look into the decompositions of the compound task anymore). The semantics of these precondition/effect-augmented compound tasks is still not the same as for actions, but we still have at least *some* state information. Note that we could do either trivial tests that just collect all "reachable" preconditions/effects within the subtree of each compound task (that might potentially already exist in the data structures) -- those would then be extremely loose, in an extreme case we could even collect all state variables both as preconditions as well as effects that way, or we could use stronger notions as those developed and computed by Olz, Biundo, and Bercher (AAAI'21). These do however not yet exist (neither in theory nor practice) as their techniques (as well as even formal definitions) are only defined for totally ordered methods (which clearly doesn't help as we need them for partially ordered ones). Note though that at least for subproblems which are totally ordered those can be computed -- but only if the independence can be proved. Consider the grammar intersection problem with initial plan G1 and G2 (the start symbols of two grammars). Each Gi is totally ordered, but their plans can still interact, so computing the precs/effects of them individually might fail as they assume on the assumption that nothing comes 'in between' -- but it does! Plans of G1 and G2 can intertwine.
+  
+  [c] Alternatively to computing a set of preconditions and effects reachable for some compound task one could represent the ground TDG (which is a structure of polynomial size -- it's basically just a graphical representation of all methods!) directly and try to find some approach that deals with all methods in a unified way, e.g., by putting all relevant information into one single SAT or ILP formula. (That somehow seems quite a promising idea to me; though one still had to find a criteria formalizing what we want to do with the TDG, so it somehow just shifts the problem to another one; it doesn't solve it.)
+  
+  [d] Sufficient criterion for linearization: If there's some partitioning of state features (i.e., if one subset of actions A uses F and another subset A' only uses F', then one execute all in A first followed by A' or vice versa). Much smarter than this simple (and completely unrealistic^^) criterion is the following: if all effects in a compound task's sub-tree TDG don't influence the preconditions (computed in the same way) of another compound task's subtask, we can again linearize as then there's no dependency. NOTE that there is already a paper on computing independent subproblems in HTN planning: "New Advances in GraphHTN: Identifying Independent Subproblems in Large {HTN} Domains" by Lotem and Nau. I strongly assume that they do something very similar; we should definitely check what that is! (I however remember that it's not about turning a PO model into a TO model, so it's definitely not the same.)
+  
+  [e] Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
+  - Consider each method independently, no interaction is considered.
+  - For each compound task c infer its (super-relaxed) preconditions and effects. 
+  - Construct a graph with possible dependencies:  
+    * For each add effect a of c move all tasks with precondition a behind c
+      and all tasks with a delete effect in front of it.  
+    * Fir each delete effect d of c move all tasks with precondition d before c
+      and all tasks with an add effect behind it.
+  - If this graph does not have a circle, choose this linearization. 
+    [It needs to be proved that (or whether) this sacrifices solutions!]
+  - If this graph does have a circle, choose a linearization at random
+    [Pretty sure that this is incomplete! It should be checked how often that
+     was the case in the IPC domains since they all admit a solution! Also
+     investigate whether there are other circle-breaking strategies that are
+     complete. Note though that even the circle-free systematic might be
+     incomplete. If that's the case even, then clearly breaking cycles, no
+     matter how, can't work either.]
+
+What shall be done in the thesis at least?
+
+- (1) and (2), but only as part of the motivation/Introduction, not in detail! In the
+  project report, the plan recognition stuff can be ignored.
+- (3) and (4) are clearly required, that's part of the transformation!
+- (5.b) is a must, (5.a) is bonus for high HD.
+- (6.e) is a must, since this is what was used to create many IPC benchmarks.
+- All other subpoints of (6) are optional, 
+  but the more are considered the higher the mark!
