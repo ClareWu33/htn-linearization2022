@@ -31,9 +31,9 @@ void get_compound_pre_eff() {
        progression::Model * m = new Model(false, maintainTaskReachability, true, true);
 
        std::ifstream fileStream; // = "I am allocating this much space, ok?"; // "problemrover01out.sas"
-       printf("A FUCKING SEGFAULT?");
+ 
        fileStream.open("problemrover01out.sas"); 
-       printf("... work ... please ...");
+ 
        std::ifstream  * fileStreampointer = &fileStream;
        if ((*fileStreampointer).is_open()) {
               printf("The problem file was opened succesfully.");
@@ -44,7 +44,6 @@ void get_compound_pre_eff() {
 
 
 int main(int argc, char *argv[]) {
-       get_compound_pre_eff();
-       printf("Oh so YOU don't segfault\n");
+       get_compound_pre_eff(); 
 	return 0;
 }
