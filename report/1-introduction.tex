@@ -1,18 +1,36 @@
 \chapter{Introduction}
 
-The introduction serves two purposes:
-\begin{compactenum}
-  \item To give a high-level \emph{introduction} into the research area and\label{enum:intro:introduction}
-  \item to \emph{motivate} your research done within it.\label{enum:intro:motivation}
-\end{compactenum}
-(Not necessarily in this order.)
+\section{Introduction to HTN Planning}
+High-level introduction (without technical definitions) to research area that can be understood by anybody with some basic mathematical understanding.  
 
-Point \ref{enum:intro:introduction} is important as you should not assume any technical background in the specific technical area of your work. Provide some high-level introduction (without technical definitions) that can be understood by anybody with some basic mathematical understanding. What such an accurate level of abstraction/presentation is might depend on the specific topic of your thesis. Also consult your supervisor(s) for his/her (their) opinion(s) and preferences. 
+\section{Motivation}
 
-Point \ref{enum:intro:motivation} should make clear why the conducted research (or experiments etc.)\ is relevant and important. This is the part where you should make the readers interested in your work! Convince them to continue reading your work!
+\textbf{Provide an overview of potential pros and cons of total vs. partial order}
+\begin{itemize}
+	\item pros of partial order:
+	\begin{itemize}
+		\item plan recognition: independent goals can be described in parallel (Daniel should be able to write something about that)
+		\item partial order is more expressive (both in terms of plan existence and in terms of computational complexity) meaning that more problems can be expressed
+		\item Domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered)
+	\end{itemize}
 
-Be specific about the precise contributions that your work actually does and list them in the text (preferably in its own paragraph; depending on the number of contributions and how well they can be separated you could also provide them in a bullet point list).
+   \item pros of total order:
+    \begin{itemize}
+   		\item computational complexity is lower (fewer worst-case solving time)
+        \item we can exploit specialised algorithms as well as heuristics. Note that heuristic design is comparably easy for total-order problems due to the missing interaction between tasks.
+   	\end{itemize}
+\end{itemize}
 
-An introduction is usually between 1 and 3 pages. You can also get some inspiration from papers published at top-tier conferences, although they are of course \emph{much} shorter due to space constraints.
 
-Some people prefer ending the introduction with a paragraph that gives an overview of the following chapters (i.e., one sentence per chapter on what it contains). However, this is more usual for scientific papers (published at conferences or in journals) but not in project/thesis reports since they have a table of contents anyway. You are still free to add one if you prefer.
+\textbf{Further advantages from having a compilation of PO into TO plans}
+\begin{itemize}
+	\item We actually get another class of decidable partially ordered problems that's orthogonal to tail-recursive ones! (Because if the criterion 'matches', we know that the PO domain is equivalent to the resulting TO domain; the latter is decidable whereas the former is not.) 
+	\item We can use more efficient algorithms and heuristics. 
+\end{itemize}
+
+
+\section{Contributions} 
+Though the algorithm existed and performed well in IPC contest, there does not exist empirical analysis of it's performance, or specification of it's formal properties. This paper provides both.
+
+
+

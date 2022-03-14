@@ -1,7 +1,79 @@
 \chapter{Background}\label{chap:background}
 
-This section should explain all the technical background that is important for being able to read your report. Recall that your report must be completely self-contained, so you should only assume ``mathematical understanding'', but no specific knowledge. All such knowledge should be provided here, e.g., the formalization and vocabulary of the research areas in which your work resides.
+\section{Classical planning}
+A classical planning problem is usually defined in the STRIPS formalism, as below:
+$\textbf{Problem} = (D, S_I, S_G)$ \newline
+D is the domain of the problem, \newline
+$S_I \in 2^F$ is the initial state and $S_G \in F$ is the goal. \newline
+Every fact $\in F$ included in $S_G$ is true, and all other facts are false. This is the closed world assumption.
 
-Note that this is not the same as reviewing related work. Related work puts the work done/described in your report into context of other (mostly recent) work that's done by others. In contrast the current chapter is not so much about what work others have done, and more about the formalization (and possibly standard techniques) that you require to describe your contributions (but since you probably didn't come up with these formalizations, you of course still need to cite the respective authors).
 
-Please make use of sections and subsections as it's reasonable to better structure this (or any) chapter.
+\textbf{Domain D} = $(F, A)$ \newline
+F is a finite set of facts, or propositional state variables. \newline
+A is a finite set of actions. \newline Every $a \in A$ is of type $2^F \times 2^F \times 2^F$, and of the format $<pre, add, del>$.
+An action a is executable in a state s if its precondition $pre$ holds in s, i.e. pre $\subseteq$ s. \newline
+If executable in s, its result is the successor state s' = (s $\backslash$ del ) $\cup$ add , i.e., delete effects get removed and add
+effects get added.
+
+\textbf{Solution}: Solutions to a problem are action sequences executable in the initial state $S_I$ that lead to a state s'' that satisfies all
+goals, i.e., s'' $ \supseteq$ g. Any such state s'' is called a goal state.
+
+\newpage
+\section{Partially Ordered Hierarchical Planning}
+Also known as Hierarchical Task Network Planning or HTN planning for short.
+
+There are many formalizations for hierarchical planning. This one borrows heavily from "A Survey on Hierarchical Planning – One Abstract Idea, Many Concrete Realizations" by Bercher, Alford, H\"{o}ller, except with the initial task network replaced by a initial compound task. 
+
+\textbf{Problem} = $(D, S_0, TN_G)$
+is over some domain D, 
+has an initial state $S_0$, which is a total assignment to F, and 
+has a initial compound task $TN_G$k. 
+
+\textbf{D} = $(F, T_P, T_C, \delta, M)$ \newline
+   F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
+   $\delta$ is a mapping from primitive task name to action.
+   M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
+
+\textbf{Task Network} = $(T, \prec, \alpha)$
+ T is a finite set of task ids,
+ $\prec$ is a partial order over T, and
+ $\alpha$ maps task ids to task names.
+
+This definition is trivially the same as having a initial task network. One can obtain the initial task network by applying a method to the initial task.
+
+\subsection{HTN Solution}
+The goal here is to refine this task network, such that a valid solution is obtained.
+A valid solution to a PO HTN problem a plan:
+   - a sequence of primitive tasks/actions
+   - The application of each action produces a corresponding state. The solution must be such that each action is applicable
+    in the previous state. i.e. the corresponding state satisfies the precondition of the action (including the first action applicable in the initial state)
+   - (Often, the final state produced will be checked against a 'goal state' encoded in a (artificially enforced) final primitive tasks' preconditions,? 
+     
+     
+\section{Totally Ordered Hierarchical Planning}
+Totally ordered hierarchical planning is the same as partially ordered planning in all respects except the task network.
+Both define a \textbf{Task Network} = $(T, \prec, \alpha)$.
+The difference is that $\prec$ now specifies the order between task ids such that for every a, b, in T, there exists an ordering
+in $\prec$ that $(a, b)$ or $(b, a)$.
+In other words, the tasks are totally ordered. 
+
+
+\section{Further Definitions}
+\textbf{Undecidable } A decision problem is equivalent to, a function that accepts a infinite (set?) of inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
+
+
+\textbf{Tail recursion}
+
+
+\textbf{Lifted}
+Methods apply to a certain set of typed objects.
+
+\textbf{Grounded}
+A transition is ground if the parameters list only involves objects. 
+Problems are grounded when all methods are grounded.
+
+So to ground a problem: Let $\omega$ be a set of typed objects. The groundings of
+a transition schema a over $\omega$  is denoted by $\sigma$(a, $\omega$ ) and corresponds to the set of all ground transitions obtained by
+substituting $\sigma$ with a list of compatible objects taken from $\omega$ , and then substituting each occurrence of the variables
+which were in $\sigma$ with the newly introduced objects.  
+

@@ -1,136 +1,254 @@
-\chapter{Reasonable Title for Main Content}\label{chap:content}
-
-This chapter holds your actual contributions. Depending on what you did in your project you might either use just one chapter describing your contributions or you use multiple ones -- think about this and consult your supervisor(s). Apart from the empirical evaluation (if there is any) -- is the main part of your work and thus the core of this document. In any case, give this chapter/these chapters a reasonable name\footnote{You may also rename the tex filename if you wish.} and explain clearly what you have done and how it builds upon or extends the closeliest related work.
-
-The following sections give additional advice that is specifically tailored to students who are new to either \LaTeX{} or scientific writing.
+\chapter{Algorithm, Formalisation, Benchmark}\label{chap:content}
+\large{Possibly another chapter focusing on better preconditions collecting?}
 
 
+\section{Algorithm}
+Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
 
-\section{General Advice}
+\begin{enumerate}
+	\item Consider each method m independently, no interaction is considered.
+	\item For each compound task c in the methods set of subtasks infer its (super-relaxed) preconditions and effects. 
+	\item Construct a graph with possible dependencies:  
+	\begin{itemize}
+		\item For each add effect a of c:
+			\begin{enumerate} 
+				\item move all tasks with precondition a behind c 
+				\item move all tasks with a delete effect in front of it
+			\end{enumerate}
+		\item For each delete effect d of c:
+			\begin{enumerate} 
+				\item move all tasks with precondition d before c %
+				\item move all tasks with an add effect behind it
+			\end{enumerate}
+	\end{itemize}
+    \item If this graph does not have a circle, choose this linearization.  [It needs to be proved that (or whether) this sacrifices solutions!]
+    \item If this graph does have a circle, break the circle in a random place and choose this linearization
+\end{enumerate}
+
+
+\section{Formalisation}
+
+
+\subsection{Formally define possibilities for linearizing a model}
+Input: method with n linearizations \newline
+Possible outputs:
+\begin{enumerate}
+	\item output: n new methods, one per linearization.(Though there are usually n=k! many linearizations if k is the number of plan steps in a method)
+	\item output: m<n methods (i.e., we delete some linearizations; the interesting question is which!) 
+\end{enumerate}
+
+
+\subsection{Formally define solution preserving properties}
+* all solutions remain (note that even if 1 method with n linearizations get transformed into all n methods, this question is still undecidable)
+* at least one solution remains (again: undecidable)
+* all optimal solutions remain
+* at least one optimal solution remains
+The report/work should answer which of these criteria is guaranteed for the translation that's investigated
+
+ 
+For the beginning it might be easiest how a primitive plan can linearized to a subset of all linearizations without losing any solutions. (For some tasks it will simply not matter where they are executed -- this should be formalised. That should essentially be the POCL or PO-all criterion [note that they are not equivalent: the PO criterion will find more linearizations; see Bercher \& Olz, AAAI-2020 POPOCL] by selecting just any sequence. So the problem will be which of them select so that we don't lose anything upon upwards-propagation.)
+
+
+From Bercher \& Olz, AAAI-2020 POPOCL 
+
+\emph{POCL criterion?} A partial POCL plan P = (PS, $\prec$, CL) is called POCL plan (also POCL solution) to a planning problem if and only if every precondition is supported by a causal link and there are no causal threats.
+
+
+\emph{PO criterion} We refer to a partial POCL plan P = (PS , $\prec$, CL) without causal links, i.e., CL = $\emptyset$, as a partial partially ordered (PO) plan. Due to the absence of causal links, the solution criteria are here defined directly by the desired property of every linearization being executable.
+
+i.e. A partial PO plan P = (PS , $\prec$) is called PO plan (also PO solution) to a planning problem if and only
+if every linearization is executable in the initial state and results into a goal state.
+i.e. it has every necessary ordering.
+
+
+
+\subsection{This algorithm won't always work}
+This algorithm linearises all the methods to be totally ordered.
+Since sub-tasks inherit the orderings of their parents, it's obviously impossible to preserve a solution that requires the interleaving of sub-tasks of parents that are already ordered with respect to each other.
+
+Consider the simple problem:
+
+F = \{a, b, c, g\}
+$N_p$ = \{$T_A, T_B, T_C$, G\}
+$N_c$ = \{AB \}
+$\delta = \{ (T_A, A), (T_B, B), (T_C, C) \}$
+M = $(AB,  \{ \{4,5\}, \{\}, \{(4,A), (5,B)\} \} )$
+$TN_Init$ = $\{ \{0,1,2\},  \{(0,2), (1,2)\}, \{(0,AB), (1,C), (2,G)\} \}$
+	
+	
+$S_I$ = $<a>$
+	
+	A = $<$pre a, del a, add c$>$
+	C = $<$pre c, del c, add b$>$
+	B = $<$pre b, del b, add g$>$
+	G = $<$pre g, ,$>$
+	
+	The initial task network enforces that G is the last action.
+	How do we make G executable? With the action B.
+	How do we make B executable? With the action C.
+	How do we make C executable? With the action A.
+	How do we make A executable? It's executable in the initial state.
+	Solution: A C B G.
+	This is impossible to achieve by linearizing methods, since either AB before C or C before AB, both of which exclude the solution.
+	Thus PO -> TO not possible this way. You would need to 
+	
+	We can also see, if we apply Gregor's algorithm:
+	AB = $<$pre a b, del a b, add c g$>$
+	A = $<$pre a, del a, add c$>$
+	C = $<$pre c, del c, add b$>$
+	B = $<$pre b, del b, add g$>$
+	G = $<$pre g, $>$
+	
+	If we consider the method (Init $\implies$ \{AB, C, G\})
+	AB has precondition a b, and C has add effect b, so C is moved before AB.             i.e. we add (C, AB) to $\prec$
+	AB has a delete effect del a b, which doesn't affect C or G, so nothing happens here.
+	AB has add effect c g, and G has prec g so G is moved after AB.	                      i.e. we add (AB, G) to $\prec$
+	C has a precondition c, which is in the add effect of AB.  So AB is placed before C.   i.e. we add (AB, C) to $\prec$
+	
+	This produces a cycle.
+	
+	The essence of this example is: some sub-task C would only NEED interleaving A, C, B from another parent 
+	before A and after B because of one or more of the following
+	\begin{enumerate} 
+		\item its precondition needs the add effect of some sub-task A from another parent (that it can't get another way)
+		\item sub-task A has some precondition variable that is deleted by C (that can't be restored another way).
+	\end{enumerate}
+     while simultaneously also needing one or more of the following:
+	\begin{enumerate} 
+		\item some sub-task B from another parent has a precondition that C has in its add effect (that it can't get another way)
+		\item C has in its precondition a variable in the delete effect of some sub-task B from another parent (that can't be restored another way).
+	\end{enumerate}
+		
+	 Due to the way Gregor's algorithm collects prec/effects for a compound task, interleaving requirements are a subset of the orderings found by:
 
 \begin{itemize}
- \item \textbf{Start early.} Writing a report is hard and takes time. More than you think. \emph{Hofstadter's Law:} ``It always takes longer than you expect, even when you take into account Hofstadter's Law.'' -- \emph{So start early!}
- \item \textbf{Read and check your work!} First of all, please use a spellchecker! Each \LaTeX{} editor should support this, so please always turn it on. Secondly: Read your work \emph{carefully} and \emph{multiple times} before showing it to your supervisor. Your supervisor is surely happy to help you -- that's her/his/their job! But you will benefit from investing your time: Assume that her/his/their time investment is always the same $n$ -- so the more of this doesn't have to be invested for errors you could solve yourself, the more time can be invested for more important advice.
- \item \textbf{Involve your supervisor!} Don't be afraid to reach out to your supervisor(s)! She/he (they) is (are) literally being paid to supervise you and help you succeed! :) So make sure you get what you need to be successful, don't hold back.
+	\item For each add effect a of c:
+	\begin{enumerate} 
+		\item move all tasks with precondition a behind c 
+		\item move all tasks with a delete effect in front of it
+	\end{enumerate}
+	\item For each delete effect d of c:
+	\begin{enumerate} 
+		\item move all tasks with precondition d before c %
+		\item move all tasks with an add effect behind it
+	\end{enumerate}
+\end{itemize}
+
+	So if the interleaving is necessary, gregors algorithm will find orderings (parent(A), C) and (C, parent(B)). Since parent(A) and parent(B) are the same compund task, a cycle is formed.
+	
+	So requiring interleaving means that a cycle will form.
+	A cycle does not always imply the solution is excluded though - due to the way the preconditons and effects are calculated, not all of the preconditions are always needed,	and not all of the effects will actually occur.
+	
+
+\subsection{Theory: So long as it doesn't have to cycle-break, algorithm will LITERALLY always work}
+	 A solution that requires interleaving under the current algorithm 
+	will be excluded from the set of solutions in the algorithm.
+	
+	As we've said before, requiring interleaving means that a cycle will form.
+	By simple contrapositive, if there are no cycles to break, that implies none of the the original solutions required interleaving sub-tasks.
+	The methods are linearised in a way that is essentially equivalent to using POCl causal links. That means that if \emph{every} method is linearized without using cycle-breaking, then the TO problem must preserve at least one solution if the PO problem has any?
+	
+	(Furthermore if there are floating tasks after gregors algorithm is applied, you can produce multiple linearizations to preserve more solutions?)
+	
+	\begin{enumerate}
+		\item if there is no cycle, then the subtasks of this method do not require their execution to be interleaved  
+		\item If it can't be solved when no cycles were broken, then the original couldn't be solved either (needs proof, by induction (and contradiction)?)		
+	\end{enumerate}
+
+
+
+	1) Methods don't have any application preconditions except for what task it applies to.
+	Why can't you just randomly decompose the initial task network into primitives and get a plan?
+	\begin{enumerate}
+		\item Cycles in decomposition process. This is clearly a problem that  
+		\item \textbf{The proposed seq of primitives leads to a state where the next desired action is not executable.}
+	\end{enumerate}
+
+	
+	
+	2) Assume that the original PO plan did have a solution. Let the solution take the form $a_0 ... a_n$. The preconditions, add, and delete effects are pre($a_i$), add($a_i$), del($a_i$).	This means that for every variable in a precondition of an action in the solution is in an add effect of another action OR present in the initial state.
+	
+	Suppose we apply the methods that would lead to a solution in the PO version. Then we have one of the possible linearizations that could have resulted
+	from the PO version. We now prove that this also leads to a solution?
+	
+	Because of how the algorithm collects pre/eff for cmpd tasks, the subtasks each have a subset of the parents pre/eff. The union of all these prec/eff sets equal the compound tasks preconditions/effects.
+	
+	Eventually, some of the sub-tasks decomposed to will be primitive tasks. These will still be a subset of the parents pre/eff, such that their union is equal to their parents pre/eff.
+	Assuming that the method linearization for this method did not have cycles, that means that none of the pre/eff of these sub-tasks conflict.
+	If they don't meet the pre/eff of the next action, neither could the PO version. 
+	
+	???
+	Therefore it must be a solution??
+	
+	
+	
+\subsection{Even when it does have to cycle break it will sometimes work}
+(Again) A cycle does not always imply the solution is excluded though - due to the way the preconditons and effects are calculated, not all of the preconditions are always needed,	and not all of the effects will actually occur.  Thus the orderings imposed as a result of these preconditions and effects will sometimes not be necessary for a solution.
+
+If you randomly break the cycle by removing an ordering like that (one from a unneeded precondition or incorrect effect) it will still work.
+
+
+For another, the 'precondition needed by a compound task' may sometimes be possible to satisfy internally. The specific variable
+that is required may be added by a sub-task of the parent. In that case, it may not need the ordering between itself and another compound task.
+
+
+\subsection{For some tasks it doesn't matter where they are executed}
+From content-notes: That should essentially be the POCL or PO-all criterion??
+If the task has no causal links, it won't matter where they are executed.
+
+A task can execute anywhere in any possible plan if: 
+\begin{itemize}
+\item 1) The variables in its precondition are present in the initial state, and there are no actions that can delete it.
+\item 2) It only adds variables already present in the initial state, and there are no actions that can delete those variables
+\item 2b) It only adds variables that other actions do not rely on
+\item 3) It only deletes variables that don't hold in the initial state, and there are no actions that can add those variables
+\item 3b) It only deletes variables that other actions do not rely on.
 \end{itemize}
 
 
-\pagebreak %
-\section{Building the PDF}
-
+Additionally, it can execute anywhere in a specific plan if:
 \begin{itemize}
-  \item \textbf{Latexmk:} This very useful commandline tool works on all standard operating systems: Linux, macOS, and Windows. The installation overhead is minimal, and on Linux you probably have \emph{everything} already installed! Check it out here: \url{https://mg.readthedocs.io/latexmk.html} -- this is the preferred option since it's the most convenient and takes the least time to run, i.e., compile.
-  \item \textbf{makefile:} If you use Linux (and potentially macOS) you can use the provided makefile, which features five different functions.
-  \begin{itemize}
-    \item Executing ``make'' (i.e., executing that command in the project's folder) is the same as executing ``make mk''. This is nothing else than a shortcut for the Latexmk program, but with the required parameters. This is the preferred way since Latexmk ``magically'' knows what it has to do, i.e., what to compile and how often.
-    \item ``make mkonline'' is an extension of the above: it runs Latexmk in an online mode that compiles again after every single change that is saved; so you always see the newest version automatically without having to re-compile.
-    \item ``make all'' will compile the document multiple times (1 times bibtex, 4 times pdflatex). This makes sure that all references like links to page numbers and figures work correctly, and that all citations are correctly processed. Note that this is not required if you use any of the above options, as those are basically the ``state of the art'' and do the minimal amount of required work.
-    \item You may also call the script via ``make quick'', which compiles exactly once. This is much quicker than the last, but may not process all references correctly. Again, Latexmk is the preferred option. It even doesn't do anything if that's not required.
-    \item With ``make clear'' you can conveniently delete all temporary files. This is sometimes required if compilation fails (e.g., when you create wrong bibtex entries, which may be caused by non-supported symbols or commands).
-  \end{itemize}  
-\end{itemize}
+\item 1a) the variables in its precondition are present in the initial state, and no actions in the plan delete it.
+\item 2c) it adds variables that another action already adds before it does, and is not deleted again.
+\end{itemize} 
+
+R.g. if gregor's algorithm deems it a floating task (no orderings imposed on it),
+it can definitely be executed anywhere.
 
 
+\section{Empirical Evaluation}
+
+To prove that our technique is beneficial, we conduct a standard empirical evaluation on PO domains and compare the runtime PO planners vs. transformation + TO planners
+
+We should also do an evaluation that shows how often the erion works, i.e., in how many instances (per domain) we can say 'yes: translate!'
+
+Results, graphs, etc here
 
 
-% the optional argument appears in the table of contents (TOC). Use that in case the *actual* title is too long 
-% and would therefore not look well.
-\section[Technical Advice for Writing Your Report]{Technical Advice (\LaTeX{} etc.), Rules for Writing Reports, and Scientific Advice}
-
-\begin{itemize}
-  \item \textbf{Watch Your Dots:} You need to ``escape'' all blanks following a dot that is not ending a sentence. E.g., the sentence ``This is 6 pt.\ project.''\ needs to be coded ``\verb!This is 6 pt.\ project.!'' as otherwise it looks as follows: ``This is 6 pt. project.''\ -- you see that in here the spacing after ``pt.''\ is wrong (i.e., way too large). This is because \LaTeX{} interprets each dot (with a following space) as one that ends a sentence -- after which more space is allocated. An escaped space in contrast produces a fixed space that doesn't get stretched. (Fun fact: when (mechanical) typewriters were still a thing, authors were hitting the space twice after each ``sentence-ending dot'' to produce exactly the behavior that \LaTeX{} does automatically.)
-  % for those who *really* want to do everything right: When you look at the code above you see that the escaping is used in even more situations than claimed in the PDF. It is also used after closing quotation marks that have a preceding dot. The reason is that in this situation 
-  
-  \item \textbf{Headlines/Titles:}
-  \begin{itemize}
-    \item Titles (chapters, sections, subsections) are capitalized according to specific rules. Basically everything is written capitalized except of some specific words (in, on, the, $\dots$). You can search for capitalization rules and even tools, which you might find useful to be consistent.
-    \item Also note that -- purely due to aesthetical reasons -- you should:
-      \begin{itemize}
-        \item Always have at least one line of ``glue text'' between the chapter title and the first section, i.e., anything that briefly introduces what comes next.
-        \item Never use exactly one section. If you use sections, there should be at least two -- because otherwise it's just pointless; you could (if you had just one section) just eliminate it as otherwise the chapter title should then already reflect the content.
-      \end{itemize}
-  \end{itemize}
-
-
-  \item \textbf{Appearance:} Don't forget that your work isn't parsed by a robot, but read by a human being. So make it pleasant for them, i.e., optically pleasing. Some examples:
-  \begin{itemize}
-    \item \emph{Page and Line Breaks:} If some headline ends up at the end of a page, that might look ugly. Consider adding \verb!\pagebreak! right before it to force placing it on the next page. That will likely look much nicer. In some rare cases you might want to do the same on a per-line basis, where you can use the \verb!\linebreak! command to enforce a linebreak at that position. In the same context the command \verb!\mbox{}! might be useful, which prevents a linebreak of the word(s) specified as argument.
-    \item \emph{Big Gaps in the Document:} Make sure that there are no huge gaps in the middle of your report/text, e.g.:
-    \begin{itemize}
-      \item For example, make sure that a chapter doesn't end with a single line on a new page, that's just ugly and thus careless. The same applies for the table of contents: If it happens to have so many entries (sections/subsections etc.) that it jumps to a next page just because of one or two lines/entries, then just search (e.g., using stackoverflow) how to reduce the space between the lines so that it fits. Show some effort.
-      \item Also make sure that when including figures or tables that there is no huge gap before them, that may happen depending on their size.
-    \end{itemize}
-    \item \emph{Respect Boundaries!} Another thing that's often done ``wrong'' regarding appearance is having expressions (mostly formulae) going over the allowed border. That is ugly and careless, so rephrase to prevent that. (That would even be strictly forbidden in the context of publishing a paper.)
-  \end{itemize}
-  Do all of this \emph{briefly before you hand in}, as all that depends on your final layout. Adding, changing, and removing text will of course change the appearance, so do all this in a very final step.
-  
-  
-  \item \textbf{Appearance of Mathematical Expressions and Algorithms:} This is \emph{not} a \LaTeX{} tutorial, so only frequent beginner's errors are being mentioned and abstract advice is provided. For an introduction to \LaTeX{} see the last list entry.
-  \begin{itemize}
-    
-    \item \emph{General advice:} If you are new to \LaTeX{} and need to write down a lot of formulae, theorems, or algorithms etc., spend a few minutes to at least scroll through the manuals of the respective standard packages -- this will already show you examples of the appearance of what you can do. Just search for the manuals for \verb!amsmath! (for equations), \verb!amsthm! (for theorems/propositions), and \verb!algorithm2e! (for algorithms).
-    
-    \item \emph{Variable names:} Very often, variable names will not be single letters, but \emph{words}, such as \emph{pre} for precondition or \emph{eff} for \emph{effects}. Since variables are usually used in math mode, there's the temptation to just write them in math mode. For example, one might write \verb!$\langle pre,eff\rangle$!, resulting into ``$\langle pre,eff\rangle$''. You hopefully see that this looks incredibly ugly -- because \LaTeX{} sets the text incorrectly. Instead, you should put it into math italics. To save you effort, you should define a new macro:
-    \begin{center}
-      \verb!\newcommand{\Pre} {\ensuremath{\mathit{pre}}}!\\
-      \verb!\newcommand{\Eff} {\ensuremath{\mathit{eff}}}!
-    \end{center}
-
-    With this you can now simply write \verb!$\langle \Pre,\Eff\rangle$!, which now results into $\langle \Pre,\Eff\rangle$, which looks exactly as it should. Do this for \emph{all} your variables to make sure they look nice. (This template includes the file macros.tex, which you can use for all your macros.)
-  \end{itemize}
-
-  
-  % the figures are put in here so that it can be moved around in the document more easily
-  % (since this way it's one line to move, otherwise it might be a large block of code)
-  \input{4-exampleGraphics}
-  
-  
-  \item \textbf{Graphics/Pictures:}
-  \begin{itemize}
-    \item The most important thing to know about graphics is that they ``float''. That is, \LaTeX{} decides where they should be placed, not you. You can of course influence that a bit (e.g., by the arguments for the figure environment, cf.~\url{https://tex.stackexchange.com/questions/39017/how-to-influence-the-position-of-float-environments-like-figure-and-table-in-lat}), depending on where you put the source code that includes the graphics, but \LaTeX{} will have the final word on where \emph{exactly} it will appear. Still, please make sure that your graphics appear at reasonable places so that reading the document remains being a pleasure. Anyway, that means that you will have to reference/cite each graphic. Thus, the reader will take a look at a graphic (i.e., figure) exactly when you reference it in the text, not when it's ``being seen''. (This also means that graphics/figures that are not referenced could and should be deleted from your work.)
-    \item In Figure~\ref{fig:graphicCaptionBelow} you see an example figure with its caption below -- which looks very ugly. Do that if the graphic is centered and wide enough. In contrast, Figure~\ref{fig:graphicCaptionAside} provides the caption next to the figure -- which in this case looks quite good since the graphic is portrait rather than landscape, i.e., now there are no white/lost spaces.
-  \end{itemize}
-
-  
-  \item \textbf{Colored Links:} By default you will see that all hyperlinks (e.g., to figures like Figure \ref{fig:graphicCaptionAside}, citations like by \cite{Smith2021Wubalubadubdub}, etc.) are colored. Personally, I (the author of this template) find that easier to read in the PDF than the alternative. The alternative is that hyperlinks are indicated by colored boxes that surround them (where the text itself remains black). You can choose between the two by the setting the option \verb!colorlinks = true! or \verb!colorlinks = false! in the hyperref definitions (where \verb!true! colors the words, whereas \verb!false! produces the box). Note a major difference between the two: The box is an annotation, so it's not visible when printing. If the text itself is colored then that's an actual text color, so it will appear as you see it in the PDF also in the printout. You can of course also change the colors.
-
-  
-  \item \textbf{Tables:} Standard \LaTeX{} tables don't look particularly pleasing. Thus, it's generally recommended to use the \verb!booktabs! package, which was designed to produce aesthetically pleasing tables. Table~\ref{tab:meatPrices} provides an example, taken from the official manual (slightly adapted). One of the most important rules: Do not use vertical lines. Note that the table caption appears on top. This is set on purpose to align with several publishers, who demand that captions for tables are \emph{above} tables, whereas those for figures (i.e., everything else: graphics, plots etc.)\ are \emph{below}.
-
-  \begin{table}[h] % the "h" means "here", so using that places it at a nicer position
-    \begin{tabular}{llr}
-      \toprule
-      \multicolumn{2}{c}{\textbf{Item}} \\
-      \cmidrule(r){1-2}
-      \textbf{Animal} & \textbf{Description} & \textbf{Price} (\$)\\
-      \midrule
-      Gnat            & per gram             & 13.65      \\
-                      & each                 & 0.01       \\
-      Gnu             & stuffed              & 92.50      \\
-      Emu             & stuffed              & 33.33      \\
-      Armadillo       & frozen               & 8.99       \\
-      \bottomrule
-    \end{tabular}
-  \caption{This table lists prices for different kinds of animal meat.\label{tab:meatPrices}}
-  \end{table}
-
-  
-  \item \textbf{Bibliography:} There are various points that you should consider when you add a publication into your bibtex file. The first basic rule is: \textbf{\emph{never blindly copy some bibtex entry from the internet}} -- most of them are of very poor quality. Instead, double-check each entry by hand via trustworthy sources, such as DBLP (\url{https://dblp.org/}), the publisher's webpage, or the websites by the authors. For each entry, consider the following:
-  \begin{itemize}
-    \item \emph{Correctness:} Is the type correct? For example, papers published in conferences should be ``inproceedings'', papers published in journals are ``article''. These are often wrong when using non-trustworthy internet sources. Also check the content like year, page numbers, etc.
-    \item \emph{Completeness:} Make sure that each entry contains all fields that are required (like authors, title, booktitle etc.) but also those that are ``usually specified''. The latter is hard for a beginner, so this is the recommendation: Also provide page numbers, publisher, year.
-    \item \emph{Consistency:} Make sure that the various entries are consistent to each other. For example, conference papers usually use acronyms. Make sure to either always add the respective acronym (preferred) or never. If you add it, add it always in the same way. E.g., don't add ``..., IJCAI-12'', ``... (IJCAI-12)'',\linebreak ``... (IJCAI '13)'', ``... (IJCAI 2015)'' -- use always the the systematicity. Likewise with the conference titles. For example, do not write ``Proceedings'' for one but ``Proc.'' for another. Stay consistent.
-  \end{itemize}
-  
-  
-  \item \textbf{Citing Papers:} In most cases, you place a citation right behind the respective proposition that you want to back up. Let's assume that the next citation backs up the sentence that you currently read \citep{Smith2021Wubalubadubdub}, it was thus plausible to put it exactly there -- and not at another position of this sentence. To use this kind of citation (that you put behind the respective proposition), you use the command \verb!citep{}!. However, if for some reason you need or wish to use the paper \emph{explicitly} within your sentence, then refer to its \emph{authors} (not the paper) using the \verb!cite{}! command. For example, I can claim that the work by \cite{Smith2021Wubalubadubdub} will be quite funny once it will have been done! This is just nicer than claiming that the work ``described in \citep{Smith2021Wubalubadubdub}'' will be influential. The reason is again consistency, because normally citations like the very first one (where everything is contained by parentheses, not just the year) are not objects of the sentence. So using them sometimes as objects and sometimes not would be inconsistent.
-
-  In addition to the commands \verb!citep{}! and \verb!cite{}!, \verb!\citeauthor{}! is sometimes useful. This just lists the author(s), but without the year. I.e., it's an alternative  to \verb!cite{}! that you should use when you want to mention the authors whereas you used similar citations before so that there is just no need to add the year again.
-  
-  Also note that you can easily cite multiple works with one command as shown in (the code of) this sentence \citep{Cooper2015SuperfluidVacuumTheory,Smith2021Wubalubadubdub}.
-
-  
-  \item \textbf{\LaTeX{} Issues?} One of the best sources for solving \LaTeX{} issues is \url{https://stackoverflow.com/}. In case your document doesn't compile, check out the log file and search for ``error'', often that points towards the problem quickly. I (the author of the template) recommend to use the ``online version'' of Latexmk (reminder: which you can execute by simply executing ``make mkonline''), because then the document recompiles every single time you save (and showing any error message in the terminal) -- so you should find your coding errors instantly since you know what you have done when the error was introduced. If the online mode fails, fix the error and enter a large X, compilation will then continue.
-
-  You might also want to take a look at a well-known \LaTeX{} introduction \citep{Oetiker2021LatexIntroduction}, which in the current version -- according to \citeauthor{Oetiker2021LatexIntroduction} -- takes ``only'' a bit more than two hours to work through.
-\end{itemize}
+\section{Modification}
+(To reduce the preconditions and effects requires cutting depth wise (e.g. a sequence of tasks s.t.  add a, del a occurs in every possible sub branch)
+If ALL methods are possible, you cant exclude the possibility of their prec/eff. Otherwise it would imply knowing which method to take, which makes no sense?)
+The obvious solution to it's current deficiencies is: 
+\begin{enumerate}
+	\item When tasks need to be interleaved as part of it's solution, introduce new (totally ordered) methods that will allow this interleaving.
+	If for example, The initial task network contains (AB, C') in that order. Then AB $\implies$ A, B.  and C' $\implies$ C.
+	And the only solution is A, C, B. We can detect a cycle (as in the example above)
+	Then when we detect the cycle between AB and C', we need a new method such that their parent (the initial task) $\implies$ A,C,B  in that order.  This one seems more impractical to find,
+	since in practice some solutions might need interleaving of tasks that are very, very far apart in a TDG.
+	
+	\item Find a more accurate set of preconditions and effects for a given task.  
+	E.g. if every possible decomposition of a given compound task that has $<$add a$>$ in action will also have $<$del a$>$ in a action after it, 
+	then there is no need to include $<$add a$>$ as a possible effect of the compound task.
+	E.g. another may be a precondition that is already met by an action before it. This precondition can be excluded from the compound tasks'??? Can it?
+	
+	
+	Both will be difficult to find and remove in practice. But if we can remove some of these extraneous preconditions and/or effects, than extraneous orderings also disappear. This could reduce the number
+	of cycles.
+	
+	Depending on the problem, even this will not be able to remove all cycles.  Some compound tasks will have \emph{different} 
+	preconditions and effects depending	on the method(s) applied to decompose it to a sequence of primitive tasks. If any number of
+	these is conflicting with another tasks, we will still have cycles.
+	
+	\item Because floating tasks can be executed where-ever, whenever there is such a floating task, we should produce
+		
+\end{enumerate}
