@@ -83,14 +83,14 @@ std::vector<int> concatenate(std::vector<int> arr1, int *arr2, int arr2_size)
        return arr1;
 }
 
-std::set<int> concatenate(std::set<int> set1, int *arr2, int arr2_size)
+std::set<int> concatenate(std::set<int> arr1, int *arr2, int arr2_size)
 {
        for (int i = 0; i < arr2_size; i++)
        {
               int elem = arr2[i];
-              set1.insert(elem);
+              arr1.insert(elem);
        }
-       return set1;
+       return arr1;
 }
 
 // fills in the int method,   section of all_pre_eff[0]m all_pre_eff[1], and   all_pre_eff[2]
@@ -138,12 +138,12 @@ std::set<int> **get_methods_pre_eff(Model *m)
 
 // abstract tasks => set of all preconditions, effects
 // every abstract task SHOULD have a method applicable in a well-formed domain
-std::set<int> **get_tasks_pre_eff(Model *m, std::set<int> **all_pre_eff)
+std::vector<int> **get_tasks_pre_eff(Model *m, std::vector<int> **all_pre_eff)
 {
-       std::set<int> **tasksPreEff = new ::std::set<int> *[3];
+       std::vector<int> **tasksPreEff = new ::std::vector<int> *[3];
        for (int i = 0; i < 3; i++)
        {
-              tasksPreEff[i] = new std::set<int>[(*m).numTasks];
+              tasksPreEff[i] = new std::vector<int>[(*m).numTasks];
        }
 
        // for each task
@@ -169,7 +169,7 @@ std::set<int> **get_tasks_pre_eff(Model *m, std::set<int> **all_pre_eff)
 
 // // Each such non-negative integer $i$ describes that the state feature $i$ is a precondition of this action.
 // // orderings [per method] <array of order pairs>  <- accumulate order pairs
-std::vector<int> *find_orderings(Model *m, std:vector<int> **all_pre_eff)
+std::vector<int> *find_orderings(Model *m, std::vector<int> **all_pre_eff)
 {
        // additional orderings per method
        std::vector<int> *orderings = new ::std::vector<int>[(*m).numMethods];
@@ -254,8 +254,8 @@ std::vector<int> *find_orderings(Model *m, std:vector<int> **all_pre_eff)
                      return all_pre_eff;
               }
 
-int main(int argc, char *argv[])
-{
+              int main(int argc, char *argv[])
+              {
                      Model *m = setup_model("problemrover01out.sas"); //("test.sas");
                      // std::vector<int> ** results = test(m);
                      // for (int i=0; i<3; i++) {
@@ -267,13 +267,13 @@ int main(int argc, char *argv[])
                      //        }
                      // }
 
-                     std::set<int> **all_pre_eff = get_methods_pre_eff(m);
+                     std::vector<int> **all_pre_eff = get_methods_pre_eff(m);
                      printf("Sample of results for 1st method:  prec %lu adds %lu del %lu \n", all_pre_eff[0][0].size(), all_pre_eff[1][0].size(), all_pre_eff[2][0].size());
                      print(all_pre_eff[0][0]);
                      print(all_pre_eff[1][0]);
                      print(all_pre_eff[2][0]);
 
-                     std::set<int> **tpe = get_tasks_pre_eff(m, all_pre_eff);
+                     std::vector<int> **tpe = get_tasks_pre_eff(m, all_pre_eff);
                      int cmpd_task = 59;
                      printf("Sample of results for 1st COMPOUND task:  prec %lu adds %lu del %lu \n", tpe[0][cmpd_task].size(), tpe[1][cmpd_task].size(), tpe[2][cmpd_task].size());
                      print(tpe[0][cmpd_task]);

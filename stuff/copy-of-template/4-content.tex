@@ -1,33 +1,19 @@
-\chapter{Reasonable Title for Main Content}\label{chap:content}
-
-This chapter holds your actual contributions. Depending on what you did in your project you might either use just one chapter describing your contributions or you use multiple ones -- think about this and consult your supervisor(s). Apart from the empirical evaluation (if there is any) -- is the main part of your work and thus the core of this document. In any case, give this chapter/these chapters a reasonable name\footnote{You may also rename the tex filename if you wish.} and explain clearly what you have done and how it builds upon or extends the closeliest related work.
-
-The following sections give additional advice that is specifically tailored to students who are new to either \LaTeX{} or scientific writing.
-
-
+\chapter{Algorithm, Formal Properties, Benchmark}\label{chap:content}
+Then another chapter featuring new algorithm if there is one?
+ 
 
 \section{General Advice}
-
-\begin{itemize}
- \item \textbf{Start early.} Writing a report is hard and takes time. More than you think. \emph{Hofstadter's Law:} ``It always takes longer than you expect, even when you take into account Hofstadter's Law.'' -- \emph{So start early!}
- \item \textbf{Read and check your work!} First of all, please use a spellchecker! Each \LaTeX{} editor should support this, so please always turn it on. Secondly: Read your work \emph{carefully} and \emph{multiple times} before showing it to your supervisor. Your supervisor is surely happy to help you -- that's her/his/their job! But you will benefit from investing your time: Assume that her/his/their time investment is always the same $n$ -- so the more of this doesn't have to be invested for errors you could solve yourself, the more time can be invested for more important advice.
- \item \textbf{Involve your supervisor!} Don't be afraid to reach out to your supervisor(s)! She/he (they) is (are) literally being paid to supervise you and help you succeed! :) So make sure you get what you need to be successful, don't hold back.
-\end{itemize}
-
 
 \pagebreak %
 \section{Building the PDF}
 
-\begin{itemize}
-  \item \textbf{Latexmk:} This very useful commandline tool works on all standard operating systems: Linux, macOS, and Windows. The installation overhead is minimal, and on Linux you probably have \emph{everything} already installed! Check it out here: \url{https://mg.readthedocs.io/latexmk.html} -- this is the preferred option since it's the most convenient and takes the least time to run, i.e., compile.
-  \item \textbf{makefile:} If you use Linux (and potentially macOS) you can use the provided makefile, which features five different functions.
-  \begin{itemize}
+\begin{itemize} 
     \item Executing ``make'' (i.e., executing that command in the project's folder) is the same as executing ``make mk''. This is nothing else than a shortcut for the Latexmk program, but with the required parameters. This is the preferred way since Latexmk ``magically'' knows what it has to do, i.e., what to compile and how often.
     \item ``make mkonline'' is an extension of the above: it runs Latexmk in an online mode that compiles again after every single change that is saved; so you always see the newest version automatically without having to re-compile.
     \item ``make all'' will compile the document multiple times (1 times bibtex, 4 times pdflatex). This makes sure that all references like links to page numbers and figures work correctly, and that all citations are correctly processed. Note that this is not required if you use any of the above options, as those are basically the ``state of the art'' and do the minimal amount of required work.
     \item You may also call the script via ``make quick'', which compiles exactly once. This is much quicker than the last, but may not process all references correctly. Again, Latexmk is the preferred option. It even doesn't do anything if that's not required.
     \item With ``make clear'' you can conveniently delete all temporary files. This is sometimes required if compilation fails (e.g., when you create wrong bibtex entries, which may be caused by non-supported symbols or commands).
-  \end{itemize}  
+    
 \end{itemize}
 
 
@@ -134,3 +120,56 @@ The following sections give additional advice that is specifically tailored to s
 
   You might also want to take a look at a well-known \LaTeX{} introduction \citep{Oetiker2021LatexIntroduction}, which in the current version -- according to \citeauthor{Oetiker2021LatexIntroduction} -- takes ``only'' a bit more than two hours to work through.
 \end{itemize}
+
+
+\section{(3)}
+Formally define which possibilities we have to linearize a model:
+* input: method with n linearizations; output: n new methods, one per linearization (careful: there are usually n=k! many linearizations if k is the number of plan steps in a method)
+* input: method with n linearizations; output: m<n methods (i.e., we delete some linearizations; the interesting question is which!)
+
+\section{(4)}
+Formally define solution preserving properties:
+* all solutions remain (note that even if 1 method with n linearizations get transformed into all n methods, this question is still undecidable)
+* at least one solution remains (again: undecidable)
+* all optimal solutions remain
+* at least one optimal solution remains
+The report/work should answer which of these criteria is guaranteed for the translation that's investigated
+
+
+\section{(6)}
+[e] Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
+
+\begin{enumerate}
+	\item Problem = $(D, S_I, TN_I).$   $D = (F, T_A, T_P, delta, M)$ 
+	\item Consider each method independently, no interaction is considered.
+	\item For each compound task c infer its (super-relaxed) preconditions and effects. 
+	\item Construct a graph with possible dependencies:  
+        \begin{itemize}
+        	\item  For each add effect a of c move all tasks with precondition a behind c and all tasks with a delete effect in front of it.  
+        	\item  For each delete effect d of c move all tasks with precondition d before c
+                	and all tasks with an add effect behind it.
+        \end{itemize} 
+    \item If this graph does not have a circle, choose this linearization. 
+[It needs to be proved that (or whether) this sacrifices solutions!]
+    \item If this graph does have a circle, choose a linearization at random
+    
+[Pretty sure that this is incomplete! It should be checked how often that
+was the case in the IPC domains since they all admit a solution! Also
+investigate whether there are other circle-breaking strategies that are
+complete. Note though that even the circle-free systematic might be
+incomplete. If that's the case even, then clearly breaking cycles, no
+matter how, can't work either.]
+\end{enumerate}
+
+
+\section{Possible Improvements to Gregor's Algorithm}
+
+[a] For the beginning it might be easiest how a primitive plan can linearized to a subset of all linearizations without losing any solutions. (For some tasks it will simply not matter where they are executed -- this should be formalised. That should essentially be the POCL or PO-all criterion [note that they are not equivalent: the PO criterion will find more linearizations; see \textbf{[Bercher \& Olz, AAAI-2020 POPOCL]} by selecting just any sequence. So the problem will be which of them select so that we don't lose anything upon upwards-propagation.)
+
+[b] Note that for any reasonable criterion, compound tasks might need some form of preconditions/effects associated to it (so that we don't have to look into the decompositions of the compound task anymore). The semantics of these precondition/effect-augmented compound tasks is still not the same as for actions, but we still have at least *some* state information. Note that we could do either trivial tests that just collect all "reachable" preconditions/effects within the subtree of each compound task (that might potentially already exist in the data structures) -- those would then be extremely loose, in an extreme case we could even collect all state variables both as preconditions as well as effects that way, or we could use stronger notions as those developed and computed by \textbf{Olz, Biundo, and Bercher (AAAI'21)}. These do however not yet exist (neither in theory nor practice) as their techniques (as well as even formal definitions) are only defined for totally ordered methods (which clearly doesn't help as we need them for partially ordered ones). Note though that at least for sub-problems which are totally ordered those can be computed -- but only if the independence can be proved. Consider the grammar intersection problem with initial plan G1 and G2 (the start symbols of two grammars). Each Gi is totally ordered, but their plans can still interact, so computing the precs/effects of them individually might fail as they assume on the assumption that nothing comes 'in between' -- but it does! Plans of G1 and G2 can intertwine.
+
+
+[c] Alternatively to computing a set of preconditions and effects reachable for some compound task one could represent the ground TDG (which is a structure of polynomial size -- it's basically just a graphical representation of all methods!) directly and try to find some approach that deals with all methods in a unified way, e.g., by putting all relevant information into one single SAT or ILP formula. (That somehow seems quite a promising idea to me; though one still had to find a criteria formalizing what we want to do with the TDG, so it somehow just shifts the problem to another one; it doesn't solve it.)
+
+[d] Sufficient criterion for linearization: If there's some partitioning of state features (i.e., if one subset of actions A uses F and another subset A' only uses F', then one execute all in A first followed by A' or vice versa). Much smarter than this simple (and completely unrealistic^^) criterion is the following: if all effects in a compound task's sub-tree TDG don't influence the preconditions (computed in the same way) of another compound task's subtask, we can again linearize as then there's no dependency. NOTE that there is already a paper on computing independent subproblems in HTN planning: "New Advances in GraphHTN: Identifying Independent Subproblems in Large {HTN} Domains" by Lotem and Nau. I strongly assume that they do something very similar; we should definitely check what that is! (I however remember that it's not about turning a PO model into a TO model, so it's definitely not the same.)
+...

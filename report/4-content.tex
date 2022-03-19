@@ -160,11 +160,12 @@ $S_I$ = $<a>$
 	1) Methods don't have any application preconditions except for what task it applies to.
 	Why can't you just randomly decompose the initial task network into primitives and get a plan?
 	\begin{enumerate}
-		\item Cycles in decomposition process. This is clearly a problem that  
-		\item \textbf{The proposed seq of primitives leads to a state where the next desired action is not executable.}
+		\item Cycles in decomposition process. This is clearly a problem unrelated to the transformation from PO to TO,
+		since it keeps all subtasks for each method the same. 
+		\item \textbf{The proposed seq of primitives leads to a state where the next desired action is not executable. This one clearly is related, since
+			it's determined by the orderings of the plan steps, and	extra orderings are inserted as part of the transformation.} 
 	\end{enumerate}
 
-	
 	
 	2) Assume that the original PO plan did have a solution. Let the solution take the form $a_0 ... a_n$. The preconditions, add, and delete effects are pre($a_i$), add($a_i$), del($a_i$).	This means that for every variable in a precondition of an action in the solution is in an add effect of another action OR present in the initial state.
 	
@@ -212,7 +213,7 @@ Additionally, it can execute anywhere in a specific plan if:
 \item 2c) it adds variables that another action already adds before it does, and is not deleted again.
 \end{itemize} 
 
-R.g. if gregor's algorithm deems it a floating task (no orderings imposed on it),
+E.g. if gregor's algorithm deems it a floating task (no orderings imposed on it),
 it can definitely be executed anywhere.
 
 
@@ -226,6 +227,27 @@ Results, graphs, etc here
 
 
 \section{Modification}
+Assume we had a subset of preconditions and effects which we knew were reliable, i.e. definitely would happen,
+as well as all the possible ones.
+
+If, when given a choice to cycle break, we respected 
+1) $\{(t_1, t_2), ... (t_{n-1}, t_n )\}$ = $\{o_1 ... o_p \}$ ordering given by HTN solution
+
+2) $\{(t_1, t_2), ... (t_{k-1}, t_k )\}$ = $\{o_{p+1}, ... o_q\}$ ordering based on preconditions/effects that would definitely happen (not complete, other things may happen too)
+
+3) $\{(t_1, t_2), ... (t_{l-1}, t_l )\}$ = $\{o_{q+1}, ... o_r\}$ ordering based on preconditions/effects that might happen
+
+If the conflict is between 1,1 the PO problem was unsolvable.
+
+If the conflict is between 1,2 or 2,2
+Then the conflict is similar to POCL.
+And the conflicting  ordering extracted is due to causal threats (white knight??? might cause it??? allowing us to resolve it???)
+So it implies that it will \emph{for certain} be deleting some solution(s) that require interleaving??
+
+If the conflict between 2, 3 it might be a problem, it might not be. But in the case that the cycle was spurious, we would definitely pick in the 'right' direction.
+
+
+
 (To reduce the preconditions and effects requires cutting depth wise (e.g. a sequence of tasks s.t.  add a, del a occurs in every possible sub branch)
 If ALL methods are possible, you cant exclude the possibility of their prec/eff. Otherwise it would imply knowing which method to take, which makes no sense?)
 The obvious solution to it's current deficiencies is: 
@@ -233,8 +255,7 @@ The obvious solution to it's current deficiencies is:
 	\item When tasks need to be interleaved as part of it's solution, introduce new (totally ordered) methods that will allow this interleaving.
 	If for example, The initial task network contains (AB, C') in that order. Then AB $\implies$ A, B.  and C' $\implies$ C.
 	And the only solution is A, C, B. We can detect a cycle (as in the example above)
-	Then when we detect the cycle between AB and C', we need a new method such that their parent (the initial task) $\implies$ A,C,B  in that order.  This one seems more impractical to find,
-	since in practice some solutions might need interleaving of tasks that are very, very far apart in a TDG.
+	Then when we detect the cycle between AB and C', we need a new method such that their parent (the initial task) $\implies$ A,C,B  in that order.  This one seems more impractical to find,	since in practice some solutions might need interleaving of tasks that are very, very far apart in a TDG.
 	
 	\item Find a more accurate set of preconditions and effects for a given task.  
 	E.g. if every possible decomposition of a given compound task that has $<$add a$>$ in action will also have $<$del a$>$ in a action after it, 
@@ -249,6 +270,6 @@ The obvious solution to it's current deficiencies is:
 	preconditions and effects depending	on the method(s) applied to decompose it to a sequence of primitive tasks. If any number of
 	these is conflicting with another tasks, we will still have cycles.
 	
-	\item Because floating tasks can be executed where-ever, whenever there is such a floating task, we should produce
-		
+	\item Because floating tasks can be executed where-ever, whenever there is such a floating task, we could produce
+	multiple linearizations of a given method, such that every possible placement of the floating task is possible.
 \end{enumerate}

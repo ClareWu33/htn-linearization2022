@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.2.8)  10 FEB 2022 21:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.3.9)  9 MAR 2022 10:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -147,27 +147,981 @@ Package: iftex 2019/11/07 v1.0c TeX engine tests
 \Gm@layoutvoffset=\dimen142
 \Gm@dimlist=\toks15
 )
+(/usr/share/texlive/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2020/01/24 v 0.09 modify URL breaks
 
-! LaTeX Error: File `xurl.sty' not found.
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2020/01/14 v7.00d Hypertext links for LaTeX
 
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
 
-Enter file name: 
-! Emergency stop.
-<read *> 
-         
-l.16 \usepackage
-                [backref=page]{hyperref}               % defines style of re...
-*** (cannot \read from terminal in nonstop modes)
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
+)
+\@linkdim=\dimen143
+\Hy@linkcounter=\count180
+\Hy@pagecounter=\count181
 
- 
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2020/01/14 v7.00d Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count182
+\pdfmajorversion=\count183
+Package hyperref Info: Hyper figures OFF on input line 4547.
+Package hyperref Info: Link nesting OFF on input line 4552.
+Package hyperref Info: Hyper index ON on input line 4555.
+Package hyperref Info: Plain pages OFF on input line 4562.
+Package hyperref Info: Backreferencing ON on input line 4565.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4800.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/backref.sty
+Package: backref 2020/01/14 v1.40 Bibliographical back referencing
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/atveryend/atveryend.sty
+Package: atveryend 2019-12-11 v1.11 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+))
+\c@Hy@tempcnt=\count184
+LaTeX Info: Redefining \url on input line 5159.
+\XeTeXLinkMargin=\dimen144
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+)
+\Fld@menulength=\count185
+\Field@Width=\dimen145
+\Fld@charsize=\dimen146
+Package hyperref Info: Hyper figures OFF on input line 6430.
+Package hyperref Info: Link nesting OFF on input line 6435.
+Package hyperref Info: Hyper index ON on input line 6438.
+Package hyperref Info: backreferencing ON on input line 6443.
+Package hyperref Info: Link coloring OFF on input line 6450.
+Package hyperref Info: Link coloring with OCG OFF on input line 6455.
+Package hyperref Info: PDF/A mode OFF on input line 6460.
+LaTeX Info: Redefining \ref on input line 6500.
+LaTeX Info: Redefining \pageref on input line 6504.
+
+(/usr/share/texlive/texmf-dist/tex/generic/atbegshi/atbegshi.sty
+Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
+)
+\Hy@abspage=\count186
+\c@Item=\count187
+\c@Hfootnote=\count188
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2020/01/14 v7.00d Hyperref driver for pdfTeX
+\Fld@listcount=\count189
+\c@bookmark@seq@number=\count190
+\Hy@SectionHShift=\skip64
+)
+Package hyperref Info: Option `linktocpage' set `true' on input line 23.
+Package hyperref Info: Option `colorlinks' set `true' on input line 23.
+
+(/usr/share/texlive/texmf-dist/tex/latex/datetime/datetime.sty
+Package: datetime 2015/03/20 v2.60 Date Time Package
+
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count191
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fmtcount.sty
+Package: fmtcount 2020/01/30 v3.06
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks16
+\XKV@tempa@toks=\toks17
+)
+\XKV@depth=\count192
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fcprefix.sty
+Package: fcprefix 2012/09/28
+
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fcnumparser.sty
+Package: fcnumparser 2017/06/15
+\fc@digit@counter=\count193
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks18
+\ex@=\dimen147
+)
+\c@padzeroesN=\count194
+\fc@tmpcatcode=\count195
+\@DT@modctr=\count196
+\@ordinalctr=\count197
+\@orgargctr=\count198
+\@strctr=\count199
+\@tmpstrctr=\count266
+\@DT@loopN=\count267
+\@DT@X=\count268
+)
+(/usr/share/texlive/texmf-dist/tex/latex/datetime/datetime-defaults.sty
+Package: datetime-defaults 2013/09/10
+)
+\@day=\count269
+\@month=\count270
+\@year=\count271
+\c@HOUR=\count272
+\c@HOURXII=\count273
+\c@MINUTE=\count274
+\c@TOHOUR=\count275
+\c@TOMINUTE=\count276
+\c@SECOND=\count277
+\currenthour=\count278
+\currentminute=\count279
+\currentsecond=\count280
+Package datetime Info: No datetime.cfg file found, using default settings on in
+put line 308.
+\@dtctr=\count281
+\dayofyear=\count282
+\dayofweek=\count283
+LaTeX Info: Redefining \today on input line 736.
+\dt@a=\toks19
+\dt@b=\toks20
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2017/10/31 v2.20.4
+\thm@style=\toks21
+\thm@bodyfont=\toks22
+\thm@headfont=\toks23
+\thm@notefont=\toks24
+\thm@headpunct=\toks25
+\thm@preskip=\skip65
+\thm@postskip=\skip66
+\thm@headsep=\skip67
+\dth@everypar=\toks26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xpatch/xpatch.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2020-02-14 L3 programming layer (loader) 
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count284
+\l__pdf_internal_box=\box47
+))
+Package: xpatch 2012/10/02 v0.3 Extending etoolbox patching commands
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2020-02-14 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count285
+\g__xparse_grabber_int=\count286
+\l__xparse_m_args_int=\count287
+\l__xparse_v_nesting_int=\count288
+))
+Class scrbook Info: amsthm's \deferred@thm@head patched.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/01/20 v2.17e AMS math features
+\@mathmargin=\skip68
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen148
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count289
+LaTeX Info: Redefining \frac on input line 227.
+\uproot@=\count290
+\leftroot@=\count291
+LaTeX Info: Redefining \overline on input line 389.
+\classnum@=\count292
+\DOTSCASE@=\count293
+LaTeX Info: Redefining \ldots on input line 486.
+LaTeX Info: Redefining \dots on input line 489.
+LaTeX Info: Redefining \cdots on input line 610.
+\Mathstrutbox@=\box48
+\strutbox@=\box49
+\big@size=\dimen149
+LaTeX Font Info:    Redeclaring font encoding OML on input line 733.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
+\macc@depth=\count294
+\c@MaxMatrixCols=\count295
+\dotsspace@=\muskip17
+\c@parentequation=\count296
+\dspbrk@lvl=\count297
+\tag@help=\toks27
+\row@=\count298
+\column@=\count299
+\maxfields@=\count300
+\andhelp@=\toks28
+\eqnshift@=\dimen150
+\alignsep@=\dimen151
+\tagshift@=\dimen152
+\tagwidth@=\dimen153
+\totwidth@=\dimen154
+\lineht@=\dimen155
+\@envbody=\toks29
+\multlinegap=\skip69
+\multlinetaggap=\skip70
+\mathdisplay@stack=\toks30
+LaTeX Info: Redefining \[ on input line 2859.
+LaTeX Info: Redefining \] on input line 2860.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen156
+\Gin@req@width=\dimen157
+)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip71
+\bibsep=\skip72
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count301
+)
+(/usr/share/texlive/texmf-dist/tex/latex/floatrow/floatrow.sty
+Package: floatrow 2008/08/02 v0.3b floatrow: float package extension
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen158
+\captionmargin@=\dimen159
+\captionwidth=\dimen160
+\caption@tempdima=\dimen161
+\caption@indent=\dimen162
+\caption@parindent=\dimen163
+\caption@hangindent=\dimen164
+Package caption Info: KOMA-Script document class detected.
+)
+\c@float@type=\count302
+\float@exts=\toks31
+\float@box=\box50
+\@floatcapt=\box51
+Package floatrow Info: Modified float package code loaded on input line 455.
+Package floatrow Info: Modified rotfloat package code loaded on input line 473.
+
+\FR@everyfloat=\toks32
+\flrow@foot=\insert252
+\FB@wd=\dimen165
+\FBo@wd=\dimen166
+\FBc@wd=\dimen167
+\FBo@ht=\skip73
+\FBc@ht=\skip74
+\FBf@ht=\skip75
+\FBo@max=\skip76
+\FBc@max=\skip77
+\FBf@max=\skip78
+\c@FBl@b=\count303
+\floatbox@depth=\count304
+\c@FRobj=\count305
+\c@FRsobj=\count306
+\Xhsize=\skip79
+\sXhsize=\skip80
+\Zhsize=\skip81
+\sZhsize=\skip82
+\flrow@rowbox=\box52
+\FR@Zunitlength=\dimen168
+\c@FBcnt=\count307
+\FPOScnt=\count308
+\LTleft=\skip83
+\LTright=\skip84
+\LTleft=\skip85
+\LTright=\skip86
+\flrow@types=\toks33
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen169
+\lightrulewidth=\dimen170
+\cmidrulewidth=\dimen171
+\belowrulesep=\dimen172
+\belowbottomsep=\dimen173
+\aboverulesep=\dimen174
+\abovetopsep=\dimen175
+\cmidrulesep=\dimen176
+\cmidrulekern=\dimen177
+\defaultaddspace=\dimen178
+\@cmidla=\count309
+\@cmidlb=\count310
+\@aboverulesep=\dimen179
+\@belowrulesep=\dimen180
+\@thisruleclass=\count311
+\@lastruleclass=\count312
+\@thisrulewidth=\dimen181
+)
+(/usr/share/texlive/texmf-dist/tex/latex/paralist/paralist.sty
+Package: paralist 2017/01/22 v2.7 Extended list environments
+\pltopsep=\skip87
+\plpartopsep=\skip88
+\plitemsep=\skip89
+\plparsep=\skip90
+\pl@lab=\toks34
+)
+(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
+Package: titlesec 2019/10/16 v2.13 Sectioning titles
+\ttl@box=\box53
+\beforetitleunit=\skip91
+\aftertitleunit=\skip92
+\ttl@plus=\dimen182
+\ttl@minus=\dimen183
+\ttl@toksa=\toks35
+\titlewidth=\dimen184
+\titlewidthlast=\dimen185
+\titlewidthfirst=\dimen186
+
+
+Package titlesec Warning: Non standard sectioning command \section
+(titlesec)                detected. Using default spacing and no format.
+
+
+Package titlesec Warning: Non standard sectioning command \subsection
+(titlesec)                detected. Using default spacing and no format.
+
+
+Package titlesec Warning: Non standard sectioning command \subsubsection
+(titlesec)                detected. Using default spacing and no format.
+
+
+Package titlesec Warning: Non standard sectioning command \paragraph
+(titlesec)                detected. Using default spacing and no format.
+
+
+Package titlesec Warning: Non standard sectioning command \subparagraph
+(titlesec)                detected. Using default spacing and no format.
+
+)
+Class scrbook Info: Unknown `titesec' release.
+(scrbook)           Cross your fingers, that is compatible on input line 45.
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrhack.sty
+Package: scrhack 2020/01/24 v3.29 KOMA-Script package (hacking other packages)
+Package scrhack Info: hyperref hack deactivated because of
+(scrhack)             detection of hyperref version, that doesn't
+(scrhack)             need that hack, on input line 162.
+Package scrhack Info: loading float hack on input line 169.
+
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/float.hak
+File: float.hak 2020/01/24 v3.29 KOMA-Script scrhack part (hacking package floa
+t)
+
+
+Package scrhack Warning: unknown \newfloat definition found!
+(scrhack)                Maybe you are using a unsupported float version.
+
+)
+Package scrhack Info: loading floatrow hack on input line 176.
+ (/usr/share/texlive/texmf-dist/tex/latex/koma-script/floatrow.hak
+File: floatrow.hak 2020/01/24 v3.29 KOMA-Script scrhack part (hacking package f
+loatrow)
+Package scrhack Info: redefining \DeclareNewFloatType on input line 150.
+Package scrhack Info: redefining \listof on input line 150.
+Package scrhack Info: undefining \float@addtolists on input line 150.
+))
+Package scrhack Info: loading standard classes sections hack on input line 46.
+
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/standardsections.hak
+File: standardsections.hak 2020/01/24 v3.29 KOMA-Script scrhack part (defining 
+standard LaTeX class section headings)
+
+
+Package scrhack Warning: You are loosing every kind of support because of
+(scrhack)                using the dangerous standard classes sections hack!
+(scrhack)                This hack can break several classes and packages.
+(scrhack)                However, sometimes it is needed to make a
+(scrhack)                package work.
+
+Package scrhack Info: Using code from the standard LaTeX classes.
+(scrhack)             For more information about this code and the
+(scrhack)             license of this code, please see:
+(scrhack)             https://ctan.org/tex-archive/macros/latex/base/classes.dt
+x  on input line 86.
+
+Package scrhack Warning: this hack should not be loaded after `hyperref' on inp
+ut line 89.
+
+
+Package scrhack Warning: this hack should not be loaded after `titlesec' on inp
+ut line 92.
+
+
+Package scrhack Warning: Resetting \@startsection,
+(scrhack)                because of loading standard classes sections hack.
+
+
+Package scrhack Warning: Resetting \@sect,
+(scrhack)                because of loading standard classes sections hack.
+
+
+Package scrhack Warning: Resetting \@ssect,
+(scrhack)                because of loading standard classes sections hack.
+
+
+Package scrhack Warning: Resetting \@xsect,
+(scrhack)                because of loading standard classes sections hack.
+
+
+Package scrhack Warning: \DeclareSectionCommand and all derivates deactivated,
+(scrhack)                because of loading standard classes sections hack.
+
+
+Package scrhack Warning: Usage of \partformat deactivated,
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: Usage of \chapterformat deactivated,
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: \sectionformat set to `\thesection\quad',
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: \subsectionformat set to `\thesubsection\quad'
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: \subsubsectionformat set to `\thesubsubsection\quad'
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: \paragraphformat set to `\theparagraph\quad'
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: \subparagraphformat set to `\thesubparagraph\quad'
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: Usage of \partlineswithprefixformat deactivated,
+(scrhack)                because of loading the standard classes sections hack.
+
+
+
+Package scrhack Warning: Usage of \chapterlineswithprefixformat and
+(scrhack)                \chapterlinesformat deactivated,
+(scrhack)                because of using standard classes sections hack.
+
+
+Package scrhack Warning: Usage of \sectionlinesformat and
+(scrhack)                \sectioncatchphraseformat deactivated,
+(scrhack)                because of using standard classes sections hack.
+
+
+Package scrhack Warning: KOMA-Script option `headings' removed,
+(scrhack)                because of loading standard classes sections hack.
+
+)
+
+Class scrbook Warning: Usage of package `parskip' together
+(scrbook)              with a KOMA-Script class is not recommended.
+(scrbook)              I'd suggest to use option
+(scrbook)              `parskip' with one of it's several values.
+(scrbook)              Nevertheless, using requested
+(scrbook)              package `parskip' on input line 48.
+
+(/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
+)
+(./configuration.tex) (./macros.tex) (./mainfile.aux)
+\openout1 = `mainfile.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 79.
+LaTeX Font Info:    ... okay on input line 79.
+Package scrbase Info: activating english \contentsname on input line 79.
+Package scrbase Info: activating english \listfigurename on input line 79.
+Package scrbase Info: activating english \listtablename on input line 79.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(71.70166pt, 418.25368pt, 107.55254pt)
+* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=418.25368pt
+* \textheight=591.5302pt
+* \oddsidemargin=-0.56833pt
+* \evensidemargin=35.28255pt
+* \topmargin=-8.26335pt
+* \headheight=17.0pt
+* \headsep=20.40001pt
+* \topskip=11.0pt
+* \footskip=47.6pt
+* \marginparwidth=89.62619pt
+* \marginparsep=12.8401pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package backref Info: ** backref set up for natbib ** on input line 79.
+\AtBeginShipoutBox=\box54
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+)
+Package hyperref Info: Link coloring ON on input line 79.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count313
+)
+LaTeX Info: Redefining \ref on input line 79.
+LaTeX Info: Redefining \pageref on input line 79.
+LaTeX Info: Redefining \nameref on input line 79.
+
+(./mainfile.out) (./mainfile.out)
+\@outlinefile=\write3
+\openout3 = `mainfile.out'.
+
+Class scrbook Info: loading recommended package `bookmark'.
+(scrbook)           Using `bookmark' together with `hyperref' is recommended,
+(scrbook)           because of handling of possible bookmark level gaps.
+(scrbook)           You can avoid loading `bookmark' with KOMA-Script option
+(scrbook)           `bookmarkpackage=false' before \begin{document} and
+(scrbook)           you can avoid this message adding:
+(scrbook)             \usepackage{bookmark}
+(scrbook)           before \begin{document} on input line 79.
+
+(/usr/share/texlive/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
+Package auxhook Info: \AddLineBeginMainAux comes a little late,
+(auxhook)             because the main .aux file is already opened on input lin
+e 168.
+\BKM@id=\count314
+))
+(/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-english.def
+File: fc-english.def 2016/01/12
+)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count315
+\scratchdimen=\dimen187
+\scratchbox=\box55
+\nofMPsegments=\count316
+\nofMParguments=\count317
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count318
+\MPscratchDim=\dimen188
+\MPnumerator=\count319
+\makeMPintoPDFobject=\count320
+\everyMPtoPDFconversion=\toks37
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+
+Couldn't patch \deferred@thm@head!
+(./0-titlepage.tex
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(113.81102pt, 629.82918pt, 101.40665pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=629.82918pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=4.14102pt
+* \headheight=17.0pt
+* \headsep=20.40001pt
+* \topskip=11.0pt
+* \footskip=47.6pt
+* \marginparwidth=89.62619pt
+* \marginparsep=12.8401pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 2
+2.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 22.
+<figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg, id=4, 911.405pt x 294.0987
+5pt>
+File: figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg Graphic file (type jpg
+)
+<use figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg>
+Package pdftex.def Info: figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg  us
+ed on input line 26.
+(pdftex.def)             Requested size: 176.33952pt x 56.9055pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--34
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 38.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Underfull \hbox (badness 10000) in paragraph at lines 35--40
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--49
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--56
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--63
+
+ []
+
+[1
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./figures/ANU-logos/ANU_Pr
+imary_Horizontal_Black.jpg>]) (./0-declaration.tex
+Underfull \hbox (badness 10000) in paragraph at lines 1--2
+
+ []
+
+[2
+
+]) (./0-acknowledgements.tex
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+
+ []
+
+) (./0-abstract.tex [3
+
+
+] [4
+
+
+]) [5] [6
+
+
+] (./mainfile.toc)
+\tf@toc=\write4
+\openout4 = `mainfile.toc'.
+
+ [7
+
+
+] [8
+
+
+]
+(./1-introduction.tex
+Chapter 1.
+[1
+
+
+]) (./2-background.tex [2]
+Chapter 2.
+[3
+
+
+]) (./3-relatedWork.tex [4]
+Chapter 3.
+) (./4-content.tex [5
+
+
+] [6
+
+
+]
+Chapter 4.
+[7] [8] [9] (./4-exampleGraphics.tex
+<figures/pexels-ann-h-3095771.jpg, id=153, 1254.6875pt x 1882.03125pt>
+File: figures/pexels-ann-h-3095771.jpg Graphic file (type jpg)
+<use figures/pexels-ann-h-3095771.jpg>
+Package pdftex.def Info: figures/pexels-ann-h-3095771.jpg  used on input line 2
+.
+(pdftex.def)             Requested size: 128.0374pt x 192.03357pt.
+Class scrbook Info: Workaround for not recommended usage of \\ or
+(scrbook)           \newlinein caption text  on input line 11.
+File: figures/pexels-ann-h-3095771.jpg Graphic file (type jpg)
+<use figures/pexels-ann-h-3095771.jpg>
+Package pdftex.def Info: figures/pexels-ann-h-3095771.jpg  used on input line 1
+1.
+(pdftex.def)             Requested size: 128.0374pt x 192.03357pt.
+Class scrbook Info: Workaround for not recommended usage of \\ or
+(scrbook)           \newlinein caption text  on input line 11.
+File: figures/pexels-ann-h-3095771.jpg Graphic file (type jpg)
+<use figures/pexels-ann-h-3095771.jpg>
+Package pdftex.def Info: figures/pexels-ann-h-3095771.jpg  used on input line 1
+1.
+(pdftex.def)             Requested size: 128.0374pt x 192.03357pt.
+Class scrbook Info: Workaround for not recommended usage of \\ or
+(scrbook)           \newlinein caption text  on input line 11.
+File: figures/pexels-ann-h-3095771.jpg Graphic file (type jpg)
+<use figures/pexels-ann-h-3095771.jpg>
+Package pdftex.def Info: figures/pexels-ann-h-3095771.jpg  used on input line 1
+1.
+(pdftex.def)             Requested size: 128.0374pt x 192.03357pt.
+
+Overfull \hbox (4.31128pt too wide) detected at line 11
+ [] 
+ []
+
+) [10] [11 <./figures/pexels-ann-h-3095771.jpg>] [12] [13] [14])
+(./5-evaluation.tex [15] [16]
+Chapter 5.
+<figures/escalators.png, id=242, 78.2925pt x 44.5665pt>
+File: figures/escalators.png Graphic file (type png)
+<use figures/escalators.png>
+Package pdftex.def Info: figures/escalators.png  used on input line 19.
+(pdftex.def)             Requested size: 209.12683pt x 119.05809pt.
+File: figures/escalators.png Graphic file (type png)
+<use figures/escalators.png>
+Package pdftex.def Info: figures/escalators.png  used on input line 19.
+(pdftex.def)             Requested size: 209.12683pt x 119.05809pt.
+File: figures/escalators.png Graphic file (type png)
+<use figures/escalators.png>
+Package pdftex.def Info: figures/escalators.png  used on input line 19.
+(pdftex.def)             Requested size: 209.12683pt x 119.05809pt.
+
+Overfull \hbox (9.99998pt too wide) detected at line 19
+ [] 
+ []
+
+[17
+
+
+ <./figures/escalators.png>]) (./6-conclusion.tex [18]
+Chapter 6.
+) (./z-appendix-1.tex [19
+
+
+] [20
+
+
+]
+Appendix A.
+) (./z-appendix-2.tex [21] [22
+
+
+]
+Appendix B.
+<figures/borders--annotated.png, id=275, 1271.952pt x 896.148pt>
+File: figures/borders--annotated.png Graphic file (type png)
+<use figures/borders--annotated.png>
+Package pdftex.def Info: figures/borders--annotated.png  used on input line 15.
+
+(pdftex.def)             Requested size: 230.04079pt x 162.06541pt.
+) (./mainfile.bbl (./mainfile.brf)
+\tf@brf=\write5
+\openout5 = `mainfile.brf'.
+
+ [23 <./figures/borders--annotated.png>]
+[24
+
+
+])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 109.
+ [25]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 109.
+ (./mainfile.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 109.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 109.
+Package rerunfilecheck Info: File `mainfile.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+Package rerunfilecheck Info: File `mainfile.brf' has not changed.
+(rerunfilecheck)             Checksum: E33880C22FB681406A584113D4E1FA07;582.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 109.
+ ) 
 Here is how much of TeX's memory you used:
- 3324 strings out of 483183
- 68409 string characters out of 5966293
- 442597 words of memory out of 5000000
- 18400 multiletter control sequences out of 15000+600000
- 532638 words of font info for 25 fonts, out of 8000000 for 9000
+ 14087 strings out of 483183
+ 236988 string characters out of 5966293
+ 641775 words of memory out of 5000000
+ 28726 multiletter control sequences out of 15000+600000
+ 547378 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 45i,1n,72p,10103b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 58i,9n,106p,10103b,809s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/clair/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600
+pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on mainfile.pdf (33 pages, 1712227 bytes).
+PDF statistics:
+ 461 PDF objects out of 1000 (max. 8388607)
+ 379 compressed objects within 4 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 221 words of extra memory for PDF output out of 10000 (max. 10000000)
+
