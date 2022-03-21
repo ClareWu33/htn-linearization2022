@@ -1,6 +1,6 @@
 args = -std=c++17 
 
-all: re model PN noDelIntSet FlexIntStack IntUtil StringUtil
+all: model PN noDelIntSet FlexIntStack IntUtil StringUtil graph util re
 
 print:
 	g++ $(args) -c -o build/print_model.o src/print_model.cpp
@@ -8,7 +8,7 @@ print:
 
 re:
 	g++ $(args) -c -o build/main.o src/main.cpp
-	g++ $(args) build/main.o build/Model.o build/ProgressionNetwork.o  build/noDelIntSet.o build/FlexIntStack.o build/IntUtil.o  build/StringUtil.o pandaPIengine/src/flags.h pandaPIengine/src/intDataStructures/IntPairHeap.h -o Main
+	g++ $(args) build/main.o build/Model.o build/ProgressionNetwork.o  build/noDelIntSet.o build/FlexIntStack.o build/IntUtil.o  build/StringUtil.o pandaPIengine/src/flags.h pandaPIengine/src/intDataStructures/IntPairHeap.h build/util.o build/directed_graph.o -o Main
 
 main:
 	g++ $(args) -c -o build/main.o src/main.cpp
@@ -25,5 +25,10 @@ IntUtil:
 StringUtil:
 	g++ $(args) -c -o build/StringUtil.o pandaPIengine/src/intDataStructures/StringUtil.cpp
 
+graph:
+	g++ $(args) -c -o build/directed_graph.o  src/directed_graph.cpp
+
+util:
+	g++ $(args) -c -o build/util.o  src/util.cpp
 clean:
 	rm -r build

@@ -7,7 +7,7 @@ Dr. Gregor Behnke already implemented a technique for 'this' available in the PA
 
 \begin{enumerate}
 	\item Consider each method m independently, no interaction is considered.
-	\item For each compound task c in the methods set of subtasks infer its (super-relaxed) preconditions and effects. 
+	\item For each compound task c in the methods set of subtasks infer its (super-relaxed) preconditions and effects. (
 	\item Construct a graph with possible dependencies:  
 	\begin{itemize}
 		\item For each add effect a of c:
@@ -24,6 +24,7 @@ Dr. Gregor Behnke already implemented a technique for 'this' available in the PA
     \item If this graph does not have a circle, choose this linearization.  [It needs to be proved that (or whether) this sacrifices solutions!]
     \item If this graph does have a circle, break the circle in a random place and choose this linearization
 \end{enumerate}
+
 
 
 \section{Formalisation}
@@ -228,7 +229,9 @@ Results, graphs, etc here
 
 \section{Modification}
 Assume we had a subset of preconditions and effects which we knew were reliable, i.e. definitely would happen,
-as well as all the possible ones.
+as well as all the possible ones. (It might then be misleading to think of compound tasks as having  'effect's. It has 'variables that hold afterwards', 'variables that won't hold afterwards' not ‘add’ or 'delete' effects.)
+
+(And Connie's possible state-independent adds stricter than gregor's definition of possible adds)
 
 If, when given a choice to cycle break, we respected 
 1) $\{(t_1, t_2), ... (t_{n-1}, t_n )\}$ = $\{o_1 ... o_p \}$ ordering given by HTN solution

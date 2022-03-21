@@ -6,9 +6,7 @@
 +g
 
 ;; Mutex Groups
-2
-0 0 +a +b +c
-1 1 +g
+0
 
 ;; further strict Mutex Groups
 0
