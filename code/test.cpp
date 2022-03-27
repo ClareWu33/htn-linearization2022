@@ -56,8 +56,6 @@ int main(int argc, char *argv[]) {
        std::vector<int> another_vec = {1,2};
        vec.insert(vec.end(), another_vec.begin(), another_vec.end());
        printf("%i %i %i %i %i \n", vec[5], vec[6]);
-
-
        return 0;
 }
 

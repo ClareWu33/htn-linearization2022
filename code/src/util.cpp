@@ -38,16 +38,21 @@ void print(std::set<int> s)
        printf("\n");
 }
 
-bool is_in(int m1, std::vector<int> *m_to_check)
+
+bool is_in(int m1, std::vector<int> m_to_check)
 {
-       for (int i = 0; i < (*m_to_check).size(); i++)
+       for (int i = 0; i < m_to_check.size(); i++)
        {
-              if (m1 == (*m_to_check)[i])
+              if (m1 == m_to_check[i])
               {
                      return true;
               }
        }
        return false;
+}
+
+bool is_in(int m1, std::set<int> m_to_check) {
+       return (m_to_check.find(m1) != m_to_check.end());
 }
 
 std::vector<int> concatenate(std::vector<int> arr1, int *arr2, int arr2_size)

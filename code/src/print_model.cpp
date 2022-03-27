@@ -9,6 +9,10 @@
 #include <fstream>
 #include <sstream>
 
+
+#include "directed_graph.h"
+#include "util.h"
+
 // pandPI code for storing an HTN planning model
 #include "../pandaPIengine/src/Model.h"
 #include "../pandaPIengine/src/intDataStructures/IntPairHeap.h"
@@ -140,6 +144,7 @@ void interactive_model(Model *m)
 {
        while (task >= 0) 
        {
+              printf("The actions prec, add, del ");
               int task;
               std::cin >> task;
               printf("prec: ");
@@ -188,10 +193,11 @@ void to_file(string fileName, std::vector<int> **results, Model *m)
 
 int main(int argc, char *argv[])
 {
-    Model *m = setup_model("test.sas"); // ("problemrover01out.sas");
+    Model *m = setup_model("problemrover01out.sas"); //("test.sas");
               
-    print_methods(m);
-    print_actions(m);
-    //interactive_model(m);
+    // print_methods(m);
+    //print_actions(m);
+    print((*m).subTasks[2], (*m).numSubTasks[2]);
+    interactive_model(m);
     return 0;
 }

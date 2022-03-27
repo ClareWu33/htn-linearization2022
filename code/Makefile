@@ -2,9 +2,14 @@ args = -std=c++17
 
 all: model PN noDelIntSet FlexIntStack IntUtil StringUtil graph util re
 
+test:
+	g++ $(args) -c -o build/test.o src/test.cpp
+	g++ $(args) build/test.o build/Model.o build/ProgressionNetwork.o  build/noDelIntSet.o build/FlexIntStack.o build/IntUtil.o  build/StringUtil.o pandaPIengine/src/flags.h pandaPIengine/src/intDataStructures/IntPairHeap.h build/util.o -o Test
+
+
 print:
 	g++ $(args) -c -o build/print_model.o src/print_model.cpp
-	g++ $(args) build/print_model.o build/Model.o build/ProgressionNetwork.o  build/noDelIntSet.o build/FlexIntStack.o build/IntUtil.o  build/StringUtil.o pandaPIengine/src/flags.h pandaPIengine/src/intDataStructures/IntPairHeap.h -o PrintModel
+	g++ $(args) build/print_model.o build/Model.o build/ProgressionNetwork.o  build/noDelIntSet.o build/FlexIntStack.o build/IntUtil.o  build/StringUtil.o pandaPIengine/src/flags.h pandaPIengine/src/intDataStructures/IntPairHeap.h build/util.o -o PrintModel
 
 re:
 	g++ $(args) -c -o build/main.o src/main.cpp
