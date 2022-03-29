@@ -4,12 +4,14 @@
 #include <set>
 #include <map>
 #include <istream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <numeric>
 #include "util.h"
- 
+
+
 
 void print(std::vector<int> vec1)
 {
@@ -51,7 +53,8 @@ bool is_in(int m1, std::vector<int> m_to_check)
        return false;
 }
 
-bool is_in(int m1, std::set<int> m_to_check) {
+bool is_in(int m1, std::set<int> m_to_check)
+{
        return (m_to_check.find(m1) != m_to_check.end());
 }
 
@@ -73,4 +76,32 @@ std::set<int> concatenate(std::set<int> set1, int *arr2, int arr2_size)
               set1.insert(elem);
        }
        return set1;
+}
+
+// n = length of the array
+bool all_true(bool * arr, std::vector<int> idxs_to_check) 
+{
+       for (int i : idxs_to_check) 
+       {
+              if (arr[i] == false) 
+              {
+                     return false;
+              }
+       }
+       return true;
+}
+
+bool all_true(bool * arr, int n) 
+{
+       for (int i=0; i<n; i++) 
+       {
+              if (arr[i] == false) 
+              {
+                     return false;
+              }
+       }
+       return true;
+       // sum = 0;  
+       // sum = accumulate(arr, arr+n, sum);
+       // return (sum >= n);  // since false=0?
 }
