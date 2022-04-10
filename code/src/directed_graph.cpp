@@ -1,12 +1,25 @@
 // A C++ Program to detect cycle in a graph (from https://www.geeksforgeeks.org/detect-cycle-in-a-graph/)
 #include "directed_graph.h"
+//#include "minheap.cpp"
 
 using namespace std;
+
+// iPair ==> Integer Pair
+// distance/priority, node_id
+typedef pair<int, int> iPair;
 
 edge::edge(int s, int e)
 {
     start = s;
     end = e;
+    weight = 0;
+}
+
+edge::edge(int s, int e, int w)
+{
+    start = s;
+    end = e;
+    weight = w;
 }
 
 bool edge::operator<(const edge &rhs) const
@@ -30,19 +43,11 @@ bool edge::operator==(const edge &rhs) const
 bool edge::operator>(const edge &rhs) const
 {
     return !(operator<(rhs)) && !(operator==(rhs));
-    // if (start > rhs.start)
-    // {
-    //        return true;
-    // }
-    // if (start == rhs.start && end > rhs.end) {
-    //        return true;
-    // }
-    // return false;
 }
 
 void edge::print()
 {
-    printf("(%i, %i)", start, end);
+    printf("(%i, %i)%i ", start, end, weight);
 }
 
 void print(set<edge> s)
@@ -63,55 +68,72 @@ void print(std::vector<edge> s)
     printf("\n");
 }
 
-bool priority_node::operator==(const priority_node &rhs) const
+void set_to_vector()
 {
-    if (value == rhs.value && priority == rhs.priority)
+}
+
+bool adj_edge::operator==(const adj_edge &rhs) const
+{
+    if (end == rhs.end && weight == rhs.weight)
     {
         return true;
     }
     return false;
 }
 
-priority_node::priority_node(int v, int p)
+adj_edge::adj_edge(int v, int p)
 {
-    value = v;
-    priority = p;
+    end = v;
+    weight = p;
 }
 
 Graph::Graph(int V, int p_lev)
 {
     this->V = V;
-    adj = new list<priority_node>[V];
+    adj = new list<adj_edge>[V];
     p_levels = p_lev;
 }
 
 Graph::Graph(int V)
 {
     this->V = V;
-    adj = new list<priority_node>[V];
+    adj = new list<adj_edge>[V];
     p_levels = 1;
 }
 
 void Graph::addEdge(int v, int w, int p)
 {
-    priority_node node(w, p);
-    adj[v].push_back(node); // Add w to v’s list.
+    adj_edge edge(w, p);
+    adj[v].push_back(edge); // Add w to v’s list.
 }
-void Graph::addEdge(int v, int w)
+
+void Graph::addEdge(edge e)
 {
-    priority_node node(w, 0);
-    adj[v].push_back(node); // Add w to v’s list.
+    adj_edge edge(e.end, e.weight);
+    adj[e.start].push_back(edge); // Add w to v’s list.
 }
+
+// void Graph::eraseEdge(int u, int v) {
+// 	list<adj_edge>::iterator i;
+//         for (i = adj[u].begin(); i != adj[u].end(); ++i) {
+// 	    if ((*i).end == v) {
+// 	         //Node n((*i).end , (*i).priority)
+// 	         // adj[u].erase(i);
+// 	         adj[u].remove(*i);
+// 	    }
+// 	}
+// 	// adj[u].remove(v);
+// }
 
 std::set<edge> *Graph::get_orderings_with_priority()
 {
     std::set<edge> *result = new std::set<edge>[p_levels];
     for (int v = 0; v < V; v++)
     {
-        for (priority_node n : adj[v])
+        for (adj_edge n : adj[v])
         {
-            edge e = edge(v, n.value);
-            result[n.priority].insert(e);
+            edge e = edge(v, n.end);
+            result[n.weight].insert(e);
         }
     }
     return result;
@@ -122,9 +144,9 @@ std::set<edge> Graph::get_orderings()
     std::set<edge> result;
     for (int v = 0; v < V; v++)
     {
-        for (priority_node n : adj[v])
+        for (adj_edge n : adj[v])
         {
-            edge e = edge(v, n.value);
+            edge e = edge(v, n.end);
             result.insert(e);
         }
     }
@@ -132,7 +154,8 @@ std::set<edge> Graph::get_orderings()
 }
 
 // This function is a variation of DFSUtil() in https://www.geeksforgeeks.org/archives/18212
-bool Graph::isCyclicUtil(int v, bool visited[], bool *recStack)
+// finds 1 or 0 edges
+std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack)
 {
     if (visited[v] == false)
     {
@@ -141,87 +164,38 @@ bool Graph::isCyclicUtil(int v, bool visited[], bool *recStack)
         recStack[v] = true;
 
         // Recur for all the vertices adjacent to this vertex
-        list<priority_node>::iterator i;
+        list<adj_edge>::iterator i;
         for (i = adj[v].begin(); i != adj[v].end(); ++i)
         {
-            if (!visited[(*i).value] && isCyclicUtil((*i).value, visited, recStack))
-                return true;
-            else if (recStack[(*i).value])
-                return true;
-        }
-    }
-    recStack[v] = false; // remove the vertex from recursion stack
-    return false;
-}
-
-bool Graph::isCyclic()
-{
-    // Mark all the vertices as not visited and not part of recursion stack
-    bool *visited = new bool[V];
-    bool *recStack = new bool[V];
-    for (int i = 0; i < V; i++)
-    {
-        visited[i] = false;
-        recStack[i] = false;
-    }
-
-    // Call the recursive helper function to detect cycle in different
-    // DFS trees
-    for (int i = 0; i < V; i++)
-        if (!visited[i] && isCyclicUtil(i, visited, recStack))
-            return true;
-
-    return false;
-}
-
-// This function is a variation of DFSUtil() in https://www.geeksforgeeks.org/archives/18212
-cycle Graph::findCyclicUtil(int v, bool visited[], bool *recStack)
-{
-    if (visited[v] == false)
-    {
-        // Mark the current node as visited and part of recursion stack
-        visited[v] = true;
-        recStack[v] = true;
-
-        // Recur for all the vertices adjacent to this vertex
-        list<priority_node>::iterator i;
-        for (i = adj[v].begin(); i != adj[v].end(); ++i)
-        {
-            if (!visited[(*i).value])
+            if (!visited[(*i).end])
             {
-                cycle result = findCyclicUtil((*i).value, visited, recStack);
-                if (result.isCycle)
+                std::vector<edge> result = findCyclicUtil((*i).end, visited, recStack);
+                if (result.size() > 0)
                 {
-                    // printf("visited,  cycle found at %i %i \n", v, *i);
-                    edge e = edge(v, (*i).value);
-                    result.edges[(*i).priority].insert(e);
                     return result;
                 }
             }
-            else if (recStack[(*i).value])
+            else if (recStack[(*i).end])
             {
-                // printf("recStack, cycle found at %i %i \n", v, *i);
-                cycle result;
-                result.isCycle = true;
-                result.edges = new std::set<edge>[p_levels];
-                edge e = edge(v, (*i).value);
-                result.edges[(*i).priority].insert(e);
-                return result;
+                // printf("recStack, cycle found at %i %i, has weight %i \n", v, (*i).end, (*i).weight);
+                std::vector<edge> back_edge;
+                edge e(v, (*i).end, (*i).weight);
+                back_edge.push_back(e);
+                return back_edge;
             }
         }
     }
     recStack[v] = false; // remove the vertex from recursion stack
 
-    cycle result;
-    result.isCycle = false;
-    return result;
+    std::vector<edge> back_edge;
+    return back_edge;
 }
 
-// Returns true if the graph contains a cycle, else false.
+// Returns the cycle if the graph contains a cycle,
 // This function is a variation of DFS() in https://www.geeksforgeeks.org/archives/18212
-std::vector<cycle> Graph::findCyclic()
+std::vector<edge> Graph::findCyclic()
 {
-    std::vector<cycle> all_cycles;
+    std::vector<edge> all_back_edges;
     // Mark all the vertices as not visited and not part of recursion
     // stack
     bool *visited = new bool[V];
@@ -239,14 +213,14 @@ std::vector<cycle> Graph::findCyclic()
     {
         if (!visited[i])
         {
-            cycle c = findCyclicUtil(i, visited, recStack);
-            if (c.isCycle)
+            std::vector<edge> back_edge = findCyclicUtil(i, visited, recStack);
+            if (back_edge.size() > 0)
             {
-                all_cycles.push_back(c);
+                return back_edge; // all_back_edges.push_back(back_edges[0]);
             }
         }
     }
-    return all_cycles;
+    return all_back_edges;
 }
 
 // A recursive function used by topologicalSort
@@ -258,10 +232,10 @@ void Graph::topologicalSortUtil(int v, bool visited[],
 
     // Recur for all the vertices
     // adjacent to this vertex
-    list<priority_node>::iterator i;
+    list<adj_edge>::iterator i;
     for (i = adj[v].begin(); i != adj[v].end(); ++i)
-        if (!visited[(*i).value])
-            topologicalSortUtil((*i).value, visited, Stack);
+        if (!visited[(*i).end])
+            topologicalSortUtil((*i).end, visited, Stack);
 
     // Push current vertex to stack
     // which stores result
@@ -289,54 +263,244 @@ stack<int> Graph::topologicalSort()
     return Stack;
 }
 
-// int main()
-// {
-//     // Create a graph given in the above diagram
-//     Graph gr(8);
+// Prints shortest paths from src to all other vertices
+int *Graph::shortestPath(int src)
+{
+    // Create a priority queue to store vertices that
+    // are being preprocessed. This is weird syntax in C++.
+    // Refer below link for details of this syntax
+    // https://www.geeksforgeeks.org/implement-min-heap-using-stl/
+    priority_queue<iPair, vector<iPair>, greater<iPair>> pq;
 
-//     gr.addEdge(0, 1, 0);
-//     gr.addEdge(1, 2, 0);
-//     gr.addEdge(2, 0, 0);
+    // Create a vector for distances and initialize all
+    // distances as infinite (INF)
+    // int INF = 9999999999;
+    vector<int> dist(V, 99999);
+    int *prev = (int *)malloc(V * sizeof(int)); // int prev[V] = {-1};  // previous node, possibly none if no path
+    for (int i = 0; i < V; i++)
+    {
+        prev[i] = -1;
+    }
 
-//     gr.addEdge(4, 2, 0);
-//     gr.addEdge(4, 5, 0);
-//     gr.addEdge(5, 6, 0);
-//     gr.addEdge(6, 7, 0);
-//     gr.addEdge(7, 4, 0);
+    // Insert source itself in priority queue and initialize
+    // its distance as 0.
+    pq.push(make_pair(0, src));
+    dist[src] = 0;
 
-//     std::vector<cycle> cycles = gr.findCyclic();
-//     for (cycle c : cycles)
-//     {
-//         if (c.isCycle)
-//         {
-//             print(c.edges[0]);
-//         }
-//     }
+    vector<bool> f(V, false);
 
-//     // get sort  = 6 7 5 4 2 3 1 0
-//     Graph g(8);
-//     g.addEdge(5, 2);
-//     g.addEdge(5, 0);
-//     g.addEdge(4, 0);
-//     g.addEdge(4, 1);
-//     g.addEdge(2, 3);
-//     g.addEdge(3, 1);
+    /* Looping till priority queue becomes empty (or all
+    distances are not finalized) */
+    while (!pq.empty())
+    {
+        // The first vertex in pair is the minimum distance vertex, extract it from priority queue.
+        // vertex label is stored in second of pair (to keep the vertices sorted by distance,
+        // distance must be first item in pair)
+        int u = pq.top().second;
+        pq.pop();
+        f[u] = true;
 
-//     g.addEdge(6, 7);
- 
-//     cout << "Following is a Topological Sort of the given "
-//             "graph \n";
-            
-//     // Function Call
-//     stack<int> Stack = g.topologicalSort(); 
+        // 'i' is used to get all adjacent vertices of a vertex
+        list<adj_edge>::iterator i;
+        for (i = adj[u].begin(); i != adj[u].end(); ++i)
+        {
+            // Get vertex label and weight of current adjacent of u.
+            int v = (*i).end;
+            int weight = (*i).weight;
 
-//     printf("\n");
-//     int first = Stack.top();
-//     Stack.pop();
-//     while (Stack.empty() == false) {
-//         int second = Stack.top();
-//         cout << first << " " << second << "\n";
-//         first = second;
-//         Stack.pop();
-//     }
-// }
+            // If there is shorted path to v through u.
+            if (f[v] == false && dist[v] > dist[u] + weight)
+            {
+                // record that shortest path to v is from neighbour u
+                prev[v] = u;
+                // Updating distance of v
+                dist[v] = dist[u] + weight;
+                pq.push(make_pair(dist[v], v));
+            }
+        }
+    }
+
+    // Print shortest distances stored in dist[]
+    //	printf("Vertex Distance from Source\n");
+    //	for (int i = 0; i < V; ++i)
+    //		printf("%d \t\t %d\n", i, dist[i]);
+
+    return prev;
+}
+
+std::set<edge> Graph::find_path(int *prev, int src, int dest, std::set<edge> edges)
+{
+    int neighbour = dest;
+std:
+    vector<int> path;
+    // at least one path
+    while (neighbour != src)
+    {
+        path.push_back(neighbour);
+        neighbour = prev[neighbour];
+        if (neighbour == -1)
+        {
+            std::set<edge> no_path;
+            return no_path;
+        }
+    }
+    path.push_back(src); // path from dest to src
+
+    // edges connecting src to dest
+    for (int i = path.size()-2; i >= 0; i--)
+    {
+        int start = path[i + 1];
+        int end = path[i];
+        // TODO: find priority of edge
+        for (adj_edge e1 : adj[start])
+        {
+            if (e1.end = end)
+            {
+                edge e(start, end, e1.weight);
+                edges.insert(e);
+            }
+        }
+    }
+    return edges;
+}
+
+std::set<edge> delete_edge(std::set<edge> edges, edge e)
+{
+    std::set<edge>::iterator place_to_delete;
+    for (std::set<edge>::iterator iter = edges.begin(); iter != edges.end(); ++iter)
+    {
+        if (*iter == e)
+        {
+            place_to_delete = iter;
+        }
+    }
+    edges.erase(place_to_delete);
+    return edges;
+}
+
+// V is number of nodes
+// REQUIRES A WELL-FORMED SET OF EDGES, (E.G., NO REPEATS WITH DIFFERING PRIORITY)
+std::set<edge> break_cycle(std::set<edge> edges, int V)
+{
+    // for each back edge
+    // 1) delete back edge between the 2 nodes OR
+    // 2) delete other path between the 2 nodes
+    // repeat until no more cycles can be found
+    std::vector<edge> is_cycle = {edge(-1, -1, -1)};
+    do
+    {
+        // make (or re-make) graph out of remaining edges
+        Graph gr(V);
+        for (edge e : edges)
+            gr.addEdge(e);
+        // printf("edges in graph: ");
+        // print(edges);
+
+        // finds a back edge that leads back to a previously seen node ( if it exists)
+        is_cycle = gr.findCyclic();
+        if (is_cycle.size() > 0)
+        {
+            edge back_edge = is_cycle[0];
+            // printf("back edge found: (%i, %i) weight %i\n", back_edge.start, back_edge.end, back_edge.weight);
+            // deletes back_edge from edges (if edge is not required)
+            if (back_edge.weight != 0)
+            {
+                edges = delete_edge(edges, back_edge);
+            }
+            // else find the rest of the cycle, and delete one of their edges
+            else
+            {
+                // find other edges of the cycle
+                int *prev = gr.shortestPath(back_edge.end);
+                std::set<edge> other_edges;
+                other_edges = gr.find_path(prev, back_edge.end, back_edge.start, other_edges);
+                // select a non-required edge from the cycle and delete it
+                if (other_edges.size() > 0)
+                {
+                    // printf("other edges in this cycle");
+                    // for (edge e1 : other_edges)
+                    // {
+                    //     printf("(%i, %i)%i ", e1.start, e1.end, e1.weight);
+                    // }
+                    // printf("\n");
+
+                    // find all the non-required edges
+                    std::vector<edge> non_req_edges;
+                    for (std::set<edge>::iterator iter = other_edges.begin(); iter != other_edges.end(); ++iter)
+                    {
+                        if ((*iter).weight != 0)
+                        {
+                            non_req_edges.push_back(*iter);
+                        }
+                    }
+                    
+                    if (non_req_edges.size() > 0)
+                    {
+                        // pick a random non-required edge
+                        int rand_idx = std::rand() % non_req_edges.size();
+                        std::vector<edge> non_req_edges_vec = std::vector<edge>(non_req_edges.begin(), non_req_edges.end());
+                        edge rand_edge = non_req_edges_vec[rand_idx];
+                        //printf("rand_edge = (%i %i) %i", rand_edge.start, rand_edge.end, rand_edge.weight);
+                        // and delete it
+                        edges = delete_edge(edges, rand_edge); 
+                    }
+                    else
+                    {
+                        printf("The required edges form a cycle - it is impossible to linearize this method effectively");
+                    }
+                }
+                // printf("random edge deleted (%i, %i)\n", rand_edge.start, rand_edge.end);
+            }
+        }
+    } while (is_cycle.size() > 0);
+    // printf("no more cycles could be found.  ");
+    return edges;
+}
+
+
+int main_()
+{
+    for (int ii = 0; ii < 2; ii++)
+    {
+        if (ii == 0)
+        {
+            // intialize graph edges
+            std::set<edge> test_edges_1;
+            test_edges_1.insert(edge(0, 1, 0)); // perma
+            test_edges_1.insert(edge(1, 0, 1)); // perma
+            test_edges_1.insert(edge(0, 1, 1)); // not added
+
+            // test_edges_1.insert(edge(0, 1, 1));
+            // test_edges_1.insert(edge(1, 2, 0));
+            // test_edges_1.insert(edge(2, 3, 1));
+            // test_edges_1.insert(edge(3, 4, 1));
+            // test_edges_1.insert(edge(4, 5, 1));
+            // test_edges_1.insert(edge(5, 0, 1));
+            // test_edges_1.insert(edge(4, 1, 1)); //<--- another one
+            std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+            printf("edges in new graph: ");
+            print(new_edges);
+        }
+        else
+        {
+            // intialize graph edges
+            std::set<edge> test_edges_1;
+            test_edges_1.insert(edge(1, 0, 0));
+            test_edges_1.insert(edge(0, 1, 1));
+            test_edges_1.insert(edge(1, 0, 1)); // not added
+
+            // test_edges_1.insert(edge(0, 1, 1));
+            // test_edges_1.insert(edge(1, 2, 0));
+            // test_edges_1.insert(edge(2, 3, 1));
+            // test_edges_1.insert(edge(3, 4, 1));
+            // test_edges_1.insert(edge(4, 5, 1));
+            // test_edges_1.insert(edge(5, 0, 1));
+            // test_edges_1.insert(edge(4, 1, 1)); //<--- another one
+            std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+            printf("edges in new graph: part 2 ");
+            print(new_edges);
+        }
+    }
+
+    return 0;
+}

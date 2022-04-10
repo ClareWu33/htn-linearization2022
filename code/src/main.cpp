@@ -11,7 +11,7 @@
 #include <chrono>
 
 #include "directed_graph.h"
-#include "util.h" 
+#include "util.h"
 
 // pandPI code for storing an HTN planning model
 #include "../pandaPIengine/src/Model.h"
@@ -22,6 +22,8 @@
 #include "../pandaPIengine/src/intDataStructures/FlexIntStack.h"
 #include "../pandaPIengine/src/intDataStructures/IntUtil.h"
 #include "../pandaPIengine/src/intDataStructures/StringUtil.h"
+
+
 
 progression::Model *setup_model(string fileName)
 {
@@ -36,17 +38,15 @@ progression::Model *setup_model(string fileName)
        fileStream.open(fileName);
        if (fileStream.is_open())
        {
-              printf("The problem file was opened successfully.");
+              printf("The problem file %s was opened successfully.", fileName.c_str());
+              m->read(&fileStream);
+       } else{
+              printf("Could not open the specified file, %s", fileName.c_str());
        }
 
-       m->read(&fileStream);
+
        return m;
 }
-
-// find a better compund task pre + eff ? // def get_Connie_compound_pre_eff(Node Compound_Task) {}
-
-// find the cmpd task pre+eff by just aggregrating all of them together
-// gets the preconditons and effects for one method
 
 // TODO: build a directed graph ~= TDG
 // then build up from leaves (ignoring if you have seen this task before)
@@ -58,79 +58,64 @@ progression::Model *setup_model(string fileName)
 
 // auto duration = duration_cast<microseconds>(stop - start);
 // cout << duration.count() << endl;
-/*
-std::set<int> **get_m_pre_eff2(int collect_to, int method, std::set<int> tasks_seen, Model *m, std::set<int> **tasks_pre_eff)
-{
-       // build tdg/ 2 dir graph
-       Graph to_subtask = Graph((*m).numTasks);
-       Graph from_subtask = Graph((*m).numTasks);
+// std::set<int> **get_tasks_pre_eff2(Model *m)
+// {
+//        // build tdg/
+//        Graph from_subtask = Graph((*m).numTasks);
+//        for (int method = 0; method < (*m).numMethods; method++)
+//        {
+//               int decomposed_task = (*m).decomposedTask[method];
+//               for (int subtask_pos = 0; subtask_pos < (*m).numSubTasks; subtask_pos++)
+//               {
+//                      int subtask = (*m).subTasks[method][subtask_pos];
+//                      to_subtask.addEdge(decomposed_task, subtask);
+//                      from_subtask.addEdge(subtask, decomposed_task);
+//               }
+//        }
 
-       for (int method = 0; method < (*m).numMethods; method++)
-       {
-              int decomposed_task = (*m).decomposedTask[method];
-              for (int subtask_pos = 0; subtask_pos < (*m).numSubTasks; subtask_pos++)
-              {
-                     int subtask = (*m).subTasks[method][subtask_pos];
+//        // set up storage of results
+//        std::set<int> **tasks_pre_eff;
+//        std::set<int> **tasks_pre_eff = new std::set<int> *[3];
+//        for (int i = 0; i < 3; i++)
+//        {
+//               tasks_pre_eff[i] = new std::set<int>[(*m).numTasks];
+//        }
 
-                     to_subtask.addEdge(decomposed_task, subtask);
-                     from_subtask.addEdge(subtask, decomposed_task);
-              }
-       }
+//        // fill the tree from bottom-up
+//        bool next_to_push[(*m).numTasks] = {0}; // false
+//        bool seen_before[(*m).numTasks] = {0}; // false
+//        int filled_tasks = 0;
+//        // the 'leaves' are actions
+//        for (int a = 0; a < (*m).numActions; a++)
+//        {
+//               tasks_pre_eff[0][a].insert((*m).precLists[subtask], &((*m).precLists[subtask][(*m).numPrecs[subtask]]));
+//               tasks_pre_eff[1][a].insert((*m).addLists[subtask], &((*m).addLists[subtask][(*m).numAdds[subtask]]));
+//               tasks_pre_eff[2][a].insert((*m).delLists[subtask], &((*m).delLists[subtask][(*m).numDels[subtask]]));
+//               next_to_push[a] = 1; // true
+//        }
+//        filled_tasks = (*m).numActions;
 
-       // fill the tree from bottom-up
-       bool is_filled[(*m).numTasks] = {0}; // false
-       int filled_tasks = 0;
-       // the 'leaves' are actions
-       for (int a = 0; a < (*m).numActions; a++)
-       {
-              tasks_pre_eff[0][a].insert((*m).precLists[subtask], &((*m).precLists[subtask][(*m).numPrecs[subtask]]));
-              tasks_pre_eff[1][a].insert((*m).addLists[subtask], &((*m).addLists[subtask][(*m).numAdds[subtask]]));
-              tasks_pre_eff[2][a].insert((*m).delLists[subtask], &((*m).delLists[subtask][(*m).numDels[subtask]]));
-              is_filled[a] = 1; // true
-       }
-       filled_tasks = (*m).numActions;
-
-       // // ver1 collect for all compund tasks whose every subtasks has pre+add+del collected
-       // for (int task = (*m).numActions; task < (*m).numTasks; task++)
-       // {
-       //        int parent_task = g.adj[task];
-       //        if (is_filled[task]) && !(is_filled[parent_task])))
-       //               {
-       //                      parent_task = g.adj[task];
-       //                      tasks_pre_eff[0][parent_task].insert(tasks_pre_eff[0][task].begin(), tasks_pre_eff[0][task].end());
-       //                      tasks_pre_eff[1][parent_task].insert(tasks_pre_eff[1][task].begin(), tasks_pre_eff[1][task].end());
-       //                      tasks_pre_eff[2][parent_task].insert(tasks_pre_eff[2][task].begin(), tasks_pre_eff[2][task].end());
-       //               }
-       //        is_filled[parent_task] = (all_true(is_filled, to_subtask.adj[c_task]);
-       // }
-
-       // ver2 collect for all compund tasks whose every subtasks has pre+add+del collected
-       while (filled_tasks < (*m).numTasks)
-       {
-              for (int c_task = (*m).numActions; c_task < (*m).numTasks; c_task++)
-              {
-                     // for compund tasks that still need pre+eff
-                     if (!(is_filled[c_task]))
-                     {
-                            // if all subtasks (all method) for this parent task, has pre+add+del collected
-                            if (all_true(is_filled, to_subtask.adj[c_task])
-                            {
-                                   for (int i = 0; i < numMethodsForTask[c_task]; i++)
-                                   {
-                                          int method = (*m).taskToMethods[c_task][i];
-                                          for (int subtask_pos = 0; subtask_pos < (*m).numSubTasks[method]; subtask_pos++)
-                                          {
-                                                 int subtask = (*m).subTasks[method][subtask_pos];
-                                                 tasks_pre_eff[0][c_task].insert(tasks_pre_eff[0][subtask].begin(), tasks_pre_eff[0][subtask].end());
-                                                 tasks_pre_eff[1][c_task].insert(tasks_pre_eff[1][subtask].begin(), tasks_pre_eff[1][subtask].end());
-                                                 tasks_pre_eff[2][c_task].insert(tasks_pre_eff[2][subtask].begin(), tasks_pre_eff[2][subtask].end());
-                                          }
-                                   }
-                            }
-                     }
-              }
-       }
-} */
+//        // push your pre+add+del up to subtasks that may deompose to you
+//        while
+//               !(all_pushed)
+//               {
+//                      for (int subtask = 0; subtask < (*m).numTasks; subtask++)
+//                      {
+//                             int parent_task = g.adj[task];
+//                             if !(has_pushed[subtask]))
+//                                    {
+//                                           parent_task = g.adj[task];
+//                                           tasks_pre_eff[0][parent_task].insert(tasks_pre_eff[0][task].begin(), tasks_pre_eff[0][task].end());
+//                                           tasks_pre_eff[1][parent_task].insert(tasks_pre_eff[1][task].begin(), tasks_pre_eff[1][task].end());
+//                                           tasks_pre_eff[2][parent_task].insert(tasks_pre_eff[2][task].begin(), tasks_pre_eff[2][task].end());
+//                                           next_to_push[parent_task] = true;
+//                                           next_to_push[this_task] = false;
+//                                    }
+//                             has_pushed[subtask] = true;
+//                      }
+//               }
+//        return tasks_pre_eff;
+// }
 //* END TODO *//
 
 std::set<int> **get_m_pre_eff(int collect_to, int method, std::set<int> tasks_seen, Model *m, std::set<int> **all_pre_eff)
@@ -142,10 +127,15 @@ std::set<int> **get_m_pre_eff(int collect_to, int method, std::set<int> tasks_se
               {
                      if ((*m).isPrimitive[subtask])
                      {
-                            // integer variable that they act on
+                            // integer variable that they act on,  .insert(arr.start(), arr.end())
                             all_pre_eff[0][collect_to].insert((*m).precLists[subtask], &((*m).precLists[subtask][(*m).numPrecs[subtask]]));
                             all_pre_eff[1][collect_to].insert((*m).addLists[subtask], &((*m).addLists[subtask][(*m).numAdds[subtask]]));
                             all_pre_eff[2][collect_to].insert((*m).delLists[subtask], &((*m).delLists[subtask][(*m).numDels[subtask]]));
+
+                            if ((*m).numConditionalAdds[subtask] > 0)
+                                   all_pre_eff[1][collect_to].insert((*m).conditionalAddLists[subtask], &((*m).conditionalAddLists[subtask][(*m).numConditionalAdds[subtask]]));
+                            if ((*m).numConditionalDels[subtask] > 0)
+                                   all_pre_eff[2][collect_to].insert((*m).conditionalDelLists[subtask], &((*m).conditionalDelLists[subtask][(*m).numConditionalDels[subtask]]));
                      }
                      else
                      {
@@ -306,55 +296,43 @@ std::vector<edge> *break_cycle(Model *m, std::set<edge> *old_orderings)
        std::vector<edge> *linearised_orderings = new std::vector<edge>[(*m).numMethods];
 
        for (int method = 0; method < (*m).numMethods; method++)
-       {
-              Graph g((*m).numSubTasks[method], 2); // num of vertices = subtasks for method
+       { 
+              std::set<edge> edges;
 
-              //  first priority to respect: (*m).orderings
-              for (int i = 0; i < (*m).numOrderings[method] - 2; i += 2)
+              //  first priority to respect: (*m).orderings 
+              // (can't be overwritten later)
+              for (int i = 0; i < (*m).numOrderings[method] - 1; i += 2)
               {
                      int o1 = (*m).ordering[method][i];
                      int o2 = (*m).ordering[method][i + 1];
-                     g.addEdge(o1, o2, 0);
+                     edge edge(o1, o2, 0); 
+                     edges.insert(edge);
               }
 
-              //   second priority to respect: output of find_orderings
+              //  second priority to respect: output of find_orderings
+              // (cannot overwrite previous edges (i.e. already assigned a higher priority) )
               for (auto e : old_orderings[method])
               {
-                     g.addEdge(e.start, e.end, 1);
+                     edge edge(e.start, e.end, 1);
+                     edges.insert(edge);
               }
+              print(edges);
 
-              // find cycles
-              new_orderings[method] = old_orderings[method];
-              std::vector<cycle> all_cycles = g.findCyclic();
-              for (cycle c : all_cycles)
-              {
-                     if (c.isCycle)
-                     {
-                            if (c.edges[1].size() > 0)
-                            {
-                                   // select a random cycle where priority = 1
-                                   new_orderings[method] = g.get_orderings(); // array of  edge set
-                                   // check that it is not a higher priority edge as well
-                                   edge rand_edge = *(c.edges[0].begin());
-                                   while (c.edges[0].find(rand_edge) != c.edges[0].end())
-                                   { 
-                                          int rand_edge_idx = (std::rand() % (c.edges[1].size()) );
-                                          std::vector<edge> edges_vec;    edges_vec.assign((c.edges[1]).begin(), (c.edges[1]).end());
-                                          rand_edge = edges_vec[rand_edge_idx];
-                                   }
-                                   // break cycles
-                                   new_orderings[method].erase(rand_edge);
-                            }
-                     }
-              }
+              // set::vector<edge> edges_vec;
+             // edges_vec.assign(edges.begin(), edges.end());
 
-              //// TODO: debug make new orderings totally ordered
+              // find and break cycles in proposed orderigns (without affecting required orderings)
+              int V = (*m).numSubTasks[method];
+              new_orderings[method] = break_cycle(edges, V);
+              // new_orderings[method] = std::set(new_o.begin(), new_o.end()); 
+
+              // make new orderings totally ordered
               Graph g2((*m).numSubTasks[method]);
               for (auto e : new_orderings[method])
-                     g2.addEdge(e.start, e.end);
-
-              stack<int> Stack = g.topologicalSort();
-
+                     g2.addEdge(e.start, e.end, 0);
+              stack<int> Stack = g2.topologicalSort();
+              
+              // return topological ordering in 'edge' format
               int first = Stack.top();
               Stack.pop();
               while (Stack.empty() == false)
@@ -366,73 +344,162 @@ std::vector<edge> *break_cycle(Model *m, std::set<edge> *old_orderings)
                      Stack.pop();
               }
        }
-
        return linearised_orderings;
 }
 
-// produce new T.O Domain  (modifies it in place)
-Model *TO_Domain(Model *m, std::vector<edge> *new_orderings)
+void to_sas(Model *m, std::vector<edge> *linearised_orderings, string og_sas)
 {
-       for (int method = 0; method < (*m).numMethods; method++)
+       // makes TO into pddl or sas?
+       // no more types
+       std::ifstream fileStream;
+       fileStream.open(og_sas);
+       if (fileStream.is_open())
        {
-              (*m).numOrderings[method] = new_orderings[method].size();
-              (*m).ordering[method] = new int[new_orderings[method].size()];
-              int i = 0;
-              for (auto edge : new_orderings[method])
-              {
-                     (*m).ordering[method][i] = edge.start;
-                     (*m).ordering[method][i] = edge.end;
-                     i += 2;
-              }
+              printf("The problem file was opened successfully.");
        }
-       return m;
+
+       // read line by line
+       // output line by line
+
+       // delete old methods, put new
+
+       // read line by line
+       // output line by line
+
 }
 
-// use gregor's original method
-// void Process1() {
-//       std::set<int> **all_pre_eff = get_methods_pre_eff(m);
-//       std::set<int> **tpe = get_tasks_pre_eff(m, all_pre_eff);
-//       std::vector<int> *orderings = find_orderings(m, tpe);
-//        std::vector<int> * new_orderings  = break_cycle(m, orderings);
-//        // new_orderings = linearised
-// }
+void linearize_model(Model *m, std::vector<edge> *linearised_orderings) {
+       delete[] (*m).ordering;
+       (*m).ordering = new int *[(*m).numMethods];
+       for (int method=0; method<(*m).numMethods; method++) {
+              (*m).numOrderings[method] = 2*linearised_orderings[method].size(); // new size of ordering
+              (*m).ordering[method] = new int[ (*m).numOrderings[method] ];    // new ordering array
+              for (int i=0; i<linearised_orderings[method].size(); i++) {
+                     (*m).ordering[method][2*i] = linearised_orderings[method][i].start;
+                     (*m).ordering[method][2*i+1] = linearised_orderings[method][i].end;
+              }              
+       } 
+} 
+
 
 // // use connies method
 // void Process2() {
-//        certain_pre_eff, possible_pre_eff  = Connies_method();
-//        std::vector<int> * orderings = find_orderings(m, certain_pre_eff);
-//        std::vector<int> * new_orderings  = break_cycle_more(orderings);
-//        // new_orderings = linearised
+//        for (int i = 0; i < num_problems; i++)
+//        {
+//               pddl = problems_to_convert[i];
+//               Model *m = setup_model(pddl);
+//               certain_pre_eff, possible_pre_eff  = Connies_method();
+//               // find orderings
+//               std::set<edge> *orderings = find_orderings(m, tpe);
+//               std::vector<edge> *linearised_orderings = break_cycle(m, orderings);
+//               out(m, linearised_orderings, pddl);
+//        }
 // }
 
-int main(int argc, char *argv[])
+// use gregor's original method
+void Process1(string filepath)
 {
 
-       Model *m = setup_model("problemrover01out.sas"); //("test01out.sas"); //
+       string sas_file = filepath + ".sas";
+       Model *m = setup_model(sas_file);
+
+       for (int method=0; method<(*m).numMethods; method++) {
+              for (int i=0; i<(*m).numOrderings[method]; i++) {
+                     printf("%i ", (*m).ordering[method][i]);
+              }
+              printf("\n");
+       }
+
        std::set<int> **all_pre_eff = get_methods_pre_eff(m);
        std::set<int> **tpe = get_tasks_pre_eff(m, all_pre_eff);
-
-       int action = 3;
-       printf("Sample of results for corresponding primitive task %i:  prec %lu adds %lu del %lu \n", action, tpe[0][action].size(), tpe[1][action].size(), tpe[2][action].size());
-       print(tpe[0][action]);
-       print(tpe[1][action]);
-       print(tpe[2][action]);
-
+       // find orderings
        std::set<edge> *orderings = find_orderings(m, tpe);
-       int method = 3;
-       printf("orderings found for %i method \n", method);
-       printf("Subtasks for method "); // should be  6    8      5         7
-                                       //            2           2
-                                       //                      16,14      10
-                                       //                10    5,2
-                                       //        i.e. (0, 2)  and NOT(2,2)  since thats itself
-       printf("orderings ");
-       print(orderings[method]);
-
-       // TODO: not yet fully debugged
        std::vector<edge> *linearised_orderings = break_cycle(m, orderings);
-       printf("orderings after cycle breaking for 1st method");
-       print(linearised_orderings[method]);
 
-       return 0;
+       linearize_model(m, linearised_orderings);
+       printf("After linearise \n");
+       for (int method=0; method<(*m).numMethods; method++) {
+              for (int i=0; i<(*m).numOrderings[method]; i++) {
+                     printf("%i ", (*m).ordering[method][i]);
+              }
+              printf("\n");
+       }
+       
+       string domain_name = "linearized-domains/" + sas_file + "-TO-domain.pddl";
+       string problem_name = "linearized-problems/" + sas_file + "-TO.pddl";
+       m->writeToPDDL(domain_name, problem_name);
 }
+
+// IPC PO benchmark hddl (:requirements :method-preconditions :equality :typing :hierarchy :negative-preconditions :universal-preconditions)
+// does not have  conditional effects?
+
+int main(int argc, char *argv[])
+{ 
+       int n = 1;
+       string problems_to_convert[n] = {"problemrover01out"};
+       for (int i = 0; i<n; i++)
+       {      
+               Process1(problems_to_convert[i]);
+       }
+}
+// int main(int argc, char *argv[])
+// {
+
+//        Model *m = setup_model("problemrover01out.sas"); //("test01out.sas"); //
+//        std::set<int> **all_pre_eff = get_methods_pre_eff(m);
+//        std::set<int> **tpe = get_tasks_pre_eff(m, all_pre_eff);
+
+//        int action = 3;
+//        printf("Sample of results for corresponding primitive  task %i: ", action);
+//        print(tpe[0][action]);
+//        print(tpe[1][action]);
+//        print(tpe[2][action]);
+
+//        std::set<int> **tpe2 = get_tasks_pre_eff2(m);
+//        printf("Sample of results for other method, corresponding primitive task %i: ", action);
+//        print(tpe2[0][action]);
+//        print(tpe2[1][action]);
+//        print(tpe2[2][action]);
+//        action = 4;
+//        printf("Sample of results for other method, corresponding primitive  task %i: ", action);
+//        print(tpe2[0][action]);
+//        print(tpe2[1][action]);
+//        print(tpe2[2][action]);
+//        action = 5;
+//        printf("Sample of results for other method, corresponding primitive task %i: ", action);
+//        print(tpe2[0][action]);
+//        print(tpe2[1][action]);
+//        print(tpe2[2][action]);
+
+//        // find orderings
+//        std::set<edge> *orderings = find_orderings(m, tpe);
+//        int method = 3;
+//        printf("orderings found for method %i \n", method);
+//        // subtasks
+//        //  should be  6    8       5         7
+//        //             2            2
+//        //                        16,14      10
+//        //                 10      5,2
+//        // i.e. (0, 2), (1,3)  and NOT(2,2)  since thats itself
+//        print(orderings[method]);
+
+//        std::vector<edge> *linearised_orderings = break_cycle(m, orderings);
+//        printf("orderings after cycle breaking for method");
+//        print(linearised_orderings[method]);
+//        printf("\n");
+
+//        method = 7;
+//        printf("orderings found for method %i\n", method);
+//        print(orderings[method]);
+//        printf("orderings that method already requires");
+//        for (int i = 0; i < (*m).numOrderings[method - 1]; i += 2)
+//        {
+//               printf("(%i %i) ", (*m).ordering[method][i], (*m).ordering[method][i + 1]);
+//        }
+//        printf("\n");
+
+//        printf("orderings after cycle breaking for method");
+//        print(linearised_orderings[method]);
+
+//        return 0;
+// }
