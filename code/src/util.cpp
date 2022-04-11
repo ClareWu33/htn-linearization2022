@@ -91,9 +91,9 @@ bool all_true(bool * arr, std::vector<int> idxs_to_check)
        return true;
 }
 
-bool all_true(bool * arr, int n) 
+bool all_true(bool * arr, int size) 
 {
-       for (int i=0; i<n; i++) 
+       for (int i=0; i<size; i++) 
        {
               if (arr[i] == false) 
               {

@@ -19,4 +19,7 @@ bool is_in(int m1, std::set<int> m_to_check);
 
 std::vector<int> concatenate(std::vector<int> arr1, int *arr2, int arr2_size);
 std::set<int> concatenate(std::set<int> set1, int *arr2, int arr2_size);
+
+bool all_true(bool * arr, std::vector<int> idxs_to_check);
+bool all_true(bool * arr, int size);
  
