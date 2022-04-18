@@ -31,6 +31,14 @@ void print(int *arr1, int arr1_size)
        printf("\n");
 }
 
+void print(bool *arr1, int arr1_size) {
+       for (int i = 0; i < arr1_size; i++)
+       {
+              printf("%i ", arr1[i]);
+       }
+       printf("\n");
+}
+
 void print(std::set<int> s)
 {
        for (auto elem : s)
@@ -39,6 +47,8 @@ void print(std::set<int> s)
        }
        printf("\n");
 }
+
+
 
 
 bool is_in(int m1, std::vector<int> m_to_check)

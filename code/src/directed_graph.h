@@ -35,7 +35,7 @@ public:
 class Graph
 {
     bool isCyclicUtil(int v, bool visited[], bool *rs); // used by isCyclic()
-    std::vector<edge> findCyclicUtil(int v, bool visited[], bool *rs);  
+    std::vector<edge> findCyclicUtil(int v, bool visited[], bool *recStack, std::vector<edge> back_edges);  
      // A function used by topologicalSort
     void topologicalSortUtil(int v, bool visited[],
                              stack<int>& Stack);
@@ -52,9 +52,9 @@ public:
     std::set<edge> * get_orderings_with_priority();
     std::set<edge>  get_orderings();
     bool isCyclic();    // returns true if there is a cycle in this graph        
-    std::vector<edge> findCyclic();  // returns cycle  if there is a cycle in this graph
-    
-    int* shortestPath(int src);
+    std::vector<edge> findAllCycles(int initial_task);
+
+    int* shortestPath(int src, int end);
     std::set<edge> find_path(int * prev, int src, int dest, std::set<edge> path);
     // a Topological Sort of
     // the complete graph

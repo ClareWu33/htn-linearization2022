@@ -155,7 +155,7 @@ std::set<edge> Graph::get_orderings()
 
 // This function is a variation of DFSUtil() in https://www.geeksforgeeks.org/archives/18212
 // finds 1 or 0 edges
-std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack)
+std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack, std::vector<edge> back_edges)
 {
     if (visited[v] == false)
     {
@@ -169,35 +169,25 @@ std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack)
         {
             if (!visited[(*i).end])
             {
-                std::vector<edge> result = findCyclicUtil((*i).end, visited, recStack);
-                if (result.size() > 0)
-                {
-                    return result;
-                }
+                back_edges = findCyclicUtil((*i).end, visited, recStack, back_edges);
             }
             else if (recStack[(*i).end])
             {
                 // printf("recStack, cycle found at %i %i, has weight %i \n", v, (*i).end, (*i).weight);
-                std::vector<edge> back_edge;
                 edge e(v, (*i).end, (*i).weight);
-                back_edge.push_back(e);
-                return back_edge;
+                back_edges.push_back(e);
             }
         }
     }
     recStack[v] = false; // remove the vertex from recursion stack
-
-    std::vector<edge> back_edge;
-    return back_edge;
+    return back_edges;
 }
 
-// Returns the cycle if the graph contains a cycle,
-// This function is a variation of DFS() in https://www.geeksforgeeks.org/archives/18212
-std::vector<edge> Graph::findCyclic()
+// Finds all back_edges for graph reachable from intial_task
+// if initial_task <0, searches whole graph 
+std::vector<edge> Graph::findAllCycles(int initial_task)
 {
-    std::vector<edge> all_back_edges;
-    // Mark all the vertices as not visited and not part of recursion
-    // stack
+    // Mark all the vertices as not visited and not part of recursion stack
     bool *visited = new bool[V];
     bool *recStack = new bool[V];
 
@@ -207,20 +197,22 @@ std::vector<edge> Graph::findCyclic()
         recStack[i] = false;
     }
 
-    // Call the recursive helper function to detect cycle in different
-    // DFS trees
-    for (int i = 0; i < V; i++)
+    std::vector<edge> back_edges;
+    if (initial_task < 0)
     {
-        if (!visited[i])
+        for (int i = 0; i < V; i++)
         {
-            std::vector<edge> back_edge = findCyclicUtil(i, visited, recStack);
-            if (back_edge.size() > 0)
+            if (visited[i] == false)
             {
-                return back_edge; // all_back_edges.push_back(back_edges[0]);
+                back_edges = findCyclicUtil(i, visited, recStack, back_edges); 
             }
         }
     }
-    return all_back_edges;
+    else
+    {
+        back_edges = findCyclicUtil(initial_task, visited, recStack, back_edges);
+    }
+    return back_edges;
 }
 
 // A recursive function used by topologicalSort
@@ -241,9 +233,8 @@ void Graph::topologicalSortUtil(int v, bool visited[],
     // which stores result
     Stack.push(v);
 }
-
-// The function to do Topological Sort.
-// It uses recursive topologicalSortUtil()
+ 
+//  Uses recursive topologicalSortUtil()
 stack<int> Graph::topologicalSort()
 {
     stack<int> Stack;
@@ -264,7 +255,7 @@ stack<int> Graph::topologicalSort()
 }
 
 // Prints shortest paths from src to all other vertices
-int *Graph::shortestPath(int src)
+int *Graph::shortestPath(int src, int end)
 {
     // Create a priority queue to store vertices that
     // are being preprocessed. This is weird syntax in C++.
@@ -299,6 +290,12 @@ int *Graph::shortestPath(int src)
         int u = pq.top().second;
         pq.pop();
         f[u] = true;
+
+        // if we've found any path to the end, return
+        if (u == end)
+        {
+            return prev;
+        }
 
         // 'i' is used to get all adjacent vertices of a vertex
         list<adj_edge>::iterator i;
@@ -347,7 +344,7 @@ std:
     path.push_back(src); // path from dest to src
 
     // edges connecting src to dest
-    for (int i = path.size()-2; i >= 0; i--)
+    for (int i = path.size() - 2; i >= 0; i--)
     {
         int start = path[i + 1];
         int end = path[i];
@@ -383,24 +380,21 @@ std::set<edge> delete_edge(std::set<edge> edges, edge e)
 std::set<edge> break_cycle(std::set<edge> edges, int V)
 {
     // for each back edge
-    // 1) delete back edge between the 2 nodes OR
-    // 2) delete other path between the 2 nodes
+    //   1) delete back edge between the 2 nodes OR
+    //   2) delete other path between the 2 nodes
     // repeat until no more cycles can be found
-    std::vector<edge> is_cycle = {edge(-1, -1, -1)};
+    std::vector<edge> back_edges = {edge(-1, -1, -1)};
     do
     {
-        // make (or re-make) graph out of remaining edges
+        //  make (or re-make) graph out of remaining edges
         Graph gr(V);
         for (edge e : edges)
             gr.addEdge(e);
-        // printf("edges in graph: ");
-        // print(edges);
 
-        // finds a back edge that leads back to a previously seen node ( if it exists)
-        is_cycle = gr.findCyclic();
-        if (is_cycle.size() > 0)
+        // finds all back edges that leads back to a previously seen node
+        back_edges = gr.findAllCycles(-1); 
+        for (edge back_edge : back_edges)
         {
-            edge back_edge = is_cycle[0];
             // printf("back edge found: (%i, %i) weight %i\n", back_edge.start, back_edge.end, back_edge.weight);
             // deletes back_edge from edges (if edge is not required)
             if (back_edge.weight != 0)
@@ -411,19 +405,12 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
             else
             {
                 // find other edges of the cycle
-                int *prev = gr.shortestPath(back_edge.end);
+                int *prev = gr.shortestPath(back_edge.end, back_edge.start);
                 std::set<edge> other_edges;
                 other_edges = gr.find_path(prev, back_edge.end, back_edge.start, other_edges);
                 // select a non-required edge from the cycle and delete it
                 if (other_edges.size() > 0)
                 {
-                    // printf("other edges in this cycle");
-                    // for (edge e1 : other_edges)
-                    // {
-                    //     printf("(%i, %i)%i ", e1.start, e1.end, e1.weight);
-                    // }
-                    // printf("\n");
-
                     // find all the non-required edges
                     std::vector<edge> non_req_edges;
                     for (std::set<edge>::iterator iter = other_edges.begin(); iter != other_edges.end(); ++iter)
@@ -433,16 +420,16 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
                             non_req_edges.push_back(*iter);
                         }
                     }
-                    
+
                     if (non_req_edges.size() > 0)
                     {
                         // pick a random non-required edge
                         int rand_idx = std::rand() % non_req_edges.size();
                         std::vector<edge> non_req_edges_vec = std::vector<edge>(non_req_edges.begin(), non_req_edges.end());
                         edge rand_edge = non_req_edges_vec[rand_idx];
-                        //printf("rand_edge = (%i %i) %i", rand_edge.start, rand_edge.end, rand_edge.weight);
-                        // and delete it
-                        edges = delete_edge(edges, rand_edge); 
+
+                        //  and delete it
+                        edges = delete_edge(edges, rand_edge);
                     }
                     else
                     {
@@ -452,55 +439,94 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
                 // printf("random edge deleted (%i, %i)\n", rand_edge.start, rand_edge.end);
             }
         }
-    } while (is_cycle.size() > 0);
-    // printf("no more cycles could be found.  ");
+    } while (back_edges.size() > 0);
     return edges;
 }
 
+int main__()
+{
+    std::set<edge> test_edges_1;
+    // test_edges_1.insert(edge(0, 1, 1));
+    // test_edges_1.insert(edge(0, 2, 0));
+    // test_edges_1.insert(edge(1, 3, 0));
+    // test_edges_1.insert(edge(2, 3, 0));
+
+    test_edges_1.insert(edge(0, 1, 1));
+    test_edges_1.insert(edge(1, 2, 0));
+    test_edges_1.insert(edge(2, 0, 0));
+
+   // test_edges_1.insert(edge(2, 4, 0));
+
+    test_edges_1.insert(edge(3, 4, 1));
+    test_edges_1.insert(edge(4, 5, 0));
+    test_edges_1.insert(edge(5, 3, 0));
+
+    // test_edges_1.insert(edge(0, 1, 0));
+    // test_edges_1.insert(edge(1, 2, 1)); // delete
+    // test_edges_1.insert(edge(2, 0, 0));
+
+    // test_edges_1.insert(edge(1, 3, 1)); // alt path
+    // test_edges_1.insert(edge(3, 2, 1));
+    Graph g(6);
+    for (edge e : test_edges_1)
+    {
+        g.addEdge(e);
+    }
+    std::vector<edge> back_edges = g.findAllCycles(-1); // break_cycle(test_edges_1, 6);
+    printf("back edges in new graph: ");
+    print(back_edges);
+    return 0;
+}
 
 int main_()
 {
-    for (int ii = 0; ii < 2; ii++)
-    {
-        if (ii == 0)
-        {
-            // intialize graph edges
-            std::set<edge> test_edges_1;
-            test_edges_1.insert(edge(0, 1, 0)); // perma
-            test_edges_1.insert(edge(1, 0, 1)); // perma
-            test_edges_1.insert(edge(0, 1, 1)); // not added
+    // intialize graph edges
+    std::set<edge> test_edges_1;
+    test_edges_1.insert(edge(0, 1, 1));
+    test_edges_1.insert(edge(1, 2, 0));
+    test_edges_1.insert(edge(2, 3, 0));
+    test_edges_1.insert(edge(3, 4, 1));
+    test_edges_1.insert(edge(4, 5, 0));
+    test_edges_1.insert(edge(5, 0, 0));
+    test_edges_1.insert(edge(4, 1, 1)); //<--- another one
 
-            // test_edges_1.insert(edge(0, 1, 1));
-            // test_edges_1.insert(edge(1, 2, 0));
-            // test_edges_1.insert(edge(2, 3, 1));
-            // test_edges_1.insert(edge(3, 4, 1));
-            // test_edges_1.insert(edge(4, 5, 1));
-            // test_edges_1.insert(edge(5, 0, 1));
-            // test_edges_1.insert(edge(4, 1, 1)); //<--- another one
-            std::set<edge> new_edges = break_cycle(test_edges_1, 6);
-            printf("edges in new graph: ");
-            print(new_edges);
-        }
-        else
-        {
-            // intialize graph edges
-            std::set<edge> test_edges_1;
-            test_edges_1.insert(edge(1, 0, 0));
-            test_edges_1.insert(edge(0, 1, 1));
-            test_edges_1.insert(edge(1, 0, 1)); // not added
-
-            // test_edges_1.insert(edge(0, 1, 1));
-            // test_edges_1.insert(edge(1, 2, 0));
-            // test_edges_1.insert(edge(2, 3, 1));
-            // test_edges_1.insert(edge(3, 4, 1));
-            // test_edges_1.insert(edge(4, 5, 1));
-            // test_edges_1.insert(edge(5, 0, 1));
-            // test_edges_1.insert(edge(4, 1, 1)); //<--- another one
-            std::set<edge> new_edges = break_cycle(test_edges_1, 6);
-            printf("edges in new graph: part 2 ");
-            print(new_edges);
-        }
-    }
-
+    test_edges_1.insert(edge(4, 5, 1));
+    test_edges_1.insert(edge(5, 0, 1)); // extra rubbish
+    std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+    printf("edges in new graph: ");
+    print(new_edges); // want  (0, 1), (1,2) (2,3) (3, 4) (4,5)
     return 0;
 }
+
+// int main_()
+// {
+//     for (int ii = 0; ii < 2; ii++)
+//     {
+//         if (ii == 0)
+//         {
+//             // intialize graph edges
+//             std::set<edge> test_edges_1;
+//             test_edges_1.insert(edge(0, 1, 0)); // perma
+//             test_edges_1.insert(edge(1, 0, 1)); // perma
+//             test_edges_1.insert(edge(0, 1, 1)); // not added
+
+//             std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+//             printf("edges in new graph: ");
+//             print(new_edges);
+//         }
+//         else
+//         {
+//             // intialize graph edges
+//             std::set<edge> test_edges_1;
+//             test_edges_1.insert(edge(1, 0, 0));
+//             test_edges_1.insert(edge(0, 1, 1));
+//             test_edges_1.insert(edge(1, 0, 1)); // not added
+
+//             std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+//             printf("edges in new graph: part 2 ");
+//             print(new_edges);
+//         }
+//     }
+
+//     return 0;
+// }
