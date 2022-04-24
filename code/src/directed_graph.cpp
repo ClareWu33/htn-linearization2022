@@ -167,11 +167,11 @@ std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack, s
         list<adj_edge>::iterator i;
         for (i = adj[v].begin(); i != adj[v].end(); ++i)
         {
-            if (!visited[(*i).end])
+            if (!visited[(*i).end]) // keep looking at neighbours
             {
                 back_edges = findCyclicUtil((*i).end, visited, recStack, back_edges);
             }
-            else if (recStack[(*i).end])
+            else if (recStack[(*i).end]) // found  a back edge
             {
                 // printf("recStack, cycle found at %i %i, has weight %i \n", v, (*i).end, (*i).weight);
                 edge e(v, (*i).end, (*i).weight);
@@ -184,7 +184,7 @@ std::vector<edge> Graph::findCyclicUtil(int v, bool visited[], bool *recStack, s
 }
 
 // Finds all back_edges for graph reachable from intial_task
-// if initial_task <0, searches whole graph 
+// if initial_task <0, searches whole graph
 std::vector<edge> Graph::findAllCycles(int initial_task)
 {
     // Mark all the vertices as not visited and not part of recursion stack
@@ -204,7 +204,7 @@ std::vector<edge> Graph::findAllCycles(int initial_task)
         {
             if (visited[i] == false)
             {
-                back_edges = findCyclicUtil(i, visited, recStack, back_edges); 
+                back_edges = findCyclicUtil(i, visited, recStack, back_edges);
             }
         }
     }
@@ -213,6 +213,29 @@ std::vector<edge> Graph::findAllCycles(int initial_task)
         back_edges = findCyclicUtil(initial_task, visited, recStack, back_edges);
     }
     return back_edges;
+}
+
+int Graph::findGraphHeight(int root)
+{
+    bool *visited = new bool[V]{false};
+    return findGraphHeightUtil(root, 0, visited);
+}
+
+int Graph::findGraphHeightUtil(int node, int height, bool *visited)
+{
+    if (!(visited[node]))
+    {
+        visited[node] = true;
+        height++; 
+        int interim_height = height;      
+        for (adj_edge child : adj[node])
+        {
+            // printf("height %i  node %i, child%i\n", interim_height, node, child.end);
+            interim_height = max(interim_height, findGraphHeightUtil(child.end, height, visited));
+        }
+        height = max(height, interim_height);
+    }
+    return height;
 }
 
 // A recursive function used by topologicalSort
@@ -233,7 +256,7 @@ void Graph::topologicalSortUtil(int v, bool visited[],
     // which stores result
     Stack.push(v);
 }
- 
+
 //  Uses recursive topologicalSortUtil()
 stack<int> Graph::topologicalSort()
 {
@@ -363,15 +386,20 @@ std:
 
 std::set<edge> delete_edge(std::set<edge> edges, edge e)
 {
-    std::set<edge>::iterator place_to_delete;
-    for (std::set<edge>::iterator iter = edges.begin(); iter != edges.end(); ++iter)
+    std::set<edge>::iterator iter = edges.find(e);
+    if (iter != edges.end())
     {
-        if (*iter == e)
-        {
-            place_to_delete = iter;
-        }
+        edges.erase(iter);
     }
-    edges.erase(place_to_delete);
+    //     std::set<edge>::iterator place_to_delete;
+    // for (std::set<edge>::iterator iter = edges.begin(); iter != edges.end(); ++iter)
+    // {
+    //     if (*iter == e)
+    //     {
+    //         place_to_delete = iter;
+    //     }
+    // }
+    // edges.erase(place_to_delete);
     return edges;
 }
 
@@ -392,7 +420,7 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
             gr.addEdge(e);
 
         // finds all back edges that leads back to a previously seen node
-        back_edges = gr.findAllCycles(-1); 
+        back_edges = gr.findAllCycles(-1);
         for (edge back_edge : back_edges)
         {
             // printf("back edge found: (%i, %i) weight %i\n", back_edge.start, back_edge.end, back_edge.weight);
@@ -451,15 +479,15 @@ int main__()
     // test_edges_1.insert(edge(1, 3, 0));
     // test_edges_1.insert(edge(2, 3, 0));
 
-    test_edges_1.insert(edge(0, 1, 1));
+    test_edges_1.insert(edge(0, 1, 0));
     test_edges_1.insert(edge(1, 2, 0));
-    test_edges_1.insert(edge(2, 0, 0));
+    test_edges_1.insert(edge(1, 3, 0));
 
-   // test_edges_1.insert(edge(2, 4, 0));
-
-    test_edges_1.insert(edge(3, 4, 1));
-    test_edges_1.insert(edge(4, 5, 0));
-    test_edges_1.insert(edge(5, 3, 0));
+    test_edges_1.insert(edge(2, 4, 0));
+    test_edges_1.insert(edge(0, 5, 0));
+    // test_edges_1.insert(edge(3, 4, 1));
+    // test_edges_1.insert(edge(4, 5, 0));
+    // test_edges_1.insert(edge(5, 3, 0));
 
     // test_edges_1.insert(edge(0, 1, 0));
     // test_edges_1.insert(edge(1, 2, 1)); // delete
@@ -472,29 +500,35 @@ int main__()
     {
         g.addEdge(e);
     }
-    std::vector<edge> back_edges = g.findAllCycles(-1); // break_cycle(test_edges_1, 6);
-    printf("back edges in new graph: ");
-    print(back_edges);
+    int height = g.findGraphHeight(0);
+    printf("graph heigth %i\n", height);
+    // std::vector<edge> back_edges = g.findAllCycles(-1); // break_cycle(test_edges_1, 6);
+    // printf("back edges in new graph: ");
+    // print(back_edges);
     return 0;
 }
 
-int main_()
+int main__()
 {
     // intialize graph edges
     std::set<edge> test_edges_1;
     test_edges_1.insert(edge(0, 1, 1));
     test_edges_1.insert(edge(1, 2, 0));
     test_edges_1.insert(edge(2, 3, 0));
-    test_edges_1.insert(edge(3, 4, 1));
-    test_edges_1.insert(edge(4, 5, 0));
-    test_edges_1.insert(edge(5, 0, 0));
-    test_edges_1.insert(edge(4, 1, 1)); //<--- another one
+    test_edges_1.insert(edge(3, 4, 0));
+    test_edges_1.insert(edge(2, 1, 0));
+    test_edges_1.insert(edge(1, 5, 0));
+    Graph g(7);
+    for (edge e : test_edges_1)
+    {
+        g.addEdge(e);
+    }
+    int height = g.findGraphHeight(0);
+    printf("graph heigth %i\n", height);
 
-    test_edges_1.insert(edge(4, 5, 1));
-    test_edges_1.insert(edge(5, 0, 1)); // extra rubbish
-    std::set<edge> new_edges = break_cycle(test_edges_1, 6);
-    printf("edges in new graph: ");
-    print(new_edges); // want  (0, 1), (1,2) (2,3) (3, 4) (4,5)
+    //std::set<edge> new_edges = break_cycle(test_edges_1, 6);
+    //printf("edges in new graph: ");
+    //print(new_edges); // 
     return 0;
 }
 

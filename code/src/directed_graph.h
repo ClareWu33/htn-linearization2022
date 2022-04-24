@@ -53,13 +53,15 @@ public:
     std::set<edge>  get_orderings();
     bool isCyclic();    // returns true if there is a cycle in this graph        
     std::vector<edge> findAllCycles(int initial_task);
+    int findGraphHeight(int root);
+    int findGraphHeightUtil(int node, int height, bool * visited);
 
     int* shortestPath(int src, int end);
     std::set<edge> find_path(int * prev, int src, int dest, std::set<edge> path);
-    // a Topological Sort of
-    // the complete graph
+    // a Topological Sort of the complete graph
     stack<int> topologicalSort();
 };
     
+std::set<edge> delete_edge(std::set<edge> edges, edge e);
 std::set<edge> break_cycle(std::set<edge> edges, int V);
 
