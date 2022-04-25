@@ -9,12 +9,11 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include<iomanip>
-#include<math.h>
+#include <iomanip>
+#include <math.h>
 
 #include "directed_graph.h"
 #include "util.h"
-
 
 // pandPI code for storing an HTN planning model
 #include "../../pandaPIengine/src/Model.h"
@@ -25,7 +24,6 @@
 #include "../../pandaPIengine/src/intDataStructures/FlexIntStack.h"
 #include "../../pandaPIengine/src/intDataStructures/IntUtil.h"
 #include "../../pandaPIengine/src/intDataStructures/StringUtil.h"
-
 
 using namespace std;
 
@@ -237,7 +235,7 @@ bool generate_total_ordering_(Model *m, int method, bool ***old_orderings, bool 
 }
 
 // WRAPPER FUNCTION FOR PREVIOUS
-void generate_total_ordering(Model *m, bool ***old_orderings, bool ***linearised_orderings, ofstream &o)
+int generate_total_ordering(Model *m, bool ***old_orderings, bool ***linearised_orderings, ofstream &o)
 {
        int i = 0;
        // get orderings for each method
@@ -248,10 +246,7 @@ void generate_total_ordering(Model *m, bool ***old_orderings, bool ***linearised
                      i++;
               }
        }
-       if (o.is_open())
-       {
-              o << "Number of methods that needed cycle breaking: " << i << "\n";
-       }
+       return i;
 }
 
 void make_linearized_model(Model *m, bool ***linearised_orderings, ofstream &o)
@@ -284,46 +279,11 @@ void make_linearized_model(Model *m, bool ***linearised_orderings, ofstream &o)
        } // return m;
 }
 
-// Main method
-int main()
-{
-       double n = 1;
-       int colWidth = 15;
-       // table header
-       cout << setfill('*') << setw(3 * colWidth) << "*" << endl;
-       cout << setfill(' ') << fixed;
-       cout << setw(colWidth) << "n" << setw(colWidth) << "log" << setw(colWidth) << "square root" << endl;
-       cout << setfill('*') << setw(3 * colWidth) << "*" << endl;
-       cout << setfill(' ') << fixed;
-
-       // create table of data
-       while (n < 1000)
-       {
-              cout << setprecision(0) << setw(colWidth) << n << setprecision(4) << setw(colWidth)
-                   << log10(n) << setw(colWidth) << sqrt(n) << endl;
-              if (n < 10)
-              {
-                     n++;
-              }
-              else if (n < 100)
-              {
-                     n += 10;
-              }
-              else
-              {
-                     n *= 10;
-              }
-       }
-       cout << setfill('*') & lt;
-       < setw(3 * colWidth) << "*" << endl;
-       return 0;
-}
-
-int main__(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
        if (argc <= 3)
        {
-              printf("You need to pass in a sas problem file, timings file, and name of the new pddl file (without file extnesion)");
+              printf("You need to pass in a sas problem file, name of the timings file, and name of the new pddl file (without file extnesion)");
               return 1;
        }
 
@@ -345,59 +305,6 @@ int main__(int argc, char *argv[])
                      printf("Could not open timings file");
                      return 0;
               }
-       }
-
-       if (o.is_open())
-       {
-              int total = (*m).numMethods;
-              int max = 0;
-              int min = 9999999;
-              int sum = 0;
-              for (int method = 0; method < (*m).numMethods; method++)
-              {
-                     if (max < (*m).numSubTasks[method])
-                     {
-                            max = (*m).numSubTasks[method];
-                     }
-                     if (min > (*m).numSubTasks[method])
-                     {
-                            min = (*m).numSubTasks[method];
-                     }
-                     sum += (*m).numSubTasks[method];
-              }
-              int avg = sum / (*m).numMethods;
-
-              // hegith of TF+DG
-
-              o << "Tasks:   " << (*m).numTasks << "\n";
-              o << "Methods: " << (*m).numMethods << "\n";
-              o << "Number of tasks per method: \n max: " << max << "\n min: " << min << "\n avg: " << avg << "\n";
-
-              Graph g((*m).numTasks);
-              for (int method = 0; method < (*m).numMethods; method++)
-              {
-                     int parent = (*m).decomposedTask[method];
-                     for (int child_pos = 0; child_pos < (*m).numSubTasks[method]; child_pos++)
-                     {
-                            int child = (*m).subTasks[method][child_pos];
-                            g.addEdge(parent, child, 0);
-                     }
-              }
-
-              std::vector<edge> back_edges = g.findAllCycles((*m).initialTask);
-              if (back_edges.size() > 0)
-              {
-                     o << "Problem recursive: false"
-                       << "\n";
-              }
-              else
-              {
-                     o << "Problem recursive: true"
-                       << "\n";
-              }
-
-              int height = g.findGraphHeight((*m).initialTask);
-              o << "Height of TDG (root=0): " << (height - 1) << "\n";
        }
 
        auto start_all = std::chrono::high_resolution_clock::now();
@@ -483,7 +390,7 @@ int main__(int argc, char *argv[])
               }
        }
        start = std::chrono::high_resolution_clock::now();
-       generate_total_ordering(m, orderings_per_method, linearised_orderings, o); // get
+       int methods_broken = generate_total_ordering(m, orderings_per_method, linearised_orderings, o); // get
        // delete storage
        for (int method = 0; method < (*m).numMethods; method++)
        {
@@ -511,20 +418,80 @@ int main__(int argc, char *argv[])
               delete[] linearised_orderings[method];
        }
        delete[] linearised_orderings;
-
-       string out_name_str = out_name;
-       string domain_name = "linearized-domains/" + out_name_str + "-TO-domain.pddl";
-       string problem_name = "linearized-problems/" + out_name_str + "-TO.pddl";
-       m->writeToPDDL(domain_name, problem_name);
        stop = std::chrono::high_resolution_clock::now();
        duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
        d = static_cast<float>(duration.count()) / 1000000.0;
        timings[3] = d;
+       // string out_name_str = out_name;
+       // string domain_name = "linearized-domains/" + out_name_str + "-TO-domain.pddl";
+       // string problem_name = "linearized-problems/" + out_name_str + "-TO.pddl";
+       // m->writeToPDDL(domain_name, problem_name);
+
 
        auto stop_all = std::chrono::high_resolution_clock::now();
        duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_all - start_all);
        d = static_cast<float>(duration.count()) / 1000000.0;
        timings[4] = d;
+
+       // collect statistics
+       if (o.is_open())
+       {
+              // methods  information
+              int total = (*m).numMethods;
+              int max = 0;
+              int min = 9999999;
+              int sum = 0;
+              for (int method = 0; method < (*m).numMethods; method++)
+              {
+                     if (max < (*m).numSubTasks[method])
+                     {
+                            max = (*m).numSubTasks[method];
+                     }
+                     if (min > (*m).numSubTasks[method])
+                     {
+                            min = (*m).numSubTasks[method];
+                     }
+                     sum += (*m).numSubTasks[method];
+              }
+              float avg = static_cast<float>(sum) / static_cast<float>((*m).numMethods);
+
+              o << (*m).numTasks << ", " << (*m).numMethods << ", " << min << ", " << max << ", " << avg << ", ";
+              o << methods_broken << ", ";
+
+              int big_method_num = 0;
+              for (int method = 0; method < (*m).numMethods; method++)
+              {
+                     if ((*m).numSubTasks[method] > 1)
+                     {
+                            big_method_num++; // number of methods with more than one subtask
+                     }
+              }
+              o << big_method_num << ", ";
+
+
+              Graph g((*m).numTasks);
+              for (int method = 0; method < (*m).numMethods; method++)
+              {
+                     int parent = (*m).decomposedTask[method];
+                     for (int child_pos = 0; child_pos < (*m).numSubTasks[method]; child_pos++)
+                     {
+                            int child = (*m).subTasks[method][child_pos];
+                            g.addEdge(parent, child, 0);
+                     }
+              }
+              std::vector<edge> back_edges = g.findAllCycles((*m).initialTask);
+              o << (back_edges.size() > 0) << ", "; // if it has back edges, it is recursive, => "true"
+
+              int height = g.findGraphHeight((*m).initialTask);
+              o << (height - 1) << ", ";
+
+              o << timings[0] << ", " << timings[1] << ", " << timings[2] << ", " << timings[3] << ", " << timings[4] << ", ";
+
+              o.close();
+
+              cout << "Preprocessing time: " << timings[4] << "\n";
+       }
+
        // if (!(collect_statistics))
        // {
 
@@ -544,32 +511,4 @@ int main__(int argc, char *argv[])
        //               }
        //        }
        // }
-
-       if (collect_statistics)
-       {
-              if (o.is_open())
-              {
-                     int counter = 0;
-                     for (int method = 0; method < (*m).numMethods; method++)
-                     {
-                            if ((*m).numSubTasks[method] > 1)
-                            {
-                                   counter++;
-                            }
-                     }
-                     o << "Number of methods with more than one subtask: " << counter << "\n";
-
-                     o << timings[0] << " seconds to find all prec eff\n";
-
-                     o << timings[1] << " seconds to find orderings suggested by prec eff\n";
-
-                     o << timings[2] << " seconds to break cycles in method, and topSort\n";
-
-                     o << timings[3] << " seconds to write to new Model to hddl\n";
-
-                     o << "Preprocessing time: " << timings[4] << "\n";
-                     cout << "Preprocessing time: " << timings[4] << "\n";
-              }
-              o.close();
-       }
 }
