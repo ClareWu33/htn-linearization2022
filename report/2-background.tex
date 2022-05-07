@@ -24,23 +24,25 @@ Also known as Hierarchical Task Network Planning or HTN planning for short.
 
 There are many formalizations for hierarchical planning. This one borrows heavily from "A Survey on Hierarchical Planning – One Abstract Idea, Many Concrete Realizations" by Bercher, Alford, H\"{o}ller, except with the initial task network replaced by a initial compound task. 
 
-\textbf{Problem} = $(D, S_0, TN_G)$
+\textbf{Problem} = $(D, S_I, T_I)$
 is over some domain D, 
-has an initial state $S_0$, which is a total assignment to F, and 
-has a initial compound task $TN_G$k. 
+has an initial state $S_I$, which is a total assignment to F, and 
+has a initial compound task $T_I$. 
 
 \textbf{D} = $(F, T_P, T_C, \delta, M)$ \newline
    F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
    $\delta$ is a mapping from primitive task name to action.
    M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
+   $T_P$ is the set of all possible primitive task names
+   $T_C$ is the set of all possible compound task names
+   $\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F x\times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
+   M is a set of methods. If $m \in M$, then m maps a compound task to a Task Network.
 
 \textbf{Task Network} = $(T, \prec, \alpha)$
  T is a finite set of task ids,
  $\prec$ is a partial order over T, and
  $\alpha$ maps task ids to task names.
-
-This definition is trivially the same as having a initial task network. One can obtain the initial task network by applying a method to the initial task.
-
+ 
 \subsection{HTN Solution}
 The goal here is to refine this task network, such that a valid solution is obtained.
 A valid solution to a PO HTN problem a plan:
@@ -61,15 +63,19 @@ In other words, the tasks are totally ordered.
 \section{Further Definitions}
 \textbf{Undecidable } A decision problem is equivalent to, a function that accepts a infinite (set?) of inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
 
+\textbf{Task Decomposition Graph}
+A directed Graph (V, E) that represents a given domain. The nodes in V represent tasks T in
 
-\textbf{Tail recursion}
+\textbf{Task Decomposition Tree}
+A tree of all possible decompositions given an initial task network and a domain.
 
 
 \textbf{Lifted}
-Methods apply to a certain set of typed objects.
+Each object that exists in the world has a type from a pre-determined set of types defined by the domain.
+Methods apply to the set of object(s) that belong to a certain type.
 
 \textbf{Grounded}
-A transition is ground if the parameters list only involves objects. 
+A transition is ground if the parameters list only involves specific objects. 
 Problems are grounded when all methods are grounded.
 
 So to ground a problem: Let $\omega$ be a set of typed objects. The groundings of

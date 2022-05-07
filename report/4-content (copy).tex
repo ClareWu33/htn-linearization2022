@@ -1,0 +1,341 @@
+\chapter{Algorithm, Formalisation, Benchmark}\label{chap:content}
+\large{Possibly another chapter focusing on better preconditions collecting?}
+
+
+\section{Algorithm}
+% Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
+
+
+% Adaptation of his
+For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
+\begin{enumerate}
+\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
+	\begin{enumerate}
+	\item For every method m that can be applied to $t_c$, consider it's sub-task $t_i$
+	\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
+	\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
+	\end{enumerate}
+\item Consider each method m $\in$ M independently
+	\begin{enumerate}	
+		\item Let the set of non-required edges be $NS_m$
+		\item $\forall a \in F$
+		\begin{itemize}			
+			\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+			\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+			\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+			\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+		\end{itemize}
+		\item Construct a directed graph G
+		\item Add the required orderings $\prec \in tn(m)$ to G with weight=0
+		\item Add the edges in $NS_m$ to G with weight=1 \newline
+		\item Use DFS to find the back edges on this directed graph.
+		\item For each back-edge e
+		\begin{enumerate}
+			\item if e can be deleted because it is not required by the PO domain, delete it
+			\item if e=(A,B) can't be deleted, because it is required by the PO domain, use Dijkstra to find path from B to A, i.e. the other components of the cycle.
+			\item Randomly pick an non-required (weight=0) edge in the (B, A) path and delete it
+		\end{enumerate}
+		\item Topological sort the resulting graph. This order is the total order for this method.
+	\end{enumerate}
+\end{enumerate}
+
+
+
+\section{Formalisation}
+
+
+\subsection{Formally define possibilities for linearizing a model}
+Input: method with n linearizations \newline
+Possible outputs:
+\begin{enumerate}
+	\item output: n new methods, one per linearization.(Though there are usually n=k! many linearizations if k is the number of plan steps in a method)
+	\item output: m<n methods (i.e., we delete some linearizations; the interesting question is which!) 
+\end{enumerate}
+
+
+\subsection{Formally define solution preserving properties}
+* all solutions remain (note that even if 1 method with n linearizations get transformed into all n methods, this question is still undecidable)
+* at least one solution remains (again: undecidable)
+* all optimal solutions remain
+* at least one optimal solution remains
+The report/work should answer which of these criteria is guaranteed for the translation that's investigated
+
+ 
+For the beginning it might be easiest how a primitive plan can linearized to a subset of all linearizations without losing any solutions. (For some tasks it will simply not matter where they are executed -- this should be formalised. That should essentially be the POCL or PO-all criterion [note that they are not equivalent: the PO criterion will find more linearizations; see Bercher \& Olz, AAAI-2020 POPOCL] by selecting just any sequence. So the problem will be which of them select so that we don't lose anything upon upwards-propagation.)
+
+
+From Bercher \& Olz, AAAI-2020 POPOCL 
+
+\emph{POCL criterion?} A partial POCL plan P = (PS, $\prec$, CL) is called POCL plan (also POCL solution) to a planning problem if and only if every precondition is supported by a causal link and there are no causal threats.
+
+
+\emph{PO criterion} We refer to a partial POCL plan P = (PS , $\prec$, CL) without causal links, i.e., CL = $\emptyset$, as a partial partially ordered (PO) plan. Due to the absence of causal links, the solution criteria are here defined directly by the desired property of every linearization being executable.
+
+i.e. A partial PO plan P = (PS , $\prec$) is called PO plan (also PO solution) to a planning problem if and only
+if every linearization is executable in the initial state and results into a goal state.
+i.e. it has every necessary ordering.
+
+
+
+\subsection{This algorithm won't always work}
+This algorithm linearises all the methods to be totally ordered.
+Since sub-tasks inherit the orderings of their parents, it's obviously impossible to preserve a solution that requires the interleaving of sub-tasks of parents that are already ordered with respect to each other.
+
+Consider the simple problem:
+
+F = \{a, b, c, g\}
+$N_p$ = \{$T_A, T_B, T_C$, G\}
+$N_c$ = \{AB \}
+$\delta = \{ (T_A, A), (T_B, B), (T_C, C) \}$
+M = $(AB,  \{ \{4,5\}, \{\}, \{(4,A), (5,B)\} \} )$
+$TN_Init$ = $\{ \{0,1,2\},  \{(0,2), (1,2)\}, \{(0,AB), (1,C), (2,G)\} \}$
+	
+	
+$S_I$ = $<a>$
+	
+	A = $<$pre a, del a, add c$>$
+	C = $<$pre c, del c, add b$>$
+	B = $<$pre b, del b, add g$>$
+	G = $<$pre g, ,$>$
+	
+	The initial task network enforces that G is the last action.
+	How do we make G executable? With the action B.
+	How do we make B executable? With the action C.
+	How do we make C executable? With the action A.
+	How do we make A executable? It's executable in the initial state.
+	Solution: A C B G.
+	This is impossible to achieve by linearizing methods, since either AB before C or C before AB, both of which exclude the solution.
+	Thus PO -> TO not possible this way. You would need to 
+	
+	We can also see, if we apply Gregor's algorithm:
+	AB = $<$pre a b, del a b, add c g$>$
+	A = $<$pre a, del a, add c$>$
+	C = $<$pre c, del c, add b$>$
+	B = $<$pre b, del b, add g$>$
+	G = $<$pre g, $>$
+	
+	If we consider the method (Init $\implies$ \{AB, C, G\})
+	AB has precondition a b, and C has add effect b, so C is moved before AB.             i.e. we add (C, AB) to $\prec$
+	AB has a delete effect del a b, which doesn't affect C or G, so nothing happens here.
+	AB has add effect c g, and G has prec g so G is moved after AB.	                      i.e. we add (AB, G) to $\prec$
+	C has a precondition c, which is in the add effect of AB.  So AB is placed before C.   i.e. we add (AB, C) to $\prec$
+	
+	This produces a cycle.
+	
+	The essence of this example is: some sub-task C would only NEED interleaving A, C, B from another parent 
+	before A and after B because of one or more of the following
+	\begin{enumerate} 
+		\item its precondition needs the add effect of some sub-task A from another parent (that it can't get another way)
+		\item sub-task A has some precondition variable that is deleted by C (that can't be restored another way).
+	\end{enumerate}
+     while simultaneously also needing one or more of the following:
+	\begin{enumerate} 
+		\item some sub-task B from another parent has a precondition that C has in its add effect (that it can't get another way)
+		\item C has in its precondition a variable in the delete effect of some sub-task B from another parent (that can't be restored another way).
+	\end{enumerate}
+		
+	 Due to the way Gregor's algorithm collects prec/effects for a compound task, interleaving requirements are a subset of the orderings found by:
+
+\begin{itemize}
+	\item For each add effect a of c:
+	\begin{enumerate} 
+		\item move all tasks with precondition a behind c 
+		\item move all tasks with a delete effect in front of it
+	\end{enumerate}
+	\item For each delete effect d of c:
+	\begin{enumerate} 
+		\item move all tasks with precondition d before c %
+		\item move all tasks with an add effect behind it
+	\end{enumerate}
+\end{itemize}
+
+	So if the interleaving is necessary, gregors algorithm will find orderings (parent(A), C) and (C, parent(B)). Since parent(A) and parent(B) are the same compund task, a cycle is formed.
+	
+	So requiring interleaving means that a cycle will form.
+	A cycle does not always imply the solution is excluded though - due to the way the preconditons and effects are calculated, not all of the preconditions are always needed,	and not all of the effects will actually occur.
+	
+
+\subsection{Theory: So long as it doesn't have to cycle-break, algorithm will LITERALLY always work}
+ Assume this solution is $(a_0, a_1, ..., a_n)$. We then prove by induction over the sequence $(a_0, .. a_n)$ that applying the linearized versions of those methods in the same order will produce this linearization.
+		Base case: The first action $a_0$ is not executable if the initial state does not satisfy some $A \in prec(a_0)$.
+	However $a_0$ must be executable in some linearization for $\{a_0, ..., a_n\}$, as we assumed it was a PO solution. So there must exist an action $a_i$, $0 < i < n$, that will adds A. Actions $a_0$ and $a_k$ must have a shared parent p in TDG. Then p has subtasks $t_0$ and $t_k$ that are parents of $a_0$ and $a_k$ respectively. The linearization of this method would have drawn an ordering $(t_k, t_0)$ due to the way the algorithm defines $prec*{*}(), add^{*}$ etc. This enforces $(a_k, a_0)$ ordering in the final TO plan, meaning $a_0$ is not the first action in the resulting total order imposed by the algorithm. Therefore if a0’s precondition could be met by any action ai that action would be ordered in front of it. 
+	And we know that $a_k$ exists, otherwise $a_0$ can never be executed, contradicting the assumption that this was a PO solution. So the linearization must find the correct first action $a_0$ such that it is executable in the initial state.
+	
+	Induction case:  Assume for inductive hypothesis that the task sequence until some arbitrary action $a_{i-1}$ is executable. We then prove that $a_i$ is executable.
+	$a_i$ is not executable only when there exists $A \in F, A \in prec(a_i)$ that is not true in the state it executes in.
+	If it was deleted by some task $a_k$, actions $a_i$ and $a_k$ must have a shared parent p in TDG. Then p has subtasks $t_0$ and $t_k$ that are parents of $a_0$ and $a_k$ respectively. The linearization of this method would have drawn an ordering $(t_i, t_k)$ due to the way the algorithm defines $del^{*}$ etc. This enforces $(a_i, a_k)$ ordering in the final TO plan, meaning such an action could not have been executed before $a_i$ after all.
+	
+	It A was not deleted, but instead never added and doesn't exist in the initial state, then the precondition can never be met, and the set of actions has no executable linearizations.
+	Therefore all preconditions of $a_i$ must be met under these assumptions, so it must be executable.
+	
+	By induction, Algorithm 1 preserves at least one solution if it doesn't have to cycle break}
+
+
+ A solution that requires interleaving under the current algorithm 
+	will be excluded from the set of solutions in the algorithm.
+	
+	As we've said before, requiring interleaving means that a cycle will form.
+	By simple contrapositive, if there are no cycles to break, that implies none of the the original solutions required interleaving sub-tasks.
+	The methods are linearised in a way that is essentially equivalent to using POCl causal links. That means that if \emph{every} method is linearized without using cycle-breaking, then the TO problem must preserve at least one solution if the PO problem has any?
+	
+	(Furthermore if there are floating tasks after gregors algorithm is applied, you can produce multiple linearizations to preserve more solutions?)
+	
+	\begin{enumerate}
+		\item if there is no cycle, then the subtasks of this method do not require their execution to be interleaved  
+		\item If it can't be solved when no cycles were broken, then the original couldn't be solved either (needs proof, by induction (and contradiction)?)		
+	\end{enumerate}
+
+
+
+	1) Methods don't have any application preconditions except for what task it applies to.
+	Why can't you just randomly decompose the initial task network into primitives and get a plan?
+	\begin{enumerate}
+		\item Cycles in decomposition process. This is clearly a problem unrelated to the transformation from PO to TO,
+		since it keeps all subtasks for each method the same. 
+		\item \textbf{The proposed seq of primitives leads to a state where the next desired action is not executable. This one clearly is related, since
+			it's determined by the orderings of the plan steps, and	extra orderings are inserted as part of the transformation.} 
+	\end{enumerate}
+
+	
+	2) Assume that the original PO plan did have a solution. Let the solution take the form $a_0 ... a_n$. The preconditions, add, and delete effects are pre($a_i$), add($a_i$), del($a_i$).	This means that for every variable in a precondition of an action in the solution is in an add effect of another action OR present in the initial state.
+	
+	Suppose we apply the methods that would lead to a solution in the PO version. Then we have one of the possible linearizations that could have resulted
+	from the PO version. We now prove that this also leads to a solution?
+	
+	Because of how the algorithm collects pre/eff for cmpd tasks, the subtasks each have a subset of the parents pre/eff. The union of all these prec/eff sets equal the compound tasks preconditions/effects.
+	
+	Eventually, some of the sub-tasks decomposed to will be primitive tasks. These will still be a subset of the parents pre/eff, such that their union is equal to their parents pre/eff.
+	Assuming that the method linearization for this method did not have cycles, that means that none of the pre/eff of these sub-tasks conflict.
+	If they don't meet the pre/eff of the next action, neither could the PO version. 
+	
+	???
+	Therefore it must be a solution??
+	
+	
+	
+\subsection{Even when it does have to cycle break it will sometimes work}
+(Again) A cycle does not always imply the solution is excluded though - due to the way the preconditons and effects are calculated, not all of the preconditions are always needed,	and not all of the effects will actually occur.  Thus the orderings imposed as a result of these preconditions and effects will sometimes not be necessary for a solution.
+
+If you randomly break the cycle by removing an ordering like that (one from a unneeded precondition or incorrect effect) it will still work.
+
+
+For another, the 'precondition needed by a compound task' may sometimes be possible to satisfy internally. The specific variable
+that is required may be added by a sub-task of the parent. In that case, it may not need the ordering between itself and another compound task.
+
+
+\subsection{For some tasks it doesn't matter where they are executed}
+From content-notes: That should essentially be the POCL or PO-all criterion??
+If the task has no causal links, it won't matter where they are executed.
+
+A task can execute anywhere in any possible plan if: 
+\begin{itemize}
+\item 1) The variables in its precondition are present in the initial state, and there are no actions that can delete it.
+\item 2) It only adds variables already present in the initial state, and there are no actions that can delete those variables
+\item 2b) It only adds variables that other actions do not rely on
+\item 3) It only deletes variables that don't hold in the initial state, and there are no actions that can add those variables
+\item 3b) It only deletes variables that other actions do not rely on.
+\end{itemize}
+
+
+Additionally, it can execute anywhere in a specific plan if:
+\begin{itemize}
+\item 1a) the variables in its precondition are present in the initial state, and no actions in the plan delete it.
+\item 2c) it adds variables that another action already adds before it does, and is not deleted again.
+\end{itemize} 
+
+E.g. if gregor's algorithm deems it a floating task (no orderings imposed on it),
+it can definitely be executed anywhere.
+
+
+
+
+\section{Modification}
+The definitions in Conny's paper assumes that there are no negative preconditions.
+Strict guaranteed:
+ $$ eff^{+}_{*} := (\bigcap_{s \in E(c)} \bigcap_{s' \in R_s(c)} s')  \backslash  (\bigcap_{s \in E(c)} s)  $$
+ $$ eff^{-}_{*} := \bigcap_{s \in E(c)} (F \backslash \bigcup_{s' \in R_s(c)}  s') $$
+ 
+Strict possible:
+ $$ poss-eff^{+}_{*} := \bigcup_{s \in E(c)} (\bigcup_{s' \in R_s(c)} s'\backslash s)   $$
+ $$ poss-eff^{-}_{*} := \bigcup_{s \in E(c)} ((\bigcup_{s' \in R_s(c)} ( F \backslash s'))  \cap  s) $$
+
+
+Relaxation: Define a new domain such that A' = ${ \{\emptyset, add, del \} |  \{\emptyset, add, del \} \in A }$
+Define the relaxed guaranteed and possible as before, under this new domain.
+
+% 
+\begin{enumerate}
+	\item Consider each method m $\in$ M independently (i.e. no interaction is considered)
+	\item For each c $\in$ sub-tasks for m infer its (precondition-relaxed) preconditions and effects.
+	This gives us a sub-set of all mandatory preconditions $prec^{\emptyset}(c)$,
+	and a sub-set of "all post-conditions that always occur" $eff^{\emptyset +}_{*}(c)$ 
+	and a sub-set of "all that definitely won't be post-conditions" $eff^{\emptyset -}_{*}(c)$
+	
+	\item Construct a directed graph with possible dependencies:  
+	\begin{itemize}
+		\item For each add effect a of c:
+		\begin{enumerate} 
+			\item move all other sub-tasks for this method with precondition a behind c 
+			\item move all other sub-tasks for this method with a delete effect in front of c
+		\end{enumerate}
+		\item For each delete effect d of c:
+		\begin{enumerate} 
+			\item move all other sub-tasks for this method with precondition d before c %
+			\item move all other sub-tasks for this method with an add effect behind c 
+		\end{enumerate}
+	\end{itemize}
+	Then add the orderings already required by the method to the directed graph.
+	For edges required by the original PO domain, weight= 0 \newline
+	For edges that must exist by the inferred preconditions/effects that always happen, weight=1 \newline 
+	For edges suggested by the possible preconditions/effects of the subtasks,
+	(even if it's only one prec) weight= 2 \newline
+	For edges suggested by the possible preconditions/effects of the subtasks,
+	(when both prec/eff are only possible) weight=3 \newline
+	
+	Then use DFS to find the back edges on this directed graph.
+	For each back-edge 
+	1) if the edge weight=2, it can be deleted because it is not required by the PO domain, delete it
+	Once all those are deleted:
+	For each back-edge 
+	2) if the edge (A,B) can't be deleted, because it is required by the PO domain, use DFS to find the other path (B,A),
+	i.e. the other components of the cycle.
+	
+	If after these steps, we find a cycle composed of edges
+\end{enumerate}
+
+If, when given a choice to cycle break, we respected 
+1) $\{(t_1, t_2), ... (t_{n-1}, t_n )\}$ = $\{o_1 ... o_p \}$ ordering given by HTN solution
+
+2) $\{(t_1, t_2), ... (t_{k-1}, t_k )\}$ = $\{o_{p+1}, ... o_q\}$ ordering based on preconditions/effects that would definitely happen (not complete, other things may happen too)
+
+3) $\{(t_1, t_2), ... (t_{l-1}, t_l )\}$ = $\{o_{q+1}, ... o_r\}$ ordering based on preconditions/effects that might happen
+
+If the conflict is between 1,1 the PO problem was unsolvable.
+
+If the conflict is between 1,2 or 2,2
+Then the conflict is similar to POCL.
+And the conflicting  ordering extracted is due to causal threats (white knight??? might cause it??? allowing us to resolve it???)
+So it implies that it will \emph{for certain} be deleting some solution(s) that require interleaving??
+
+If the conflict between 2, 3 it might be a problem, it might not be. But in the case that the cycle was spurious, we would definitely pick in the 'right' direction.
+
+
+
+(To reduce the preconditions and effects requires cutting depth wise (e.g. a sequence of tasks s.t.  add a, del a occurs in every possible sub branch)
+If ALL methods are possible, you cant exclude the possibility of their prec/eff. Otherwise it would imply knowing which method to take, which makes no sense?)
+The obvious solution to it's current deficiencies is: 
+\begin{enumerate}
+	\item When tasks need to be interleaved as part of it's solution, introduce new (totally ordered) methods that will allow this interleaving.
+	If for example, The initial task network contains (AB, C') in that order. Then AB $\implies$ A, B.  and C' $\implies$ C.
+	And the only solution is A, C, B. We can detect a cycle (as in the example above)
+	Then when we detect the cycle between AB and C', we need a new method such that their parent (the initial task) $\implies$ A,C,B  in that order.  This one seems more impractical to find,	since in practice some solutions might need interleaving of tasks that are very, very far apart in a TDG.
+	Also, if enough interleaving is required, this is equivalent to solving the problem. 
+	
+	
+	Depending on the problem, even this will not be able to remove all cycles.  Some compound tasks will have \emph{different} 
+	preconditions and effects depending	on the method(s) applied to decompose it to a sequence of primitive tasks. If any number of
+	these is conflicting with another tasks, we will still have cycles.
+	
+	\item Because floating tasks can be executed where-ever, whenever there is such a floating task, we could produce
+	multiple linearizations of a given method, such that every possible placement of the floating task is possible.
+\end{enumerate}
