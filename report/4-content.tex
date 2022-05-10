@@ -2,42 +2,79 @@
 
 \section{Algorithm 1}
 % Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
-For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
-\begin{enumerate}
-\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
-	\begin{enumerate}
-	\item For every method m that can decompose $t_c$, consider each sub-task $t_i$ of m:
-	\begin{enumerate}
-		\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
-		\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
-		\end{enumerate}
-	\end{enumerate}
-\item Consider each method m $\in$ M independently
-	\begin{enumerate}	
-		\item Let the set of non-required edges be $NS_m$
-		\item $\forall a \in F$
-		\begin{itemize}			
-			\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\end{itemize}
-		\item Construct a directed graph G
-		\item Add the required orderings $\prec \in tn(m)$ to G with weight=0
-		\item Add the edges in $NS_m$ to G with weight=1 \newline
-		\item Use DFS to find the back edges on this directed graph.
-		\item For each back-edge e
-		\begin{enumerate}
-			\item if e can be deleted because it is not required by the PO domain, delete it
-			\item if e=(A,B) can't be deleted, because it is required by the PO domain, use Dijkstra to find path from B to A, i.e. the other components of the cycle.
-			\item Randomly pick an non-required (weight=0) edge in the (B, A) path and delete it
-		\end{enumerate}
-		\item Topological sort the resulting graph. This order is the total order for this method.
-	\end{enumerate}
-\item Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2.
-\end{enumerate} 
+Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
+ 
+\begin{algorithm}
+	% \SetAlgoLined
+	\SetKwProg{Fn}{Function}{}{end}
+	\Fn{afunc(i: int) : int}{ %\TitleOfAlgo{GetPreEff}  	%\ProcNameSty{GetPreEff} \;
+	\KwData{$F, T_P, T_C, \delta, M, visited$}
+	\KwResult{$\PreS, \AddS, \DelS$}
+	function\
+	\For {c $\in$ $T_C$} {
+		\If {c $\notin$ visited} {
+			\For {t $\in$ $\{ t \vert  m \in M \land m(c) = tn\}$ } { % each sub-task of each method
+				\For {a $\in$ F} {
+					\eIf {t $\in T_P$} {
+						$\PreS[v] = \PreS[v] \land Pre(t)$
+						$\AddS[v] = \AddS[v] \land Add(t)$
+						$\DelS[v] = \DelS[v] \land Del(t)$
+					}{
+						visited.add(c) \;
+						GetPreEff(F, $T_P$, $T_C$, $\delta$, M, visited)\;
+					}
+				}
+			}
+		}
+	}
+	\Return {$\PreS, \AddS, \DelS$}\;
+	\caption{Calculate all possible preconditions and effects for all compound tasks}
+}
+\end{algorithm}
+
+	
+\begin{algorithm}[H]
+	\KwData{$(F, T_P, T_C, \delta, M), \PreS, \AddS, \DelS$}
+	\KwResult{$(F, T_P, T_C, \delta, M)$}
+	initialization\;
+	
+	\For {)m $\in$ M}{
+		$NS_m$  $\gets \emptyset$\;
+		\For{a $\in$ F}{
+			$NS_m$  = $\{ (t, t', 1) |  (a \in \AddS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+		 	$NS_m$  = $\{ (t', t, 1) |  (a \in \AddS(t) \land a \in \DelS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t', t, 1) |  (a \in \DelS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t, t', 1) |  (a \in \DelS(t) \land a \in \AddS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+		}{\tiny }
+		directed graph G =(V,E)\;
+		V $\gets \emptyset$ \;
+		E $\gets \emptyset$ \;
+		\For {o $\in \prec$} {
+			E.addEdge(o, 0)\;
+		} 
+		\For {(t, t', w) $\in \prec$}{
+			E.addEdge((t,t'), w); \	
+		}       
+	    BackEdges $\gets$ DFS(G) \;
+	    \For{back-edge $\in$ e}{
+	     	if e can be deleted because it is not required by the PO domain, delete it\;
+	   		if e=(A,B) can't be deleted, because it is required by the PO domain, use Dijkstra to find path from B to A, i.e. the other components of the cycle. \;
+	     	Randomly pick an non-required (weight=0) edge in the (B, A) path and delete it \;
+     	}
+     	Topological sort the resulting graph. This order is the total order for this method  \;
+	}
+	Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2 \;	
+	return $\PreS, \AddS, \DelS$;	 \;
+	\caption{Calculation of linearized methods}
+\end{algorithm}
 
 
+GetPreEff (time)= NumMethods * log(TDG height) * NumStateBits
+Linearize (time) =  order based on precondtions + (create graph + DFS + Dijkstra)*(as needed)
+Let the method size be V, and the number of edges be E
+Linearize = NumMethods * (NumStateBits + Method Size + Method Size + (orderings) + (Method Size)log(method Size) })
+
+ 
 
 \section{Solution preserving properties of Algorithm 1}
 From Bercher \& Olz, AAAI-2020 POPOCL 
@@ -156,6 +193,20 @@ In other words, the variables that affect t, do not affect other tasks in that m
 
 
 \section{Algorithm 2}
+Note that linearization *always* enforces (del a) before (add a).
+Therefore, when attempting to linearizing a method with subtasks (t1, ... tn).
+You can be assured that if ti has effect set {del a, add a, ...} there MUST exist a method that
+decomposes it to an action with add a. That method will add a. i.e. All add effects can relied to exist in some decomposition.
+
+The ordering for this method can therefore preference deletion of orderings relating to (del a) of this task ti.
+For example if some other task has preconditon a.
+
+(add a, prec a) (prec a, del a)  (del a,  add a)
+(t,       t')     (t',     t'')   (t'',    t) 
+
+We could remove the ordering (prec a, del a) - we know that task won't really delete it?
+
+
 For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 \begin{enumerate}
 	\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
@@ -186,7 +237,7 @@ For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 	\item Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2.
 \end{enumerate} 
 
-
+ 
 \textbf{Proposition 5} \textit {Algorithm 2 is sound} \newline
 \textit{Proof.} Same as Proposition 1
 
@@ -201,6 +252,7 @@ If a method does require interleaving, it's executable sub-units can remain an u
 Why would we need to split m? If m's subtasks adds a then deletes a, and another action needs a. But then there would be conflict in m
 by algorithm definiton, (add)
 You must 1) add 1) 2) meet prec of those with a) and 3) delete a.
+
 
 
 Actions only:  
@@ -218,38 +270,48 @@ If you need something that was true before they deleted it, just place yourself 
 Also note that you can add things between the other task B and linearised task A, in case you want to have task B effects but not task A effects.
 
 
-Note that for a fully linearised method, if it's children could not all be fully linearised,
+Note that for a fully linearized method, if it's children could not all be fully linearised,
 then you cannot rely on it adding something in it's effects list. However, you can always just interleave yourself between its sub-tasks, as it will have partially ordered sub-tasks, or sub-sub-tasks etc.
- 
+
+
+Also consider (delete c, add a, add b) (prec a,b,c,  add goal)
+The first task is linearised in any way without conflict.
+The second task MUST interleave with the and ALSO required (add a, add b, delete c)
+The first is possible, (their parents will conflict, and thus have no ordering imposed) the second is not guaranteed to happen.
+
 \section{Algorithm 3}
 The definitions in Conny's paper assumes that there are no negative preconditions.
-Strict guaranteed:
+Strict State-independent positive and negative effects:
  $$ eff^{+}_{*} := (\bigcap_{s \in E(c)} \bigcap_{s' \in R_s(c)} s')  \backslash  (\bigcap_{s \in E(c)} s)  $$
  $$ eff^{-}_{*} := \bigcap_{s \in E(c)} (F \backslash \bigcup_{s' \in R_s(c)}  s') $$
- 
-Strict possible:
+if $E(c) \neq \emptyset$ otherwise $eff^{+/-}_{*}(c) := undef$
+
+Strict Possible state-independent effects:
  $$ poss-eff^{+}_{*} := \bigcup_{s \in E(c)} (\bigcup_{s' \in R_s(c)} s'\backslash s)   $$
  $$ poss-eff^{-}_{*} := \bigcup_{s \in E(c)} ((\bigcup_{s' \in R_s(c)} ( F \backslash s'))  \cap  s) $$
 
 Relaxation: Define a new domain such that A' = ${ \{\emptyset, add, del \} |  \{\emptyset, add, del \} \in A }$
 Define the relaxed guaranteed and possible as before, under this new domain.
 
-Since these effects will *definitely* happen, even if some methods cannot be linearised,
+These effects will *definitely* happen, even if some methods cannot be linearised,
+Unlike Algorithm 1, this set of preconditions and effects have no false candidates in them.
+Unlike Algorithm 1, this set of preconditions and effects may be missing some State-independent positive and negative effects.
 
+Links between MUST be enforced
+If any of these cause cycles in method, we know it actually needs interleaving and is not just a coincidence.
 
-\section{Algorithm 1}
+\section{Algorithm 3}
 % Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
 For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 \begin{enumerate}
-	\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
-	\begin{enumerate}
-		\item For every method m that can decompose $t_c$, consider each sub-task $t_i$ of m:
-		\begin{enumerate}
-			\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
-			\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
-		\end{enumerate}
-	\end{enumerate}
-
+%	\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
+%	\begin{enumerate}
+%		\item For every method m that can decompose $t_c$, consider each sub-task $t_i$ of m:
+%		\begin{enumerate}
+%			\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
+%			\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
+%		\end{enumerate}
+%	\end{enumerate}
 	\item Consider each $t_c \in T_C$, and infer its (precondition-relaxed) effects as  $add^{*}_{\emptyset}(t_c), del^{*}_{\emptyset}(t_c)$.
 
 	\item Consider each method m $\in$ M independently

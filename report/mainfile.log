@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.3.9)  7 MAY 2022 18:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.5.10)  10 MAY 2022 18:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -718,42 +718,56 @@ Class scrbook Warning: Usage of package `parskip' together
 (/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
 )
-(/usr/share/texlive/texmf-dist/tex/latex/csvsimple/csvsimple.sty
-Package: csvsimple 2019/04/09 version 1.21 LaTeX CSV file processing
+(/usr/share/texlive/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Package: algorithm2e 2017/07/18 v5.2 algorithms environments
+\c@AlgoLine=\count313
+\algocf@hangindent=\skip93
 
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks36
-\pgfutil@tempdima=\dimen187
-\pgfutil@tempdimb=\dimen188
-
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
-ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box54
-(/usr/share/texlive/texmf-dist/tex/latex/ms/everyshi.sty
-Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
-))
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
-Package: pgfrcs 2020/01/08 v3.1.5b (3.1.5b)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks37
-\pgfkeys@temptoks=\toks38
-
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
-ex
-\pgfkeys@tmptoks=\toks39
-))) (/usr/share/texlive/texmf-dist/tex/latex/tools/shellesc.sty
-Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
-Package shellesc Info: Restricted shell escape enabled on input line 77.
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count314
 )
-\csv@file=\read2
-\c@csvinputline=\count313
-\c@csvrow=\count314
-\c@csvcol=\count315
-\csv@out=\write3
+(/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+\skiptotal=\skip94
+\skiplinenumber=\skip95
+\skiprule=\skip96
+\skiphlne=\skip97
+\skiptext=\skip98
+\skiplength=\skip99
+\algomargin=\skip100
+\skipalgocfslide=\skip101
+\algowidth=\dimen187
+\inoutsize=\dimen188
+\inoutindent=\dimen189
+\interspacetitleruled=\dimen190
+\interspacealgoruled=\dimen191
+\interspacetitleboxruled=\dimen192
+\algocf@ruledwidth=\skip102
+\algocf@inoutbox=\box54
+\algocf@inputbox=\box55
+\AlCapSkip=\skip103
+\AlCapHSkip=\skip104
+\algoskipindent=\skip105
+\algocf@nlbox=\box56
+\algocf@hangingbox=\box57
+\algocf@untilbox=\box58
+\algocf@skipuntil=\skip106
+\algocf@capbox=\box59
+\algocf@lcaptionbox=\skip107
+\algoheightruledefault=\skip108
+\algoheightrule=\skip109
+\algotitleheightruledefault=\skip110
+\algotitleheightrule=\skip111
+\c@algocfline=\count315
+\c@algocfproc=\count316
+\c@algocf=\count317
+\algocf@algoframe=\box60
+\algocf@algobox=\box61
 )
 (./configuration.tex) (./macros.tex) (./mainfile.aux)
 \openout1 = `mainfile.aux'.
@@ -813,7 +827,7 @@ Package scrbase Info: activating english \listtablename on input line 80.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package backref Info: ** backref set up for natbib ** on input line 80.
-\AtBeginShipoutBox=\box55
+\AtBeginShipoutBox=\box62
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
 
@@ -833,15 +847,15 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count316
+\c@section@level=\count318
 )
 LaTeX Info: Redefining \ref on input line 80.
 LaTeX Info: Redefining \pageref on input line 80.
 LaTeX Info: Redefining \nameref on input line 80.
 
 (./mainfile.out) (./mainfile.out)
-\@outlinefile=\write4
-\openout4 = `mainfile.out'.
+\@outlinefile=\write3
+\openout3 = `mainfile.out'.
 
 Class scrbook Info: loading recommended package `bookmark'.
 (scrbook)           Using `bookmark' together with `hyperref' is recommended,
@@ -860,24 +874,24 @@ File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
 Package auxhook Info: \AddLineBeginMainAux comes a little late,
 (auxhook)             because the main .aux file is already opened on input lin
 e 168.
-\BKM@id=\count317
+\BKM@id=\count319
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/fmtcount/fc-english.def
 File: fc-english.def 2016/01/12
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count318
-\scratchdimen=\dimen189
-\scratchbox=\box56
-\nofMPsegments=\count319
-\nofMParguments=\count320
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count321
-\MPscratchDim=\dimen190
-\MPnumerator=\count322
-\makeMPintoPDFobject=\count323
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count320
+\scratchdimen=\dimen193
+\scratchbox=\box63
+\nofMPsegments=\count321
+\nofMParguments=\count322
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count323
+\MPscratchDim=\dimen194
+\MPnumerator=\count324
+\makeMPintoPDFobject=\count325
+\everyMPtoPDFconversion=\toks37
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -887,415 +901,4 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: End \AtBeginDocument code.
-
-Couldn't patch \deferred@thm@head!
-ABD: EveryShipout initializing macros (./0-titlepage.tex
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: pdftex
-* paper: a4paper
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
-* v-part:(T,H,B)=(113.81102pt, 629.82918pt, 101.40665pt)
-* \paperwidth=597.50787pt
-* \paperheight=845.04684pt
-* \textwidth=455.24411pt
-* \textheight=629.82918pt
-* \oddsidemargin=-1.1381pt
-* \evensidemargin=-1.1381pt
-* \topmargin=4.14102pt
-* \headheight=17.0pt
-* \headsep=20.40001pt
-* \topskip=11.0pt
-* \footskip=47.6pt
-* \marginparwidth=89.62619pt
-* \marginparsep=12.8401pt
-* \columnsep=10.0pt
-* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 2
-2.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 22.
-<figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg, id=4, 911.405pt x 294.0987
-5pt>
-File: figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg Graphic file (type jpg
-)
-<use figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg>
-Package pdftex.def Info: figures/ANU-logos/ANU_Primary_Horizontal_Black.jpg  us
-ed on input line 26.
-(pdftex.def)             Requested size: 176.33952pt x 56.9055pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 30--34
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 38--38
-[]\OT1/cmss/bx/n/24.88 Transforming Par-tially Or-dered
- []
-
-
-Underfull \hbox (badness 3460) in paragraph at lines 38--38
-\OT1/cmss/bx/n/24.88 Plan-ning Prob-lems into To-tally
- []
-
-LaTeX Font Info:    Trying to load font information for U+msa on input line 38.
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
-
-
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \hbox (badness 10000) in paragraph at lines 35--40
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 43--49
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 53--56
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 59--63
-
- []
-
-[1
-
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./figures/ANU-logos/ANU_Pr
-imary_Horizontal_Black.jpg>]) (./0-declaration.tex
-Underfull \hbox (badness 10000) in paragraph at lines 1--2
-
- []
-
-[2
-
-]) (./0-acknowledgements.tex
-Underfull \hbox (badness 10000) in paragraph at lines 5--6
-
- []
-
-) (./0-abstract.tex [3
-
-
-] [4
-
-
-]) [5] [6
-
-
-] (./mainfile.toc [7
-
-
-])
-\tf@toc=\write5
-\openout5 = `mainfile.toc'.
-
- [8]
-(./1-introduction.tex
-Chapter 1.
-[1
-
-
-
-
-]) (./2-background.tex [2]
-Chapter 2.
-[3
-
-
-]
-Underfull \vbox (badness 1762) has occurred while \output is active []
-
- [4])
-(./3-relatedWork.tex [5] [6
-
-
-]
-Chapter 3.
-) (./4-content.tex [7] [8
-
-
-]
-Chapter 4.
-
-Overfull \hbox (57.34303pt too wide) in paragraph at lines 11--12
-[]\OT1/cmr/m/n/10.95 If $\OML/cmm/m/it/10.95 t[] \OMS/cmsy/m/n/10.95 2 \OML/cmm
-/m/it/10.95 T[]$ \OT1/cmr/m/n/10.95 , add $\OML/cmm/m/it/10.95 prec\OT1/cmr/m/n
-/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add\OT
-1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95
- ; del\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ ef-fects
- to the set of $\OML/cmm/m/it/10.95 prec[]c\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10
-.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add[]\OT1/cmr/m/n/10.95 (\OML/
-cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; del[]\OT1/cmr/m/n/1
-0.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-
- []
-
-[9]
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 63.
-
-Underfull \hbox (badness 10000) in paragraph at lines 63--69
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 71--76
-
- []
-
-[11] [12]
-Overfull \hbox (57.34303pt too wide) in paragraph at lines 165--166
-[]\OT1/cmr/m/n/10.95 If $\OML/cmm/m/it/10.95 t[] \OMS/cmsy/m/n/10.95 2 \OML/cmm
-/m/it/10.95 T[]$ \OT1/cmr/m/n/10.95 , add $\OML/cmm/m/it/10.95 prec\OT1/cmr/m/n
-/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add\OT
-1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95
- ; del\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ ef-fects
- to the set of $\OML/cmm/m/it/10.95 prec[]c\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10
-.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add[]\OT1/cmr/m/n/10.95 (\OML/
-cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; del[]\OT1/cmr/m/n/1
-0.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
-
- []
-
-[13] [14]
-Overfull \hbox (57.34303pt too wide) in paragraph at lines 248--249
-[]\OT1/cmr/m/n/10.95 If $\OML/cmm/m/it/10.95 t[] \OMS/cmsy/m/n/10.95 2 \OML/cmm
-/m/it/10.95 T[]$ \OT1/cmr/m/n/10.95 , add $\OML/cmm/m/it/10.95 prec\OT1/cmr/m/n
-/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add\OT
-1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95
- ; del\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ ef-fects
- to the set of $\OML/cmm/m/it/10.95 prec[]c\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10
-.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; add[]\OT1/cmr/m/n/10.95 (\OML/
-cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; del[]\OT1/cmr/m/n/1
-0.95 (\OML/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$ 
- []
-
-
-Overfull \hbox (11.04361pt too wide) in paragraph at lines 253--254
-[]\OT1/cmr/m/n/10.95 Consider each $\OML/cmm/m/it/10.95 t[] \OMS/cmsy/m/n/10.95
- 2 \OML/cmm/m/it/10.95 T[]$\OT1/cmr/m/n/10.95 , and in-fer its (precondition-re
-laxed) ef-fects as $\OML/cmm/m/it/10.95 add[]\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/
-10.95 t[]\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; del[]\OT1/cmr/m/n/10.95 (\OM
-L/cmm/m/it/10.95 t[]\OT1/cmr/m/n/10.95 )$. 
- []
-
-[15] [16]) (./5-evaluation.tex [17] [18
-
-
-]
-Chapter 5.
-
-LaTeX Warning: Reference `fig:xkcd' on page 19 undefined on input line 11.
-
-
-Overfull \hbox (21.7429pt too wide) in paragraph at lines 38--62
-[] 
- []
-
-
-Underfull \vbox (badness 4899) has occurred while \output is active []
-
- [19]
-Overfull \hbox (27.70459pt too wide) in paragraph at lines 63--97
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [20]
-Overfull \hbox (21.7429pt too wide) in paragraph at lines 98--127
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [21]
-Overfull \hbox (22.22958pt too wide) in paragraph at lines 128--152
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [22]
-Overfull \hbox (18.70123pt too wide) in paragraph at lines 153--179
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [23]
-Overfull \hbox (22.22958pt too wide) in paragraph at lines 180--208
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [24]
-Overfull \hbox (22.22958pt too wide) in paragraph at lines 209--253
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [25]
-Overfull \hbox (21.7429pt too wide) in paragraph at lines 254--275
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [26]
-Overfull \hbox (22.22958pt too wide) in paragraph at lines 276--305
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [27]
-Overfull \hbox (21.7429pt too wide) in paragraph at lines 306--315
-[][] 
- []
-
-
-Overfull \hbox (21.7429pt too wide) in paragraph at lines 316--327
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [28]
-Overfull \hbox (22.22958pt too wide) in paragraph at lines 328--342
-[][] 
- []
-
-) (./6-conclusion.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [29]
-[30]
-Chapter 6.
-) (./z-appendix-1.tex [31
-
-
-] [32
-
-
-]
-Appendix A.
-) (./z-appendix-2.tex [33] [34
-
-
-]
-Appendix B.
-<figures/borders--annotated.png, id=317, 1271.952pt x 896.148pt>
-File: figures/borders--annotated.png Graphic file (type png)
-<use figures/borders--annotated.png>
-Package pdftex.def Info: figures/borders--annotated.png  used on input line 15.
-
-(pdftex.def)             Requested size: 230.04079pt x 162.06541pt.
-) (./mainfile.bbl (./mainfile.brf)
-\tf@brf=\write6
-\openout6 = `mainfile.brf'.
-
- [35 <./figures/borders--annotated.png>]
-[36
-
-
-]
-
-Package natbib Warning: Empty `thebibliography' environment on input line 10.
-
-) [37]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 110.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 110.
- (./mainfile.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 110.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 110.
-Package rerunfilecheck Info: File `mainfile.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package rerunfilecheck Info: File `mainfile.brf' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 110.
- ) 
-Here is how much of TeX's memory you used:
- 15283 strings out of 483183
- 266142 string characters out of 5966293
- 681033 words of memory out of 5000000
- 29839 multiletter control sequences out of 15000+600000
- 542689 words of font info for 61 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 58i,9n,106p,10103b,513s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/clair/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600
-pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-l10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on mainfile.pdf (45 pages, 1024028 bytes).
-PDF statistics:
- 514 PDF objects out of 1000 (max. 8388607)
- 440 compressed objects within 5 object streams
- 129 named destinations out of 1000 (max. 500000)
- 243 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+Package caption Info: Be

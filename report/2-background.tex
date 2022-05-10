@@ -63,12 +63,14 @@ In other words, the tasks are totally ordered.
 \section{Further Definitions}
 \textbf{Undecidable } A decision problem is equivalent to, a function that accepts a infinite (set?) of inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
 
-\textbf{Task Decomposition Graph}
-A directed Graph (V, E) that represents a given domain. The nodes in V represent tasks T in
+%\textbf{Task Decomposition Graph}
+%Let $G = (V_T, V_M , E)$ be a TDG in accordance to Def. 5
+%given by Elkawkagy et al. (2012). 
 
 \textbf{Task Decomposition Tree}
-A tree of all possible decompositions given an initial task network and a domain.
-
+Given a planning problem P, then a decomposition tree g = (T, E, $\prec$, $\alpha$, $\beta$) is a 5-tuple with the following properties. (T,E) is a tree with nodes T and directed edges E pointing towards the leafs. There is a strict partial order defined over the nodes, given by $\prec$. The nodes are labeled with task names by $\alpha$ : T $\rightarrow$ C $\cup$ O.  Additionally, $\beta$ : T $\rightarrow$ M labels inner inner nodes with methods.
+$T(g)$ refers to the tasks of $g$, and $ch(g,t)$ refers to the direct children of $t \in T(g)$ in $g$. 
+ 
 
 \textbf{Lifted}
 Each object that exists in the world has a type from a pre-determined set of types defined by the domain.
