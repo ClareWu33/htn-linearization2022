@@ -1,6 +1,0 @@
-./pandaPIparser/pandaPIparser  p-rover01/rover/domains/rover-domain.hddl  p-rover01/rover/problems/pfile01.hddl >> rover01out
-
-./pandaPIgrounder/pandaPIgrounder  rover01out  rover01.sas
-
-./pandaPIengine/build/pandaPIengine    rover01.sas >> rovere01.solution
-
