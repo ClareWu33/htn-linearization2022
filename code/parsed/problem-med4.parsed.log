@@ -1,0 +1,9 @@
+pandaPIparser is configured as follows
+  Colors in output: true
+  Mode: parsing mode
+  Parameter splitting: true
+  Conditional effects: exponential encoding
+  Disjunctive preconditions as HTN: false
+  Replace goal with action: false
+  Output: pandaPI format
+I can't open pfile02-p-0068-provide-medical-attention-4-domain.hddl.hddl!

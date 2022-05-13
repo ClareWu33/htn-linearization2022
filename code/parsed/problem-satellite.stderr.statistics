@@ -1,0 +1,28 @@
+Reading input from parsed/problem-satellite.parsed.
+Writing output to parsed/problem-satellite.sas.
+Writing output to standard output.
+Parsing done.
+Running PG.
+Process actions without preconditions
+Done.
+Returning from runGpg().
+PG done. Postprocessing
+PG postprocessing done.
+Calculated [7] grounded tasks and [9] reachable facts.
+Running TDG.
+Process actions without preconditions
+Done.
+Returning from runGpg().
+TDG done.
+Calculated [11] grounded tasks and [11] grounded decomposition methods.
+Performing DFS.
+DFS done.
+After DFS: 11 tasks, 11 methods.
+Grounded PG:
+Input was [7, 11], output was [7, 9].
+Simplifying instance.
+Removing useless facts/literals
+Removing method precondition actions whose precondition is empty
+Expanding abstract tasks with only one method
+Writing instance to output.
+Exiting.

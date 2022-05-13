@@ -1,0 +1,28 @@
+Reading input from parsed/problem-tranport01.parsed.
+Writing output to parsed/problem-tranport01.sas.
+Writing output to standard output.
+Parsing done.
+Running PG.
+Process actions without preconditions
+Done.
+Returning from runGpg().
+PG done. Postprocessing
+PG postprocessing done.
+Calculated [13] grounded tasks and [16] reachable facts.
+Running TDG.
+Process actions without preconditions
+Done.
+Returning from runGpg().
+TDG done.
+Calculated [27] grounded tasks and [24] grounded decomposition methods.
+Performing DFS.
+DFS done.
+After DFS: 27 tasks, 24 methods.
+Grounded PG:
+Input was [13, 27], output was [13, 16].
+Simplifying instance.
+Removing useless facts/literals
+Removing method precondition actions whose precondition is empty
+Expanding abstract tasks with only one method
+Writing instance to output.
+Exiting.

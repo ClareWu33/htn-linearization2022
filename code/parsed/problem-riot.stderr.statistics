@@ -1,0 +1,51 @@
+Reading input from parsed/problem-riot.parsed.
+Writing output to parsed/problem-riot.sas.
+Writing output to standard output.
+Parsing done.
+Running PG.
+Process actions without preconditions
+Done.
+ ---> Disabling potentially consistent extension checking for action:           61 (SHOP_methodm_get_out_unload_precondition)
+ ---> Disabling potentially consistent extension checking for action:           55 (SHOP_methodm_get_to_vehicle_gets_driven_precondition)
+ ---> Disabling potentially consistent extension checking for action:           54 (SHOP_methodm_get_to_person_drives_themself_precondition)
+ ---> Disabling potentially consistent extension checking for action:           56 (SHOP_methodm_get_to_as_cargo_precondition)
+ ---> Disabling potentially consistent extension checking for action:           57 (SHOP_methodm_get_to_with_ambulance_precondition)
+ ---> Disabling potentially consistent extension checking for action:           5 (climb_out)
+ ---> Disabling potentially consistent extension checking for action:           59 (SHOP_methodm_get_in_ambulatory_person_precondition)
+ ---> Disabling potentially consistent extension checking for action:           3 (navegate_vehicle)
+ ---> Disabling potentially consistent extension checking for action:           58 (SHOP_methodm_drive_to_precondition)
+ ---> Disabling potentially consistent extension checking for action:           4 (climb_in)
+Returning from runGpg().
+PG done. Postprocessing
+PG postprocessing done.
+Calculated [127046] grounded tasks and [2560] reachable facts.
+Running TDG.
+Process actions without preconditions
+Done.
+ ---> Disabling potentially consistent extension checking for action:           19 (m_drive_to)
+ ---> Disabling potentially consistent extension checking for action:           27 (m_get_in_load_in)
+ ---> Disabling potentially consistent extension checking for action:           29 (m_get_out_unload)
+ ---> Disabling potentially consistent extension checking for action:           35 (_splitting_method_m_get_to_as_cargo_splitted_7)
+ ---> Disabling potentially consistent extension checking for action:           37 (_splitting_method_m_get_to_with_ambulance_splitted_8)
+ ---> Disabling potentially consistent extension checking for action:           20 (m_emt_treat)
+ ---> Disabling potentially consistent extension checking for action:           78 (_splitting_method_m_tow_to_splitted_17)
+ ---> Disabling potentially consistent extension checking for action:           32 (m_get_to_person_drives_themself)
+ ---> Disabling potentially consistent extension checking for action:           34 (m_get_to_vehicle_gets_driven)
+ ---> Disabling potentially consistent extension checking for action:           36 (m_get_to_as_cargo)
+ ---> Disabling potentially consistent extension checking for action:           38 (m_get_to_with_ambulance)
+ ---> Disabling potentially consistent extension checking for action:           49 (m_provide_temp_heat_local_electricity)
+ ---> Disabling potentially consistent extension checking for action:           22 (m_fix_water_main)
+Returning from runGpg().
+TDG done.
+Calculated [137532] grounded tasks and [118645] grounded decomposition methods.
+Performing DFS.
+DFS done.
+After DFS: 68444 tasks, 56042 methods.
+Grounded PG:
+Input was [63376, 68444], output was [63376, 2505].
+Simplifying instance.
+Removing useless facts/literals
+Removing method precondition actions whose precondition is empty
+Expanding abstract tasks with only one method
+Writing instance to output.
+Exiting.
