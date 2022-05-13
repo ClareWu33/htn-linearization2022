@@ -1,9 +1,0 @@
-pandaPIparser is configured as follows
-  Colors in output: true
-  Mode: parsing mode
-  Parameter splitting: true
-  Conditional effects: exponential encoding
-  Disjunctive preconditions as HTN: false
-  Replace goal with action: false
-  Output: pandaPI format
-I can't open transport01-domain.hddl!
