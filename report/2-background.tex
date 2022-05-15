@@ -1,56 +1,68 @@
 \chapter{Background}\label{chap:background}
 
 \section{Classical planning}
-A classical planning problem is usually defined in the STRIPS formalism, as below:
-$\textbf{Problem} = (D, S_I, S_G)$ \newline
-D is the domain of the problem, \newline
+A classical planning problem is defined as $\textbf{Problem} = (D, S_I, S_G)$ \newline
+D is the domain of the problem, 
 $S_I \in 2^F$ is the initial state and $S_G \in F$ is the goal. \newline
 Every fact $\in F$ included in $S_G$ is true, and all other facts are false. This is the closed world assumption.
 
-
-\textbf{Domain D} = $(F, A)$ \newline
-F is a finite set of facts, or propositional state variables. \newline
-A is a finite set of actions. \newline Every $a \in A$ is of type $2^F \times 2^F \times 2^F$, and of the format $<pre, add, del>$.
-An action a is executable in a state s if its precondition $pre$ holds in s, i.e. pre $\subseteq$ s. \newline
-If executable in s, its result is the successor state s' = (s $\backslash$ del ) $\cup$ add , i.e., delete effects get removed and add
-effects get added.
+The domain \textbf{D} = $(F, A)$. 
+F is a finite set of facts, or propositional state variables.
+A is a finite set of actions. 
+Every $a \in A$ is of type $2^F \times 2^F \times 2^F$, and of the format $<pre, add, del>$. 
+The preconditions, add, and delete effects, of an action a are referred to as $\Pre(a), \Add(a)$, and $\Del(a)$ respectively.
+An action a is executable in a state s if its precondition $pre$ holds in s, i.e. pre $\subseteq$ s. 
+If executable in s, its result is the successor state s' = (s $\backslash$ del ) $\cup$ add , i.e., variables in del(a) get removed and variables in ass(a) get added.
 
 \textbf{Solution}: Solutions to a problem are action sequences executable in the initial state $S_I$ that lead to a state s'' that satisfies all
 goals, i.e., s'' $ \supseteq$ g. Any such state s'' is called a goal state.
 
 \newpage
 \section{Partially Ordered Hierarchical Planning}
-Also known as Hierarchical Task Network Planning or HTN planning for short.
+Also known as Partially Ordered Hierarchical Task Network Planning or PO HTN planning for short.
 
-There are many formalizations for hierarchical planning. This one borrows heavily from "A Survey on Hierarchical Planning – One Abstract Idea, Many Concrete Realizations" by Bercher, Alford, H\"{o}ller, except with the initial task network replaced by a initial compound task. 
+%There are many formalizations for hierarchical planning. This one borrows heavily from "A Survey on Hierarchical Planning – One Abstract Idea, Many Concrete Realizations" by Bercher, Alford, %H\"{o}ller, except with the initial task network replaced by a initial compound task. 
 
 \textbf{Problem} = $(D, S_I, T_I)$
 is over some domain D, 
 has an initial state $S_I$, which is a total assignment to F, and 
 has a initial compound task $T_I$. 
+Every fact $\in F$ included in $S_I$ is true, and all other facts are false. This is the closed world assumption.
 
-\textbf{D} = $(F, T_P, T_C, \delta, M)$ \newline
-   F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
-   $\delta$ is a mapping from primitive task name to action.
-   M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
-   $T_P$ is the set of all possible primitive task names
-   $T_C$ is the set of all possible compound task names
-   $\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F x\times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
-   M is a set of methods. If $m \in M$, then m maps a compound task to a Task Network.
+The domain \textbf{D} = $(F, T_P, T_C, \delta, M)$.
+\begin{enumerate}
+	\item   F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
+   \item $\delta$ is a mapping from primitive task name to action.
+   \item M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
+   \item $T_P$ is the set of all possible primitive task names
+   \item $T_C$ is the set of all possible compound task names
+   \item $\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F x\times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
+   \item M is a set of methods. If $m \in M$, $m$ maps a compound task to a Task Network.
+\end{enumerate}     
 
-\textbf{Task Network} = $(T, \prec, \alpha)$
- T is a finite set of task ids,
+The \textbf{Task Network} = $(T, \prec, \alpha)$.
+ T is a finite set of task identifiers (ids),
  $\prec$ is a partial order over T, and
- $\alpha$ maps task ids to task names.
+ $\alpha$ maps task ids $\in$ T to task names in $T_C$ and $T_P$.
  
-\subsection{HTN Solution}
-The goal here is to refine this task network, such that a valid solution is obtained.
-A valid solution to a PO HTN problem a plan:
-   - a sequence of primitive tasks/actions
-   - The application of each action produces a corresponding state. The solution must be such that each action is applicable
-    in the previous state. i.e. the corresponding state satisfies the precondition of the action (including the first action applicable in the initial state)
-   - (Often, the final state produced will be checked against a 'goal state' encoded in a (artificially enforced) final primitive tasks' preconditions,? 
-     
+\textbf{Task Decomposition}
+A method m = (c, $tn_m$) decomposes a task network $tn_1 = (T_1, \prec_1, \alpha_1)$ into
+a new task network $tn_2$ by replacing $t$ (i.e. $tn_1 \rightarrow_{t,m} tn_2$), if and only if $t \in T_1$, $\alpha_1(t) = c$, and there exists a task network $tn' = (T', \prec' \alpha')$ with $tn' \cong tn_m$ and $T' \cap T = \emptyset$ and
+\begin{align}
+tn_2 :=     &((T_1 \setminus \{t\}) \cup T',    \prec_1 \cup \prec' \prec_X,        \alpha_1 \cup \alpha') \\
+\prec_X :=  &\{(t_1, t_2) \in T_1 \times T'  \vert  (t_1,t) \in \prec_1 \} \cup \\
+            &\{(t_1, t_2) \in T' \times T_1 \vert (t, t_2) \in \prec_1 \}  \\
+\end{align}
+
+ 
+\textbf{HTN Solution}
+A solution to a problem is a task network $tn = (T, \prec, \alpha)$ if and only if
+\begin{enumerate}
+	\item tn can be reached via decomposing $tn_I$
+    \item all tasks are primitive, ($\forall t \in T: \alpha(t) \in T_P$)
+    \item there exists a sequence $\langle t_1, t_2 ... t_n \rangle$ of the task ids in T
+    that agrees with $\prec$ such that the application of that sequence $\langle \alpha(t_1), \alpha(t_2) ... \alpha(t_n) \rangle$ in $S_I$ is executable.
+\end{enumerate}     
      
 \section{Totally Ordered Hierarchical Planning}
 Totally ordered hierarchical planning is the same as partially ordered planning in all respects except the task network.
@@ -60,9 +72,11 @@ in $\prec$ that $(a, b)$ or $(b, a)$.
 In other words, the tasks are totally ordered. 
 
 
-\section{Further Definitions}
-\textbf{Undecidable } A decision problem is equivalent to, a function that accepts a infinite (set?) of inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
+\textbf{Undecidable } A decision problem is equivalent to a function that accepts (potentially infinite) inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
 
+Partially ordered HTN planning is undecidable, while totally ordered HTN planning is decidable.
+
+\section{Further Definitions (may be required)}
 %\textbf{Task Decomposition Graph}
 %Let $G = (V_T, V_M , E)$ be a TDG in accordance to Def. 5
 %given by Elkawkagy et al. (2012). 
@@ -85,3 +99,14 @@ a transition schema a over $\omega$  is denoted by $\sigma$(a, $\omega$ ) and co
 substituting $\sigma$ with a list of compatible objects taken from $\omega$ , and then substituting each occurrence of the variables
 which were in $\sigma$ with the newly introduced objects.  
 
+\textbf{Partial Order Causal Link Planning}
+% From Bercher \& Olz, AAAI-2020 POPOCL 
+\emph{POCL criterion.} A partial POCL plan P = (PS, $\prec$, CL) is called POCL plan (also POCL solution) to a planning problem if and only if every precondition is supported by a causal link and there are no causal threats.
+
+\emph{PO criterion.} We refer to a partial POCL plan P = (PS , $\prec$, CL) without causal links, i.e., CL = $\emptyset$, as a partial partially ordered (PO) plan. Due to the absence of causal links, the solution criteria are here defined directly by the desired property of every linearization being executable.
+
+i.e. A partial PO plan P = (PS , $\prec$) is called PO plan (also PO solution) to a planning problem if and only
+if every linearization is executable in the initial state and results into a goal state.
+i.e. it has every necessary ordering.
+
+Therefore a linearization exists if and only if a POCL solution exists.

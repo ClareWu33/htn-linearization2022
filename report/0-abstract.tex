@@ -1,3 +1,8 @@
 \chapter*{Abstract}
 
-An abstract is a very short summary (around 15 lines) of your entire work (that doesn't use citations by convention). There are plenty of examples you can take a look at -- simply take a look at some papers published at top-tier venues, e.g., by your supervisor.
+The refinement step of partially ordered HTN planning has in the worst case k! possible solutions to search through when k plan steps should be ordered into a executable refinement.
+A large search space can be an advantage in case not enough is known about the domain to sensibly ensure a smaller search space will hold solutions,
+but also a disadvantage in the case that the search space is too large to efficiently search through. We attempt to linearize partially ordered HTN planning problems in 
+order to reduce this disadvantage, while attempting to preserve at least one solution in the reduced search space.
+We test our techniques on the partially-ordered track of the bench-mark set of the IPC 2020. We use the Panda progression search planner on both linearised and partially-ordered problem. 
+We find that in the majority of domains, the linearized problem can be solved faster. We also find that for the majority of problems, the linearized problem remains solvable.

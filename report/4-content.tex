@@ -7,9 +7,9 @@ Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 \begin{algorithm}
 	% \SetAlgoLined
 	\SetKwProg{Fn}{Function}{}{end}
-	\Fn{afunc(i: int) : int}{ %\TitleOfAlgo{GetPreEff}  	%\ProcNameSty{GetPreEff} \;
-	\KwData{$F, T_P, T_C, \delta, M, visited$}
-	\KwResult{$\PreS, \AddS, \DelS$}
+	\Fn{GetPreEff($F, T_P, T_C, \delta, M, visited$)}{ %\TitleOfAlgo{GetPreEff}  	%\ProcNameSty{GetPreEff} \;
+	%\KwData{$F, T_P, T_C, \delta, M, visited$}
+	%\KwResult{$\PreS, \AddS, \DelS$}
 	function\
 	\For {c $\in$ $T_C$} {
 		\If {c $\notin$ visited} {
@@ -28,7 +28,7 @@ Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 		}
 	}
 	\Return {$\PreS, \AddS, \DelS$}\;
-	\caption{Calculate all possible preconditions and effects for all compound tasks}
+	\caption{Calculate all possible preconditions and effects for compound tasks}
 }
 \end{algorithm}
 
@@ -36,9 +36,8 @@ Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 \begin{algorithm}[H]
 	\KwData{$(F, T_P, T_C, \delta, M), \PreS, \AddS, \DelS$}
 	\KwResult{$(F, T_P, T_C, \delta, M)$}
-	initialization\;
-	
-	\For {)m $\in$ M}{
+
+	\For {m $\in$ M}{
 		$NS_m$  $\gets \emptyset$\;
 		\For{a $\in$ F}{
 			$NS_m$  = $\{ (t, t', 1) |  (a \in \AddS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
@@ -46,52 +45,45 @@ Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
 			$NS_m$  =  $\{ (t', t, 1) |  (a \in \DelS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
 			$NS_m$  =  $\{ (t, t', 1) |  (a \in \DelS(t) \land a \in \AddS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
 		}{\tiny }
-		directed graph G =(V,E)\;
-		V $\gets \emptyset$ \;
+		directed graph G =(tasks(m),E)\;
 		E $\gets \emptyset$ \;
-		\For {o $\in \prec$} {
-			E.addEdge(o, 0)\;
+		\For {ordering $\in \prec$} {
+			E = E $\cup$ (ordering, 0)  
 		} 
-		\For {(t, t', w) $\in \prec$}{
-			E.addEdge((t,t'), w); \	
+		\For {(t, t', w) $\in NS_m$}{
+			E = E $\cup$ ((t,t'), w)  
 		}       
 	    BackEdges $\gets$ DFS(G) \;
-	    \For{back-edge $\in$ e}{
-	     	if e can be deleted because it is not required by the PO domain, delete it\;
-	   		if e=(A,B) can't be deleted, because it is required by the PO domain, use Dijkstra to find path from B to A, i.e. the other components of the cycle. \;
-	     	Randomly pick an non-required (weight=0) edge in the (B, A) path and delete it \;
+	    \For{e $\in$ BackEdges}{
+	     	\If {weight(e) = 1}  {E = E $\setminus$ e} 
+	   		\If {weight(e) = 0} {
+	   			A, B = e \; 
+	   		  	Path = Dijkstra(B, A)  \;
+	     		randEdge = RANDOM( \{e $\vert$ weight(e) = 0 $\land$ e $\in Path$ \} ) \;
+	     		E = E $\setminus$ randEdge
+	     	}
      	}
-     	Topological sort the resulting graph. This order is the total order for this method  \;
+     	$\prec'$ = TopologicalSort(G) \;
+     	$m' = (tasks(m), \prec', \alpha(t))$ \;
+     	$M' = m' \cup M'$ \;
 	}
-	Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2 \;	
-	return $\PreS, \AddS, \DelS$;	 \;
+	Return new domain = $(F, T_P, T_C, \delta, M')$
 	\caption{Calculation of linearized methods}
 \end{algorithm}
 
-
-GetPreEff (time)= NumMethods * log(TDG height) * NumStateBits
-Linearize (time) =  order based on precondtions + (create graph + DFS + Dijkstra)*(as needed)
-Let the method size be V, and the number of edges be E
-Linearize = NumMethods * (NumStateBits + Method Size + Method Size + (orderings) + (Method Size)log(method Size) })
+ 
+\begin{enumerate}
+	\item GetPreEff (time)= NumMethods * log(TDG height) * NumStateBits
+	\item Linearize (time) =  order based on precondtions + (create graph + DFS + Dijkstra)*(as needed)
+	\item Let the method size be V, and the number of edges be E
+	\item Linearize = NumMethods * (NumStateBits + Method Size + Method Size + (orderings) + (Method Size)log(method Size))
+\end{enumerate}
+Therefore this algorithm is O(?) time?
 
  
 
-\section{Solution preserving properties of Algorithm 1}
-From Bercher \& Olz, AAAI-2020 POPOCL 
-
-\emph{POCL criterion?} A partial POCL plan P = (PS, $\prec$, CL) is called POCL plan (also POCL solution) to a planning problem if and only if every precondition is supported by a causal link and there are no causal threats.
-
-
-\emph{PO criterion} We refer to a partial POCL plan P = (PS , $\prec$, CL) without causal links, i.e., CL = $\emptyset$, as a partial partially ordered (PO) plan. Due to the absence of causal links, the solution criteria are here defined directly by the desired property of every linearization being executable.
-
-i.e. A partial PO plan P = (PS , $\prec$) is called PO plan (also PO solution) to a planning problem if and only
-if every linearization is executable in the initial state and results into a goal state.
-i.e. it has every necessary ordering.
-
-A linearization exists if and only if a POCL solution exists.
-
-
-\textbf{Proposition 0:} \textit{Removes linearizations} \newline
+\subsection{Solution preserving properties of Algorithm 1}
+\textbf{Proposition 0.} \textit{Removes linearizations} \newline
 \textit{Proof.}
 This algorithm linearises all the methods to be totally ordered. Since sub-tasks inherit the orderings of their parents, it's impossible to preserve a solution that requires the interleaving of sub-tasks if their respective parents that are already ordered with respect to each other. This proves that the algorithm will always remove some linearizations, assuming the original domain was not already totally ordered.
 
@@ -121,13 +113,13 @@ $S_I$ = $<a>$
 	This proves that the algorithm can remove all solutions, so Algorithm 1 is not complete.
 	
 	
-\textbf{Proposition 1: Soundness}  \newline
+\textbf{Proposition 1.} \textit{Soundness}  \newline
 \textit{Proof.}
 We do not modify the sub-tasks a method produces, just the ordering between them, so the set of plans from the totally ordered method is just a subset of the plans possible from the partially ordered one. Any solution to the linearized problem is then obviously a solution to the original problem.
 
 
 
-\textbf{Proposition 2} \textit{If Algorithm 1 didn't have to cycle-break, at least one solution is preserved} \newline
+\textbf{Proposition 2.} \textit{If Algorithm 1 didn't have to cycle-break, at least one solution is preserved} \newline
 \textit{Proof.}
 	Assume that there exists a solution in the PO domain. Using the same decomposition in the linearised domain, we can produce a linearization $(a_0, a_1, ..., a_n)$ of those actions in the PO solution. We then prove by induction over the sequence $(a_0, .. a_n)$ that it is executable.
  
@@ -157,33 +149,24 @@ $a \in F, a \in prec(t_2)$. By the algorithm rules
 		\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
 \end{itemize}	
 We know that $t_1$ is ordered before $t_2$. And by the previous proposition 2.1, we know that there does not exist a task $t_3$
-such that $a \in del(t_3)$ Therefore, $t_2$ will always be executable regardless of what other tasks might do.
-
-However, $a \in prec^{*}(t')$ because $a \in prec^{*}(t_2)$
-
+such that $a \in del(t_3)$ Therefore, $t_2$ will always be executable regardless of what other tasks might do. However, $a \in prec^{*}(t')$ because $a \in prec^{*}(t_2)$. 
 Therefore it's possible for preconditions to be erroneous, even if Algorithm 1 did not need to cycle break.
 
-
-
-\textbf{Proposition 3: When it does have to cycle break, it may preserve solutions} \newline
+\textbf{Proposition 3.} \textit{When it does have to cycle break, it may preserve solutions} \newline
 \textit{Proof.}
 As per proposition 2.1 and 2.2, not all of the preconditions and/or effects are always needed. Suppose the initial task network consisted of 2 sub-tasks, $t_1, t_2$. If $t_2$ can decompose into an action $a_1$ such that $add(a_1) = A$, and an action $a_2$ such that $del(a_2) = A$,
 and $t_1$ can decompose into an action $a_3$ with $prec(a_3) = A$
 $t_2 = {add A, del A}$ and $t_1 = {prec A}$. The rules $\{(add A, prec A), (prec A, del A))\}$ of Algorthm 1
 require orderings $\{(t_2, t_2), (t_2, t_1), (t_1, t_2)\}$, i.e.
 Despite a cycle break being needed, this is obviously a solvable problem. Order $t_2$ before $t_1$ for this method.
-Then when solving decompose $t_2$ to $a_1$ and $t_1$ to $a_3$ - this creates a solution.
-
-
-\textbf{Proposition 4} \textit{For some tasks it doesn't matter where they are executed} \newline
+Then when solving decompose $t_2$ to $a_1$ and $t_1$ to $a_3$ - this creates a solution. \newline \newline
+\textbf{Proposition 4.} \textit{For some tasks it doesn't matter where they are executed} \newline
 \textit{Proof.}
 Assume that some pair of tasks $(t_1), (t_2)$ has no ordering between them. Assume also that $t_1 t_2$ is ok but $(t_2) (t_1)$ is not, i.e.
-it matters where they are executed.
-
+it matters where they are executed.  \newline  \newline
 The required execution sequence implies that $t_2$ deletes some variable A $t_1$ relies on. But from the algorithm,
 that would mean that an ordering $(t_1, t_2)$ was created, which contradicts the assumption that there is no ordering between them.
-Therefore $(t_2)(t_1)$ must also be ok. 
- 
+Therefore $(t_2)(t_1)$ must also be ok. \newline  \newline
 Thus if some task t has no ordering from the algorithm, it can never matter where it is in relation to any other task.
 The algorithm will not order it specifically when $(\forall t' \in m, \forall a \in prec(t). a \notin add(t') \land a \notin del(t'))
 \land  (\forall t' \in m, \forall a \in add(t). a \notin prec(t') \land a \notin del(t')) 
@@ -192,181 +175,128 @@ In other words, the variables that affect t, do not affect other tasks in that m
 
 
 
-\section{Algorithm 2}
-Note that linearization *always* enforces (del a) before (add a).
-Therefore, when attempting to linearizing a method with subtasks (t1, ... tn).
-You can be assured that if ti has effect set {del a, add a, ...} there MUST exist a method that
-decomposes it to an action with add a. That method will add a. i.e. All add effects can relied to exist in some decomposition.
+\section{Algorithm 2} 
+\begin{algorithm}[H]
+	\KwData{$(F, T_P, T_C, \delta, M), \PreS, \AddS, \DelS$}
+	\KwResult{$(F, T_P, T_C, \delta, M)$}
+	
+	\For {m $\in$ M}{
+		$NS_m$  $\gets \emptyset$\;
+		\For{a $\in$ F}{
+			$NS_m$  = $\{ (t, t', 1) |  (a \in \AddS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  = $\{ (t', t, 1) |  (a \in \AddS(t) \land a \in \DelS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t', t, 1) |  (a \in \DelS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t, t', 1) |  (a \in \DelS(t) \land a \in \AddS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+		}{\tiny }
+		directed graph G =(tasks(m),E)\;
+		E $\gets \emptyset$ \;
+		\For {ordering $\in \prec$} {
+			E = E $\cup$ (ordering, 0)  
+		} 
+		\For {(t, t', w) $\in NS_m$}{
+			E = E $\cup$ ((t,t'), w)  
+		}       
+		BackEdges $\gets$ DFS(G) \;
+		\uIf{ $\vert BackEdges \vert > 0$ }
+		{$\prec'$ = TopologicalSort(G)  \;
+		$m' = (tasks(m), \prec', \alpha(t))$ \;
+		$M' = m' \cup M'$ \;}
+		\Else {$M' = m \cup M'$}
+	}
+	Return new domain = $(F, T_P, T_C, \delta, M')$
+	\caption{Calculation of linearized methods}
+\end{algorithm}
 
-The ordering for this method can therefore preference deletion of orderings relating to (del a) of this task ti.
-For example if some other task has preconditon a.
+A possible option is to only linearize the methods which do not need cycle breaking.
 
-(add a, prec a) (prec a, del a)  (del a,  add a)
-(t,       t')     (t',     t'')   (t'',    t) 
-
-We could remove the ordering (prec a, del a) - we know that task won't really delete it?
-
-
-For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
-\begin{enumerate}
-	\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
-	\begin{enumerate}
-		\item For every method m that can decompose $t_c$, consider each sub-task $t_i$ of m:
-		\begin{enumerate}
-			\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
-			\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
-		\end{enumerate}
-	\end{enumerate}
-	\item Consider each method m $\in$ M independently
-	\begin{enumerate}	
-		\item Let the set of non-required edges be $NS_m$
-		\item $\forall a \in F$
-		\begin{itemize}			
-			\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\end{itemize}
-		\item Construct a directed graph G
-		\item Add the required orderings $\prec \in tn(m)$ to G with weight=0
-		\item Add the edges in $NS_m$ to G with weight=1 \newline
-		\item Use DFS to find the back edges on this directed graph.
-		\item If there exist back edges, do not modify the method.
-		\item Else topological sort the resulting graph. This order is the new order for this method.
-	\end{enumerate}
-	\item Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2.
-\end{enumerate} 
-
- 
-\textbf{Proposition 5} \textit {Algorithm 2 is sound} \newline
+\subsection{Solution preserving properties of Algorithm 2}
+\textbf{Proposition 5.} \textit {Algorithm 2 is sound} \newline
 \textit{Proof.} Same as Proposition 1
 
-\textbf{Proposition 6} \textit {Algorithm 2 is complete} \newline
-\textit{Proof.}
-Assume that the original problem is solvable. This means that for some PO sequence of actions that we got from decomposition of an initial task, there exists a linearization of this that is executable. Assume this solution is $(a_0, a_1, ..., a_n)$. 
-A linearization produces
-Assuming that a method is linearizable, 
-Not even it's textit{possible} preconditions and effects conflict in this sequence, so it must be executable.
 
-If a method does require interleaving, it's executable sub-units can remain an unit.
-Why would we need to split m? If m's subtasks adds a then deletes a, and another action needs a. But then there would be conflict in m
-by algorithm definiton, (add)
-You must 1) add 1) 2) meet prec of those with a) and 3) delete a.
+\textbf{Proposition 6.} \textit {Does Algorithm 2 preserve at least one solution? When?} \newline
+\textit{Proof.} ?
 
-
-
-Actions only:  
-Methods prioritise add variable (del then add ordering enforced)
-Given a compound task with only complete methods in it. 
-If the effect of a compound task claims it can add a (even if it claims to delete it too), there exists a method that decomposes it to a linearised set of tasks that DEFINITELY ADD A. 
-
-If another task B needs a precondition b, there exists a linearization of A that adds it, so there is no need to interleave them.
-If it needs several, either 1 method does them all, OR the adds are split among different methods for A, in this case PO wouldn't help either.
-(a0 ... a1) (B)
-There will not exist a method that adds a, deletes a, adds b.
-
-It will ONLY delete a precondition you were relying on if it was literally impossible for them to add it in the first place.
-If you need something that was true before they deleted it, just place yourself in front of them. We are not linearizing via Gregor's algorithm, due to this method having this conflict, so you can do that. Henceforth the task that this decomposes will have no guarantee that it will delete then add.
-Also note that you can add things between the other task B and linearised task A, in case you want to have task B effects but not task A effects.
-
-
-Note that for a fully linearized method, if it's children could not all be fully linearised,
-then you cannot rely on it adding something in it's effects list. However, you can always just interleave yourself between its sub-tasks, as it will have partially ordered sub-tasks, or sub-sub-tasks etc.
-
-
-Also consider (delete c, add a, add b) (prec a,b,c,  add goal)
-The first task is linearised in any way without conflict.
-The second task MUST interleave with the and ALSO required (add a, add b, delete c)
-The first is possible, (their parents will conflict, and thus have no ordering imposed) the second is not guaranteed to happen.
 
 \section{Algorithm 3}
 The definitions in Conny's paper assumes that there are no negative preconditions.
 Strict State-independent positive and negative effects:
- $$ eff^{+}_{*} := (\bigcap_{s \in E(c)} \bigcap_{s' \in R_s(c)} s')  \backslash  (\bigcap_{s \in E(c)} s)  $$
- $$ eff^{-}_{*} := \bigcap_{s \in E(c)} (F \backslash \bigcup_{s' \in R_s(c)}  s') $$
+ $$ \EffPlus := (\bigcap_{s \in E(c)} \bigcap_{s' \in R_s(c)} s')  \backslash  (\bigcap_{s \in E(c)} s)  $$
+ $$ \EffMinus := \bigcap_{s \in E(c)} (F \backslash \bigcup_{s' \in R_s(c)}  s') $$
 if $E(c) \neq \emptyset$ otherwise $eff^{+/-}_{*}(c) := undef$
 
 Strict Possible state-independent effects:
- $$ poss-eff^{+}_{*} := \bigcup_{s \in E(c)} (\bigcup_{s' \in R_s(c)} s'\backslash s)   $$
- $$ poss-eff^{-}_{*} := \bigcup_{s \in E(c)} ((\bigcup_{s' \in R_s(c)} ( F \backslash s'))  \cap  s) $$
+ $$ \PossEffPlus := \bigcup_{s \in E(c)} (\bigcup_{s' \in R_s(c)} s'\backslash s)   $$
+ $$ \PossEffMinus := \bigcup_{s \in E(c)} ((\bigcup_{s' \in R_s(c)} ( F \backslash s'))  \cap  s) $$
 
-Relaxation: Define a new domain such that A' = ${ \{\emptyset, add, del \} |  \{\emptyset, add, del \} \in A }$
-Define the relaxed guaranteed and possible as before, under this new domain.
+
+Relaxation: Define a new domain such that A' = ${ \{\emptyset, add, del \} |  \{\emptyset, add, del \} \in A }$.
+Using this new domain, define the relaxed guaranteed and relaxed possible effects $\RelEffPlus$, 
+
+$\RelEffMinus$, 
+
+$\RelPossEffPlus$,
+
+$ \RelPossEffMinus$ as before.
 
 These effects will *definitely* happen, even if some methods cannot be linearised,
 Unlike Algorithm 1, this set of preconditions and effects have no false candidates in them.
 Unlike Algorithm 1, this set of preconditions and effects may be missing some State-independent positive and negative effects.
 
-Links between MUST be enforced
-If any of these cause cycles in method, we know it actually needs interleaving and is not just a coincidence.
 
-\section{Algorithm 3}
-% Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
-For the Domain $(F, T_P, T_C, \delta, M)$ and Problem = $(T_I, S_0, TN_G)$
-\begin{enumerate}
-%	\item Consider each $t_c \in T_C$, and infer its (super-relaxed) preconditions and effects.
-%	\begin{enumerate}
-%		\item For every method m that can decompose $t_c$, consider each sub-task $t_i$ of m:
-%		\begin{enumerate}
-%			\item If $t_i \in T_P$ , add $prec(t_i), add(t_i), del(t_i)$ effects to the set of $prec^{*}c(t_c), add^{*}(t_c), del^{*}(t_c)$
-%			\item If $t_i \in T_C$, find the actions it can decompose to and repeat this algorithm for it
-%		\end{enumerate}
-%	\end{enumerate}
-	\item Consider each $t_c \in T_C$, and infer its (precondition-relaxed) effects as  $add^{*}_{\emptyset}(t_c), del^{*}_{\emptyset}(t_c)$.
-
-	\item Consider each method m $\in$ M independently
-	\begin{enumerate}	
-		\item Let the set of non-required edges be $NS_m$
-		\item $\forall a \in F$
-		\begin{itemize}			
-			\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\end{itemize}
-		\item $\forall a \in F$
-		\begin{itemize}			
-			\item Add $\{ (t, t') |  (a \in add^{*}_{\emptyset}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in add^{*}_{\emptyset}(t) \land a \in del^{*}_{\emptyset}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t', t) |  (a \in del^{*}_{\emptyset}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-			\item Add $\{ (t, t') |  (a \in del^{*}_{\emptyset}(t) \land a \in add^{*}_{\emptyset}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\end{itemize}
-		\item Construct a directed graph G
-		\item Add the required orderings $\prec \in tn(m)$ to G with weight=0
-		\item Add edges between definite adds and definite deletes, weight =1
-		\item Add edges between definite effects and possible preconditions, weight=2
-		\item Add edges between possible effects and possible preconditions, with weight=3  
-		\item Use DFS to find the back edges on this directed graph.
-		\item For each back-edge e
-		\begin{enumerate}
-			\item if e weight == 4, delete it
-			\item else use Dijkstra to find path from B to A, i.e. the other components of the cycle.
-			\item Randomly pick an weight==3 edge in the (B, A) path and delete it. If it doesn't exist, search for weight=weight-1 to delete, etc,
-		\end{enumerate}
-		\item Topological sort the resulting graph. This order is the total order for this method.
-	\end{enumerate}
-	\item Create a new domain $(F, T_P, T_C, \delta, M')$, where M' is the modified methods produced in step 2.
-\end{enumerate}   
-
- 
-\textbf{SOUND, NOT COMPLETE}
-\textbf{PARTIAL LINEARIZATION: SOUND, COMPLETE}
-
-(To reduce the preconditions and effects requires cutting depth wise (e.g. a sequence of tasks s.t.  add a, del a occurs in every possible sub branch)
-If ALL methods are possible, you cant exclude the possibility of their prec/eff. Otherwise it would imply knowing which method to take, which makes no sense?)
-The obvious solution to it's current deficiencies is: 
-\begin{enumerate}
-	\item When tasks need to be interleaved as part of it's solution, introduce new (totally ordered) methods that will allow this interleaving.
-	If for example, The initial task network contains (AB, C') in that order. Then AB $\implies$ A, B.  and C' $\implies$ C.
-	And the only solution is A, C, B. We can detect a cycle (as in the example above)
-	Then when we detect the cycle between AB and C', we need a new method such that their parent (the initial task) $\implies$ A,C,B  in that order.  This one seems more impractical to find,	since in practice some solutions might need interleaving of tasks that are very, very far apart in a TDG.
-	Also, if enough interleaving is required, this is equivalent to solving the problem. 
+\begin{algorithm}[H]
+	\KwData{$(F, T_P, T_C, \delta, M)$, \newline,
+		$\RelEffPlus, \RelEffMinus, \RelPossEffPlus, \RelPossEffMinus$}
+	\KwResult{$(F, T_P, T_C, \delta, M)$}
 	
-	
-	Depending on the problem, even this will not be able to remove all cycles.  Some compound tasks will have \emph{different} 
-	preconditions and effects depending	on the method(s) applied to decompose it to a sequence of primitive tasks. If any number of
-	these is conflicting with another tasks, we will still have cycles.
-	
-	\item Because floating tasks can be executed where-ever, whenever there is such a floating task, we could produce
-	multiple linearizations of a given method, such that every possible placement of the floating task is possible.
-\end{enumerate}
+	\For {m $\in$ M}{
+		$NS_m$  $\gets \emptyset$\;
+		\For{a $\in$ F}{
+			$NS_m$  = $\{ (t, t', 1) |  (a \in \AddS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  = $\{ (t', t, 1) |  (a \in \AddS(t) \land a \in \DelS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t', t, 1) |  (a \in \DelS(t) \land a \in \PreS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			$NS_m$  =  $\{ (t, t', 1) |  (a \in \DelS(t) \land a \in \AddS(t') \land t, t' \in tasks(m) ) \}$ $\cup$ $NS_m$  \;
+			 Add edges between definite adds and definite deletes, weight =1  \;
+			 Add edges between definite effects and possible preconditions, weight=2  \;
+		  	Add edges between possible effects and possible preconditions, with weight=3   \;
+		}
+		directed graph G =(tasks(m),E)\;
+		E $\gets \emptyset$ \;
+		\For {ordering $\in \prec$} {
+			E = E $\cup$ (ordering, 0)  
+		} 
+		\For {(t, t', w) $\in NS_m$}{
+			E = E $\cup$ ((t,t'), w)  
+		}       
+	    BackEdges $\gets$ DFS(G) \;
+		\For{e $\in$ BackEdges}{
+			\uIf {weight(e) = 4}  {E = E $\setminus$ e} 
+			%   Randomly pick an weight==3 edge in the (B, A) path and delete it. If it doesn't exist, search for weight=weight-1 to delete, etc,
+			\Else {weight(e) = 3} { 
+				A, B = e \; 
+				Path = Dijkstra(B, A) \;
+				randEdge = RANDOM( \{e $\vert$ weight(e) = 0 $\land$ e $\in Path$ \} ) \;
+				E = E $\setminus$ randEdge
+			} 
+		}
+		$\prec'$ = TopologicalSort(G) \;
+		$m' = (tasks(m), \prec', \alpha(t))$ \;
+		$M' = m' \cup M'$ \;
+	}
+	Return new domain = $(F, T_P, T_C, \delta, M')$
+	\caption{Calculation of linearized methods}
+\end{algorithm}
+
+
+
+\subsection{Solution preserving properties of Algorithm 3}
+\textbf{Proposition 7.} \textit {Algorithm 3 is sound} \newline
+\textit{Proof.} Same as Proposition 1
+
+
+\textbf{Proposition 8.} \textit {Does Algorithm 3 preserve at least one solution? When?} \newline
+\textit{Proof.} ?
+% If guaranteed precondtions/effects or those required by initial domain cause cycles in method, we know it actually needs interleaving and is not just a coincidence.
+
+% \textbf{SOUND, NOT COMPLETE} \newline
+% \textbf{PARTIAL LINEARIZATION: SOUND, COMPLETE?} \newline

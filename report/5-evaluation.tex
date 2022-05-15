@@ -1,20 +1,8 @@
 \chapter{Evaluation}\label{chap:evaluation}
 
 
-These are some suggestions on what you may report on:
-\begin{itemize}
-  \item Benchmark Selection: Which data set did you choose to evaluate your approach on? Why did you make that specific selection? Would there have been alternatives?
-  \item Hardware setup: What hardware was used (processor, RAM, etc.), and which operating systems and software were used?
-  \item Results: Report the plain data (plots, tables, etc.)\ and their \emph{interpretation}, i.e., did the approach work well or not? Do we know on which subset it worked well (or badly) and why was it like this? Do the results raise further questions and thus directions for future research/investigations?
-\end{itemize}
-
-When reporting your results using graphs and plots, make sure to provide all information necessary to interpret the data, e.g., axis and graph labeling (cf.~Figure~\ref{fig:xkcd}).
-
-
 \section{Empirical Evaluation}
 To prove that our technique is beneficial, we conduct a standard empirical evaluation on PO domains and compare the runtime of PO planners vs. transformation + TO planners
-
-We should also do an evaluation that shows how often the criterion works, i.e., in how many instances (per domain) we can say 'yes: translate!'
 
 %\begin{tabular}{lcccccl}\toprule
 %	& \multicolumn{3}{c}{$\tol=\tols$} & \multicolumn{3}{c}{$\tol=\told$}
@@ -32,31 +20,23 @@ We should also do an evaluation that shows how often the criterion works, i.e., 
 % Pand Pro Pand SaT GBFS Add (th, s, th+s)
 
 
-
 \subsection{Hardware Setup}
-8GB RAM
-Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz  (Total Cores 4; Total Threads 8)
-Ubuntu 20.04.4 LTS
+The following benchmark used ?GB RAM, %8GB RAM
+Nectar cores, threads, processor, %Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz  (Total Cores 4; Total Threads 8)
+Nectar OS, and %Ubuntu 20.04.4 LTS
 C++
 
-\subsection{Solving Performance}
-For this benchmark we will be doing
-\begin{tabular}{lcccl} 
-	\multicolumn{5}{c} {Rover} \\\toprule 
-	Tasks &  time to solve PO &  time to solve TO &  PO/TO time &  Problem Name \\
-	396 & 203.617 & 0.168 & 121032.0 & Rover/pfile12 \\ 
-	460 & 187.619 & 4.077 & 4601.0 & Rover/pfile10 \\ 
-	65 & 0.236 & 0.057 & 410.0 & Rover/pfile01 \\ 
-	59 & 0.111 & 0.055 & 200.0 & Rover/pfile02 \\ 
-	1202 & 380.662 & 5.17 & 7363.0 & Rover/pfile17 \\ 
-	382 & 155.551 & 0.6 & 25923.0 & Rover/pfile08 \\ 
-	561 & 148.941 & 0.191 & 77783.0 & Rover/pfile14 \\ 
-	626 & 204.075 & 4.275 & 4773.0 & Rover/pfile16 \\ 
-	89 & 0.134 & 0.058 & 228.0 & Rover/pfile03 \\ 
-	595 & 202.559 & 0.403 & 50291.0 & Rover/pfile15 \\ 
-	494 & 179.874 & 24.747 & 726.0 & Rover/pfile11 \\ 
-	245 & 125.468 & 0.257 & 48861.0 & Rover/pfile06 \\ 
-	152 & 134.515 & 0.152 & 88698.0 & Rover/pfile05 \\ 
-	414 & 201.005 & 0.204 & 98302.0 & Rover/pfile09 \\ 
-	707 & 261.94 & 47.815 & 547.0 & Rover/pfile13 \\\bottomrule
-\end{tabular}
+
+Full Tables in Appendix. Plots/Tables of relevant properties, e.g.
+\begin{center}
+	\includegraphics[scale=0.4]{../ipc2020-domains/Preprocessing**_vs_Tasksnotlog.jpg}
+\end{center}
+
+\begin{enumerate}
+	\item None of the instances can be linearized.
+	\item Despite this, ?percent of linearized problems are solvable.
+	\item The additional processing time is within the same order of time as the time needed for grounding and a tiny fraction of the overall time $\sim$
+	\item We compare the ratio of (Grounding + Pre-processing time + TO solve time) to (Grounding + PO solve time), as those
+	are the steps needed to solve the respective problems. The average solve time for the TO problem is ?? percent of the PO problem, for all problems.
+	\item Difference in reduction of total solving time influenced most by ? (e.g. domain, recursiveness of problem, percentage of linearizable methods, etc)
+\end{enumerate}

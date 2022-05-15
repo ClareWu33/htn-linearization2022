@@ -1,21 +1,11 @@
-\chapter{Appendix: Explanation on Appendices}\label{chap:appendix1}
+\chapter{Appendix: All Results For Algorithms}\label{chap:appendix1}
 
-You may use appendices to provide additional information that is in principle relevant to your work, though you don't want \emph{every reader} to look at the entire material, but only those interested.
-
-There are many cases where an appendix may make sense. For example:
-\begin{itemize}
-  \item You developed various variants of some algorithm, but you only describe one of them in the main body, since the different variants are not that different.
-  \item You may have conducted an extensive empirical analysis, yet you don't want to provide \emph{all} results. So you focus on the most relevant results in the main body of your work to get the message across. Yet you present the remaining and complete results here for the more interested reader.
-  \item You developed a model of some sort. In your work, you explained an excerpt of the model. You also used mathematical syntax for this. Here, you can (if you wish) provide the actual model as you provided it in probably some textfile. Note that you don't have to do this, as artifacts can be submitted separately. Consult your supervisor in such a case.
-  \item You could also provide a list of figures and/or list of tables in here (via the commands \verb!\listoffigures! and \verb!\listoftables!, respectively). Do this only if you think that this is beneficial for your work. If you want to include it, you can of course also provide it right after the table of contents. You might want to make this dependent on how many people you think are interested in this.
-\end{itemize}
-
-\subsection{Pre-processing performance}
+\section{Algorithm 1}
+\subsection{Algorithm 1 pre-processing performance}
 
 * Percentage of number of linearised methods / number of methods with 2 or more subtasks \newline 
 ** All time in seconds \newline 
 *** Average number of tasks per method, excluding the initial task network
-
 
 \begin{tabular}{lccccl} \\\toprule 
 	\multicolumn{6}{c} {Rover} \\\toprule 
@@ -318,3 +308,32 @@ There are many cases where an appendix may make sense. For example:
 	12092 & 1.84136 & 12684 & 68.3509 & 0.9201 & 0.184313 \\\bottomrule 
 \end{tabular} 
 \newline Recursive: False \newline
+
+
+\subsection{Solving Performance}
+We use the partially ordered track in the IPC 2020 benchmark.
+\begin{tabular}{lcccl} 
+	\multicolumn{5}{c} {Rover} \\\toprule 
+	Tasks &  time to solve PO &  time to solve TO &  PO/TO time &  Problem Name \\
+	396 & 203.617 & 0.168 & 121032.0 & Rover/pfile12 \\ 
+	460 & 187.619 & 4.077 & 4601.0 & Rover/pfile10 \\ 
+	65 & 0.236 & 0.057 & 410.0 & Rover/pfile01 \\ 
+	59 & 0.111 & 0.055 & 200.0 & Rover/pfile02 \\ 
+	1202 & 380.662 & 5.17 & 7363.0 & Rover/pfile17 \\ 
+	382 & 155.551 & 0.6 & 25923.0 & Rover/pfile08 \\ 
+	561 & 148.941 & 0.191 & 77783.0 & Rover/pfile14 \\ 
+	626 & 204.075 & 4.275 & 4773.0 & Rover/pfile16 \\ 
+	89 & 0.134 & 0.058 & 228.0 & Rover/pfile03 \\ 
+	595 & 202.559 & 0.403 & 50291.0 & Rover/pfile15 \\ 
+	494 & 179.874 & 24.747 & 726.0 & Rover/pfile11 \\ 
+	245 & 125.468 & 0.257 & 48861.0 & Rover/pfile06 \\ 
+	152 & 134.515 & 0.152 & 88698.0 & Rover/pfile05 \\ 
+	414 & 201.005 & 0.204 & 98302.0 & Rover/pfile09 \\ 
+	707 & 261.94 & 47.815 & 547.0 & Rover/pfile13 \\\bottomrule
+\end{tabular}
+
+
+\section{Algorithm 2}
+
+
+\section{Algorithm 3}
