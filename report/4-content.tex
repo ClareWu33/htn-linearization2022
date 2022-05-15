@@ -112,7 +112,61 @@ $S_I$ = $<a>$
 	
 	This proves that the algorithm can remove all solutions, so Algorithm 1 is not complete.
 	
-	
+
+\textbf{0.1} \textit{Even if Algorithm 1 didn't have to cycle break, $\exists t. add^{*}(t) \neq add(t) \lor del^{*}(t) \neq del(t) $ }\newline
+\textit{Proof.}
+Suppose there exists an compound task t whose method 1 decomposes to an action A, with $add(A) = \{a\}$.
+Assume there is another method which decomposes t to action B, with $add(B) = \{b\}$
+Therefore $eff^{*}(t) =\{a, b\} $ but no execution of t will add $\{a, b\}$ to the state.
+
+
+\textbf{0.2} \textit{If Algorithm 1 didn't have to cycle break, $\exists t. prec(t) \neq prec^{*}(t)$} \newline
+\textit{Proof.}
+Assume some compound task t' decomposes into at least two sub-tasks, $\{t_1, t_2\}$. Suppose that $a \in F, a \in add(t_1), a \in prec(t_2)$. By the algorithm rules
+\begin{itemize}			
+	\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+	\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+	\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+	\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+\end{itemize}	
+We know that $t_1$ is ordered before $t_2$. This means that $t'$ does not $a \in s$ in order to execute in s. However, $a \in prec^{*}(t')$ because $a \in prec^{*}(t_2)$. 
+Therefore it's possible for preconditions to be erroneous, even if Algorithm 1 did not need to cycle break.
+
+
+
+%\textbf{0.3} \textit{If Algorithm 1 didn't have to cycle break, if $a \in prec^{*}(t)$, then there exists an decomposition
+%t' such that t' will add a} \newline
+%\textit{Proof.} Assume a domain D linearized without cycle-breaking.
+%Assume some compound task $t'$ and $a \in \AddS(t)$. We prove that there exists an decomposition of t'into actions $\langle a_0 ... a_n \rangle$ such 
+%$a \in add(a_i)$ and $\forall k$ such that $a \in del(a_k)$,  $k < i$
+
+%Base case: Assume some compound task $t$ decomposes into a non-empty set of actions A=$\{t', ...\}$,
+%such that $a \in F, a \in add(t').$ This means $a \in \AddS(t)$. 
+%If there exists $t'' \in A$ such that $a \in del(t'')$. By the algorithm rules
+%\begin{itemize}			
+%	\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%	\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ %
+%	\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%	\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%\end{itemize}
+%We know that $t_1$ is ordered before $t_2$. Therefore, $a \in add(t')$ and $\forall t''$ such that $a \in del(t''))$,  $(t'', t') \in \prec$
+
+
+%Assume for Inductive Hypothesis that if there exists an decomposition of $t$ into $\langle t_0 ... t_n \rangle$, then for each 
+%$t_n$= $\langle t'_0 ... t'_n \rangle$, $a \in add(t'_i)$ and $\forall k$ such that $a \in del(t'_k)$,  $k < i$
+%Step case: 
+%Assume some compound task $t'$ decomposes into at least two actions: $\{t_1, t_2, ...\}$,
+%such that $a \in F, a \in add(t_1), a \in del(t_2)$. This means $a \in \AddS(t)$. By the algorithm rules
+%\begin{itemize}			
+%	\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%	\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ %
+%	\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%	\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
+%\end{itemize}
+%We know that $t_2$ is ordered before $t_1$. 
+%This means that for $t'$, and $a \in \AddS(t)$, that there exists an execution of $t'$ that will add a.
+
+
 \textbf{Proposition 1.} \textit{Soundness}  \newline
 \textit{Proof.}
 We do not modify the sub-tasks a method produces, just the ordering between them, so the set of plans from the totally ordered method is just a subset of the plans possible from the partially ordered one. Any solution to the linearized problem is then obviously a solution to the original problem.
@@ -131,27 +185,6 @@ We do not modify the sub-tasks a method produces, just the ordering between them
 	If $a_i$ does not exist then $a_k$ can never be executed for any linearization of $\{a_0, ...a_n\}$, contradicting the assumption that this was a PO solution. Since each action in the solution is executable, the entire sequence is executable linearization of actions produced by decomposition of initial task, i.e. the solution.
 	
 
-\textbf{2.1} \textit{Even if Algorithm 1 didn't have to cycle break, $\exists t. add^{*}(t) != add(t) \lor del^{*}(t) != del(t) $ }\newline
-\textit{Proof.}
-Suppose there exists an compound task t whose method 1 decomposes to an action a, with $add(a) = \{A\}$.
-Assume there is another method which decomposes to action b, with $add(b) = \{B\}$
-Therefore $prec^{*}(t) =\{A, B\} $ but both A and B, will not be applied in every execution of t.
-
-
-\textbf{2.2} \textit{If Algorithm 1 didn't have to cycle break, there may be t such that $prec^{*}(t)$ } \newline
-\textit{Proof.}
-Assume some compound task t' decomposes into at least two sub-tasks, $\{t_1, t_2\}$. Suppose that $a \in F, a \in add(t_1)$ and
-$a \in F, a \in prec(t_2)$. By the algorithm rules
-\begin{itemize}			
-		\item Add $\{ (t, t') |  (a \in add^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\item Add $\{ (t', t) |  (a \in add^{*}(t) \land a \in del^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\item Add $\{ (t', t) |  (a \in del^{*}(t) \land a \in prec^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-		\item Add $\{ (t, t') |  (a \in del^{*}(t) \land a \in add^{*}(t') \land t, t' \in tasks(m) ) \}$ to $NS_m$ 
-\end{itemize}	
-We know that $t_1$ is ordered before $t_2$. And by the previous proposition 2.1, we know that there does not exist a task $t_3$
-such that $a \in del(t_3)$ Therefore, $t_2$ will always be executable regardless of what other tasks might do. However, $a \in prec^{*}(t')$ because $a \in prec^{*}(t_2)$. 
-Therefore it's possible for preconditions to be erroneous, even if Algorithm 1 did not need to cycle break.
-
 \textbf{Proposition 3.} \textit{When it does have to cycle break, it may preserve solutions} \newline
 \textit{Proof.}
 As per proposition 2.1 and 2.2, not all of the preconditions and/or effects are always needed. Suppose the initial task network consisted of 2 sub-tasks, $t_1, t_2$. If $t_2$ can decompose into an action $a_1$ such that $add(a_1) = A$, and an action $a_2$ such that $del(a_2) = A$,
@@ -159,14 +192,15 @@ and $t_1$ can decompose into an action $a_3$ with $prec(a_3) = A$
 $t_2 = {add A, del A}$ and $t_1 = {prec A}$. The rules $\{(add A, prec A), (prec A, del A))\}$ of Algorthm 1
 require orderings $\{(t_2, t_2), (t_2, t_1), (t_1, t_2)\}$, i.e.
 Despite a cycle break being needed, this is obviously a solvable problem. Order $t_2$ before $t_1$ for this method.
-Then when solving decompose $t_2$ to $a_1$ and $t_1$ to $a_3$ - this creates a solution. \newline \newline
+Then when solving decompose $t_2$ to $a_1$ and $t_1$ to $a_3$. This creates a solution. \newline \newline
 \textbf{Proposition 4.} \textit{For some tasks it doesn't matter where they are executed} \newline
 \textit{Proof.}
-Assume that some pair of tasks $(t_1), (t_2)$ has no ordering between them. Assume also that $t_1 t_2$ is ok but $(t_2) (t_1)$ is not, i.e.
-it matters where they are executed.  \newline  \newline
-The required execution sequence implies that $t_2$ deletes some variable A $t_1$ relies on. But from the algorithm,
+Assume that some pair of tasks $t_1, t_2$, Algorithm 1 did not add an ordering between them based
+off their preconditions and effects. Assume also that the ordering $t_1, t_2$ is executable but $t_2,t_1$ is not, i.e.
+it matters where they are executed relative to each other.  \newline  \newline
+This implies that $t_2$ deletes some variable A $t_1$ relies on. But from the definition of Algorithm 1,
 that would mean that an ordering $(t_1, t_2)$ was created, which contradicts the assumption that there is no ordering between them.
-Therefore $(t_2)(t_1)$ must also be ok. \newline  \newline
+Therefore $(t_2, t_1)$ ordering must also be executable. \newline  \newline
 Thus if some task t has no ordering from the algorithm, it can never matter where it is in relation to any other task.
 The algorithm will not order it specifically when $(\forall t' \in m, \forall a \in prec(t). a \notin add(t') \land a \notin del(t'))
 \land  (\forall t' \in m, \forall a \in add(t). a \notin prec(t') \land a \notin del(t')) 
@@ -231,13 +265,7 @@ Strict Possible state-independent effects:
 
 
 Relaxation: Define a new domain such that A' = ${ \{\emptyset, add, del \} |  \{\emptyset, add, del \} \in A }$.
-Using this new domain, define the relaxed guaranteed and relaxed possible effects $\RelEffPlus$, 
-
-$\RelEffMinus$, 
-
-$\RelPossEffPlus$,
-
-$ \RelPossEffMinus$ as before.
+Using this new domain, define the relaxed guaranteed and relaxed possible effects $\RelEffPlus$, $\RelEffMinus$,  $\RelPossEffPlus$, $ \RelPossEffMinus$ as before.
 
 These effects will *definitely* happen, even if some methods cannot be linearised,
 Unlike Algorithm 1, this set of preconditions and effects have no false candidates in them.
@@ -272,11 +300,17 @@ Unlike Algorithm 1, this set of preconditions and effects may be missing some St
 		\For{e $\in$ BackEdges}{
 			\uIf {weight(e) = 4}  {E = E $\setminus$ e} 
 			%   Randomly pick an weight==3 edge in the (B, A) path and delete it. If it doesn't exist, search for weight=weight-1 to delete, etc,
-			\Else {weight(e) = 3} { 
-				A, B = e \; 
-				Path = Dijkstra(B, A) \;
-				randEdge = RANDOM( \{e $\vert$ weight(e) = 0 $\land$ e $\in Path$ \} ) \;
-				E = E $\setminus$ randEdge
+			\Else { 
+				\Do {w > 1} {
+					A, B = e \; 
+					Path = Dijkstra(B, A) \;
+					randEdge = RANDOM( \{e $\vert$ weight(e) = 0 $\land$ w $\in Path$ \} ) \;
+					\uIf {randEdge exists} {
+					 	E = E $\setminus$ randEdge
+					} \Else {
+						w := w - 1
+					}
+				}
 			} 
 		}
 		$\prec'$ = TopologicalSort(G) \;

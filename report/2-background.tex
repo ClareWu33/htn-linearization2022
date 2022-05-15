@@ -9,7 +9,7 @@ Every fact $\in F$ included in $S_G$ is true, and all other facts are false. Thi
 The domain \textbf{D} = $(F, A)$. 
 F is a finite set of facts, or propositional state variables.
 A is a finite set of actions. 
-Every $a \in A$ is of type $2^F \times 2^F \times 2^F$, and of the format $<pre, add, del>$. 
+Every $a \in A$ is of type $2^F \times 2^F \times 2^F$, and of the format $\langle pre, add, del \rangle$. 
 The preconditions, add, and delete effects, of an action a are referred to as $\Pre(a), \Add(a)$, and $\Del(a)$ respectively.
 An action a is executable in a state s if its precondition $pre$ holds in s, i.e. pre $\subseteq$ s. 
 If executable in s, its result is the successor state s' = (s $\backslash$ del ) $\cup$ add , i.e., variables in del(a) get removed and variables in ass(a) get added.
@@ -30,15 +30,22 @@ has a initial compound task $T_I$.
 Every fact $\in F$ included in $S_I$ is true, and all other facts are false. This is the closed world assumption.
 
 The domain \textbf{D} = $(F, T_P, T_C, \delta, M)$.
-\begin{enumerate}
-	\item   F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
-   \item $\delta$ is a mapping from primitive task name to action.
-   \item M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
-   \item $T_P$ is the set of all possible primitive task names
-   \item $T_C$ is the set of all possible compound task names
-   \item $\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F x\times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
-   \item M is a set of methods. If $m \in M$, $m$ maps a compound task to a Task Network.
-\end{enumerate}     
+F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
+$\delta$ is a mapping from primitive task name to action.
+M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
+ $T_P$ is the set of all possible primitive task names
+ $T_C$ is the set of all possible compound task names
+$\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F \times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
+ M is a set of methods. If $m \in M$, $m$ maps a compound task to a Task Network.
+%\begin{enumerate}
+%	\item   F is the finite set of state variables, $T_P$ is the finite set of primitive task names, $T_C$ is the finite set of compound task names, and
+%   \item $\delta$ is a mapping from primitive task name to action.
+%   \item M is the finite set of decomposition methods. Each one maps a compound task name to a task network.
+%   \item $T_P$ is the set of all possible primitive task names
+%   \item $T_C$ is the set of all possible compound task names
+%   \item $\delta$ maps actions to it's (preconditions, add, deletes) $\in 2^F \times 2^F \times 2^F$. This can alternatively be referred to as $prec(t), add(t), del(t)$ for $a \in F, t \in T_P$
+%   \item M is a set of methods. If $m \in M$, $m$ maps a compound task to a Task Network.
+%\end{enumerate}     
 
 The \textbf{Task Network} = $(T, \prec, \alpha)$.
  T is a finite set of task identifiers (ids),
@@ -53,6 +60,8 @@ tn_2 :=     &((T_1 \setminus \{t\}) \cup T',    \prec_1 \cup \prec' \prec_X,    
 \prec_X :=  &\{(t_1, t_2) \in T_1 \times T'  \vert  (t_1,t) \in \prec_1 \} \cup \\
             &\{(t_1, t_2) \in T' \times T_1 \vert (t, t_2) \in \prec_1 \}  \\
 \end{align}
+In other words, the decomposition of a compound task results in its removal from the task network, followed by an insertion of a copy of the method’s task network. The ordering constraints
+on the removed task are inherited by its replacement tasks, as defined by $\prec_X$.
 
  
 \textbf{HTN Solution}
@@ -67,16 +76,16 @@ A solution to a problem is a task network $tn = (T, \prec, \alpha)$ if and only 
 \section{Totally Ordered Hierarchical Planning}
 Totally ordered hierarchical planning is the same as partially ordered planning in all respects except the task network.
 Both define a \textbf{Task Network} = $(T, \prec, \alpha)$.
-The difference is that $\prec$ now specifies the order between task ids such that for every a, b, in T, there exists an ordering
-in $\prec$ that $(a, b)$ or $(b, a)$.
-In other words, the tasks are totally ordered. 
+The difference is that $\prec$ now specifies a total order between task ids. In other words,\newline
+$\forall a \in T, \forall b \in T, a \neq b, \exists o \in \prec$ such that $(a, b)$ or $(b, a)$.
 
 
-\textbf{Undecidable } A decision problem is equivalent to a function that accepts (potentially infinite) inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer.
-
-Partially ordered HTN planning is undecidable, while totally ordered HTN planning is decidable.
 
 \section{Further Definitions (may be required)}
+
+\textbf{Undecidable} A decision problem is equivalent to a function that accepts (potentially infinite) inputs and returns a yes or no. The decision problem is undecidable if it can be proved that there exists no algorithm for the problem that always leads to a correct yes-or-no answer. Partially ordered HTN planning is undecidable, while totally ordered HTN planning is decidable.
+
+
 %\textbf{Task Decomposition Graph}
 %Let $G = (V_T, V_M , E)$ be a TDG in accordance to Def. 5
 %given by Elkawkagy et al. (2012). 
@@ -92,9 +101,7 @@ Methods apply to the set of object(s) that belong to a certain type.
 
 \textbf{Grounded}
 A transition is ground if the parameters list only involves specific objects. 
-Problems are grounded when all methods are grounded.
-
-So to ground a problem: Let $\omega$ be a set of typed objects. The groundings of
+Problems are grounded when all methods are grounded. To ground a problem: Let $\omega$ be a set of typed objects. The groundings of
 a transition schema a over $\omega$  is denoted by $\sigma$(a, $\omega$ ) and corresponds to the set of all ground transitions obtained by
 substituting $\sigma$ with a list of compatible objects taken from $\omega$ , and then substituting each occurrence of the variables
 which were in $\sigma$ with the newly introduced objects.  
@@ -107,6 +114,4 @@ which were in $\sigma$ with the newly introduced objects.
 
 i.e. A partial PO plan P = (PS , $\prec$) is called PO plan (also PO solution) to a planning problem if and only
 if every linearization is executable in the initial state and results into a goal state.
-i.e. it has every necessary ordering.
-
-Therefore a linearization exists if and only if a POCL solution exists.
+i.e. it has every necessary ordering. Therefore a linearization exists if and only if a POCL solution exists.

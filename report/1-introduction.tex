@@ -1,32 +1,23 @@
 \chapter{Introduction}
 
 \section{Introduction to HTN Planning}
-I have no idea what to write here.
+I have no idea what to write here that isn't already covered somewhere else.
 
 \section{Motivation}
-\subsection{Potential advantages and disadvantages of total vs. partial order}
-\begin{itemize}
-	\item pros of partial order:
-	\begin{itemize}
-		\item plan recognition: independent goals can be described in parallel (Daniel should be able to write something about that)
-		\item partial order is more expressive (both in terms of plan existence and in terms of computational complexity) meaning that more problems can be expressed
-		\item Domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered)
-	\end{itemize}
-
-   \item pros of total order:
+There are several advantages to a totally ordered planning problem:
     \begin{itemize}
    		\item computational complexity is lower (fewer worst-case solving time)
-        \item we can exploit specialised algorithms as well as heuristics. Note that heuristic design is comparably easy for total-order problems due to the missing interaction between tasks.
+        \item we can exploit specialised algorithms for totally ordered problems, as well as heuristics. Heuristic design is comparably easy for total-order problems due to the missing interaction between tasks.
    	\end{itemize}
-\end{itemize}
 
+Having a compilation of PO into TO plans allows us to apply the advantages of a totally ordered planning problem to partially ordered problems. Also, we get another class of decidable partially ordered problems that's orthogonal to tail-recursive ones. %Because if the cri 
 
-\subsection{Further advantages from having a compilation of PO into TO plans}
+On the other hand, advantages of partial order:
 \begin{itemize}
-	\item We get another class of decidable partially ordered problems that's orthogonal to tail-recursive ones! (Because if the criterion 'matches', we know that the PO domain is equivalent to the resulting TO domain; the latter is decidable whereas the former is not.
-	\item We can use more efficient algorithms and heuristics. 
+	\item plan recognition: independent goals can be described in parallel (Daniel should be able to write something about that)
+	\item partial order is more expressive (both in terms of plan existence and in terms of computational complexity) meaning that more problems can be expressed
+	\item Domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered)
 \end{itemize}
-
 % \subsection{POCL} 
 
 \section{Contributions} 
