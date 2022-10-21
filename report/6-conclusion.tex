@@ -1,12 +1,18 @@
 \chapter{Concluding Remarks}\label{chap:conclusion}
 
-\section{Conclusion}
+\section{Summary}
 
-\begin{enumerate}
- \item The linearization retained solutions for almost all problems.
- \item The linearization greatly reduces the time needed to solve problems.
-\end{enumerate}
+Though it's impressive performance on a range of domains is good news, the success of this approach on the IPC benchmark ultimately hinges on the relative lack of unsolvable problems --
+e.g. PCP problems in the ICAPS benchmark. When the pre-processed domain eliminates all solutions, significant time is wasted in proving this has occurred. Fortunately, the IPC benchmark covers a wide variety of domains, so the performance of the pre-processing is hopefully indicative of good performance in other problems as well. Ultimately, it's also an undecidable problem to detect when a problem cannot be converted to TOHTN representation (as that would be solving whether the problem is undecidable), so no perfect solution exists. For example, a simple machine learning model that learns when the pre-processing step could be applied, by analysing some basic features of the problem, such as size of the problem, structure of the Task Decomposition Graph, etc, could further improve, and is of interest in further work.
 
+\section{Further Work}
+%Given that HyperTensioN by \cite{hypertension} and Lilotane by \cite{Lilotane}, planning systems that work on \emph{lifted} totally ordered problems, and rely significantly on lifted input for their efficiency, it would be of interest to generalise this technique to produce lifted domains, so that HyperTensioN and Lilotane can solve the linearized problem more efficiently.
 
-\section{Future Work}
- 
+%It would be of interest to do HyperTensioN at all. 
+
+The success of this solution was, as stated before, in part due to the relatively few undecidable problems in the benchmark set. A heuristic to decide whether or not to pre-process, so that we can reduce the case where the planning system attempts to solve an unsolvable problem might allow this procedure to generalise better in less favourable circumstances. 
+
+Furthermore, the current algorithm for linearization can still be improved upon. The problem of how to satisfy the desired dependency relationships between the preconditions and effects of sub-tasks in a method, while still satisfying the can be modelled using SAT encoding. It can then be solved by a SAT solver rather than random cycle-breaking.
+%We might convert "required orderings" between sub-tasks to constraints and use a SAT %solver to satisfy as many constraints as possible?
+
+%A less naive procedure for approximating preconditions and effects for compound tasks, allowing stronger assumptions to be made when linearizing, may also be of interest. 

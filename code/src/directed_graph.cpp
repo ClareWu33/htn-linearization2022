@@ -8,14 +8,8 @@ using namespace std;
 // distance/priority, node_id
 typedef pair<int, int> iPair;
 
-edge::edge(int s, int e)
-{
-    start = s;
-    end = e;
-    weight = 0;
-}
 
-edge::edge(int s, int e, int w)
+edge::edge(int s, int e, int w = 0)
 {
     start = s;
     end = e;
@@ -67,6 +61,24 @@ void print(std::vector<edge> s)
     }
     printf("\n");
 }
+
+void print(list<adj_edge> s)
+{
+    for (auto elem : s)
+    {
+        printf("%i)%i, ", elem.end, elem.weight);
+    }
+    printf("\n");
+}
+void print(list<adj_edge> * s, int V)
+{
+    for (int i=0; i<V; i++) {
+        printf("%i ->", i);
+        print(s[i]);
+    }
+    printf("\n");
+}
+
 
 void set_to_vector()
 {
@@ -349,11 +361,11 @@ int *Graph::shortestPath(int src, int end)
 std::set<edge> Graph::find_path(int *prev, int src, int dest, std::set<edge> edges)
 {
     int neighbour = dest;
-std:
     vector<int> path;
     // at least one path
+ 
     while (neighbour != src)
-    {
+    {    
         path.push_back(neighbour);
         neighbour = prev[neighbour];
         if (neighbour == -1)
@@ -372,9 +384,9 @@ std:
         // TODO: find priority of edge
         for (adj_edge e1 : adj[start])
         {
-            if (e1.end = end)
-            {
-                edge e(start, end, e1.weight);
+            if (e1.end == end)
+            {                
+                edge e = edge(start, end, e1.weight);                
                 edges.insert(e);
             }
         }
@@ -422,7 +434,7 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
         for (edge back_edge : back_edges)
         {
             // printf("back edge found: (%i, %i) weight %i\n", back_edge.start, back_edge.end, back_edge.weight);
-            // deletes back_edge from edges (if edge is not required)
+            // deletes back_edge from edges (if edge is not required) 
             if (back_edge.weight != 0)
             {
                 edges = delete_edge(edges, back_edge);
@@ -432,14 +444,16 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
             {
                 // find other edges of the cycle
                 int *prev = gr.shortestPath(back_edge.end, back_edge.start);
-                std::set<edge> other_edges;
-                other_edges = gr.find_path(prev, back_edge.end, back_edge.start, other_edges);
+
+                std::set<edge> back_path;  // back_path is not being discovered correctly
+                back_path = gr.find_path(prev, back_edge.end, back_edge.start, back_path);
+                
                 // select a non-required edge from the cycle and delete it
-                if (other_edges.size() > 0)
+                if (back_path.size() > 0)
                 {
                     // find all the non-required edges
                     std::vector<edge> non_req_edges;
-                    for (std::set<edge>::iterator iter = other_edges.begin(); iter != other_edges.end(); ++iter)
+                    for (std::set<edge>::iterator iter = back_path.begin(); iter != back_path.end(); ++iter)
                     {
                         if ((*iter).weight != 0)
                         {
@@ -459,8 +473,16 @@ std::set<edge> break_cycle(std::set<edge> edges, int V)
                     }
                     else
                     {
-                        printf("The required edges form a cycle - it is impossible to linearize this method effectively");
+                        printf("other edges in cycle");
+                        print(back_path); 
+                        
+                        printf("all edges in graph/method");                    
+                        print(edges);
+                        printf("\n");
+                        printf("The required edges form a cycle - it is impossible to linearize this method effectively\n");
                     }
+                } else {
+                    printf("No back path - are you sure you found a cycle?");
                 }
                 // printf("random edge deleted (%i, %i)\n", rand_edge.start, rand_edge.end);
             }

@@ -1,0 +1,16 @@
+(define (problem p)
+   (:domain rc)
+   (:htn :parameters ()
+      :subtasks (and
+         (x__top__)
+      )
+   )
+   (:init
+      (pcapacity_truckm0_capacitym3_)
+      (pat_packagem1_citymlocm1_)
+      (pat_packagem0_citymlocm0_)
+      (pat_packagem2_citymlocm3_)
+      (pat_packagem3_citymlocm2_)
+      (pat_truckm0_citymlocm0_)
+   )
+)

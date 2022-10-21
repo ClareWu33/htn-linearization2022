@@ -48,14 +48,14 @@ void print(std::set<int> s)
        printf("\n");
 }
 
-void print(std::unordered_set<int> s)
-{
-       for (auto elem : s)
-       {
-              printf("%i ", elem);
-       }
-       printf("\n");
-}
+// void print(std::unordered_set<int> s)
+// {
+//        for (auto elem : s)
+//        {
+//               printf("%i ", elem);
+//        }
+//        printf("\n");
+// }
 
 
 bool is_in(int m1, std::vector<int> m_to_check)

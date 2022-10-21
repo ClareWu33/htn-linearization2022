@@ -2,8 +2,13 @@
 % This template has been created by:
 % Pascal Bercher, pascal.bercher@anu.edu.au
 %
-% This is version 1.00 (3. Dec. 2021)
-% Make sure to use the newest version available on git:
+% This is version 1.01 (13. Sep 2022)
+%
+% version history:
+% - 1.00 (3. Dec 2021)  - first version that deserves a version number! :)
+% - 1.01 (13. Sep 2022) - fixed wrong TOC link to Bibliography
+%
+% Make sure to use the newest version available on git!
 %
 % I was too lazy to put it under a specific license, but you are still free to use and alter it.
 % But since I put a *lot* of effort (and experience)
@@ -34,6 +39,7 @@ citecolor   = blue
 
 
 \usepackage{datetime}                             % to be able to print month & year on title page
+  \newdateformat{monthonly}{\monthname[\THEMONTH]}
 \usepackage{amssymb,amsthm,amsmath}               % standard math packages; often used
 \usepackage{graphicx}                             % allows including graphics
 \usepackage{natbib}                               % a specific citation style
@@ -44,12 +50,23 @@ citecolor   = blue
 \usepackage{titlesec}                             % used to add those horizontal lines around chapter package; see defs below.
 \usepackage[standardsections]{scrhack}            %  fixes an error causes by loading titlesec for class scrbook
 \usepackage{parskip}                              % when this is included, no indentations are used for new paragraphs,
-                                           % and instead paragraphs are separated by a small distance between them
-\usepackage[ruled, noline]{algorithm2e}
+                                                  % and instead paragraphs are separated by a small distance between them
+
+\usepackage[ruled, noend, linesnumbered]{algorithm2e}  %noline
+\usepackage{multirow} 
+\usepackage{csquotes}
+
+\usepackage{todonotes}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{aiplans}
+% hyperref package to display URLs in blue roman font according to Springer's eBook style:
+\usepackage{hyperref}
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
 
 % [requires titlesec]
-% Surrounds all chapter titles by lines (see screenshot),
-% which includes the titles in the TOC and list of figures and tables
+% Surrounds all chapter titles by lines,
 \titleformat{\chapter}[display]
 {\bfseries\huge}
 {\filleft\Large\chaptertitlename~\thechapter}
@@ -69,8 +86,9 @@ citecolor   = blue
 
  
 
-% !! Set your individual data for the title page
-%    in the configuration file !!
+% Set your individual data for the title page in the configuration file
+% AND DONT SCREW UP THIS DATA! You should know, for example, whether it's
+% an Honours thesis or not, or in which semester it is running.
 
 \input{configuration}                             % to specify data used in the title page
 \input{macros}                                    % define all your macros here
@@ -98,12 +116,13 @@ citecolor   = blue
 \input{6-conclusion}                              % conclusion
 
 \appendix
-\input{z-appendix-1}                              % appendix 1
-\input{z-appendix-2}                              % appendix 2
+%\input{z-appendix-1}                              % appendix 1
+%\input{z-appendix-2}                              % appendix 2
 
 
 % literature
-% \bibliographystyle{plainnat}
-\bibliographystyle{anuthesis}
+\bibliographystyle{anuthesis} % or plainnat or whatever
+\cleardoublepage\phantomsection
+% see https://tex.stackexchange.com/questions/60556/link-to-bibliography-in-the-toc-fails
 \bibliography{bib}
 \end{document}

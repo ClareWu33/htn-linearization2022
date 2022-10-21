@@ -1,46 +1,99 @@
 \chapter{Evaluation}\label{chap:evaluation}
 
+To prove that our technique is beneficial, we conduct a standard empirical evaluation on PO domains and compare the runtime of a state-of-the-art planning system on the original problem vs. the transformed problem. All problems are taken from two benchmark sets prepared for 2020 IPC. The first set\footnote{\url{https://github.com/panda-planner-dev/ipc2020-domains/tree/master/partial-order}} was used in the partially ordered track in the 2020 IPC benchmark, while the second set\footnote{\url{https://github.com/panda-planner-dev/domains/tree/master/partial-order}} went un-used for various reasons. Each problem has the standard IPC time limit of 30 minutes. Where grounding and pre-processing is needed, the time to do this is included as part of the 'solving' time required. Since the pre-processing may \emph{potentially} remove all solutions, where the planning system can prove that the pre-processing renders a problem unsolvable, we use the remaining time to solve the original problem.
 
-\section{Empirical Evaluation}
-To prove that our technique is beneficial, we conduct a standard empirical evaluation on PO domains and compare the runtime of PO planners vs. transformation + TO planners
+\section{Hardware and Planning Systems}
+The empirical evaluation was conducted on a machine with 30GiB of memory and 4 vCPUs, each with 2 GiB RAM.  We use the $panda_{\pi}$ solver by \citep{useClassicalHuristicICAPS18,useClassicalHeuristicIJCAI19,progressionsearchJAIR20} on the configuration of Greedy best first search with visited lists. We try this search with 4 different RC-heuristics: FF \cite{FF}, Add \cite{Add}, Filter \cite{useClassicalHuristicICAPS18} and Landmark-cut \cite{LM-Cut}.
 
-%\begin{tabular}{lcccccl}\toprule
-%	& \multicolumn{3}{c}{$\tol=\tols$} & \multicolumn{3}{c}{$\tol=\told$}
-%	\\\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-%	& $mv$  & Rel.~err & Time    & $mv$  & Rel.~err & Time\\\midrule
-%	trigmv    & 11034 & 1.3e-7 & 3.9 & 15846 & 2.7e-11 & 5.6 \\
-%	trigexpmv & 21952 & 1.3e-7 & 6.2 & 31516 & 2.7e-11 & 8.8 \\
-%	trigblock & 15883 & 5.2e-8 & 7.1 & 32023 & 1.1e-11 & 1.4e1\\
-%	expleja   & 11180 & 8.0e-9 & 4.3 & 17348 & 1.5e-11 & 6.6 \\\bottomrule
-%\end{tabular}
+We compare the performance of these 4 planner settings on the original problem and the pre-processed problem.
+We also try the Lilotane planner \cite{Lilotane}, which is specialised for TOHTN problems. For panda$_{pi}$, the same setting is used for re-runs. For Lilotane, re-runs use panda$_{pi}$ on the best setting (Add heuristic) to solve the original PO version of the problem.
 
+%VCPUs  : 4 \newline
+%Memory : 8GB, OR 8192(MB) \newline
+%Disk   : 30GB \newline
+%RAM per VCPU; 2GB \newline
+%CPU Shares: 256 \newline
 
-% https://ojs.aaai.org/index.php/ICAPS/article/view/15959/15770
-% HyperTension
-% Pand Pro Pand SaT GBFS Add (th, s, th+s)
+\section{Results}
 
 
-\subsection{Hardware Setup}
-The following benchmark used ?GB RAM, %8GB RAM
-Nectar cores, threads, processor, %Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz  (Total Cores 4; Total Threads 8)
-Nectar OS, and %Ubuntu 20.04.4 LTS
-C++
+\begin{table}[H]
+	\setlength{\tabcolsep}{2.5pt} 
+	\caption{IPC score, with and without pre-processing, for all planners. If any problems in that domain were proven unsolvable by TO, a number in brackets beside domain name shows how many.} \label{tabIPC} 
+	\scalebox{0.8}{ 
+		\input{figures/IPC_tabular.tex}
+	}
+\end{table}
 
 
-Full Tables in Appendix. Plots/Tables of relevant properties, e.g.
-\begin{center}
-	\includegraphics[scale=0.4]{../ipc2020-domains/Preprocessing**_vs_Tasksnotlog.jpg}
-\end{center}
 
-\begin{center}
-	\includegraphics[scale=0.4]{../ipc2020-domains/Time_comparision.jpg}
-\end{center}
+\begin{table}[H]
+	\setlength{\tabcolsep}{2.5pt} 
+	\caption{Coverage, with and without pre-processing, for all planners. If any problems in that domain were proven unsolvable by TO, a number in brackets beside domain name shows how many.}\label{tabcoverage} 
+	\scalebox{0.8}{ 
+		\input{figures/coverage_tabular.tex}
+	}
+\end{table}
 
-\begin{enumerate}
-	\item None of the instances can be linearized.
-	\item Despite this, ?percent of linearized problems are solvable.
-	\item The additional processing time is within the same order of time as the time needed for grounding and a tiny fraction of the overall time $\sim$
-	\item We compare the ratio of (Grounding + Pre-processing time + TO solve time) to (Grounding + PO solve time), as those
-	are the steps needed to solve the respective problems. The average solve time for the TO problem is ?? percent of the PO problem, for all problems.
-	\item Difference in reduction of total solving time influenced most by ? (e.g. domain, recursiveness of problem, percentage of linearizable methods, etc)
-\end{enumerate}
+\begin{figure}
+	\floatbox[{\capbeside\thisfloatsetup{capbesideposition={left,center},capbesidewidth=6cm}}]{figure}[\FBwidth]
+	{\caption{Percentage of problems for which linearized problems is faster to solve, for problems that took at least $\mathit{x}$ seconds to solve, with $\mathit{x}$  being the value on the x-axis. \\ \label{faster}}}
+	{\includegraphics[width=5cm]{figures/faster_to_solve_m.jpg}}
+\end{figure}
+
+% 'UM-Translog': 1, 'Monroe-Fully-Observable': 2, 'Woodworking': 2, 'Monroe-Partially-Observable': 2, 'PCP': 17, 'SmartPhone': 1}
+
+\begin{figure}[H]
+	\caption{Comparison of time to solve PO and TO problems, for each $panda_{\pi}$ setting} \label{RuntimevsSolved}
+	\begin{subfigure}{6cm}
+		\includegraphics[width=5cm]{figures/Runtime comparisionRC(Add).jpg}	
+		\caption{Using heuristic RC\textsuperscript{add}}	
+	\end{subfigure}
+	\begin{subfigure}{6cm}
+		\includegraphics[width=5cm]{figures/Runtime comparisionRC(Filter).jpg}	
+		\caption{Using heuristic RC\textsuperscript{Filter}}
+	\end{subfigure}
+	
+	\begin{subfigure}{6cm}
+		\includegraphics[width=5cm]{figures/Runtime comparisionRC(FF).jpg}	
+		\caption{Using heuristic RC\textsuperscript{FF}}	
+	\end{subfigure}
+	\begin{subfigure}{6cm}
+		\includegraphics[width=5cm]{figures/Runtime comparisionRC(LM-Cut).jpg}
+		\caption{Using heuristic RC\textsuperscript{LM-Cut}}		
+	\end{subfigure}
+\end{figure}
+
+
+
+\newpage
+
+\section{Analysis}
+
+Table~\ref{tabIPC} and \ref{tabcoverage} shows that the IPC score and coverage when pre-processing is overall significantly better than when not using pre-processing. 
+
+However in some domains there is minimal gain, if any at all. This seems to be because some domains are dominated by small problems. E.g.\ 14 of the 17 PCP problems take less than 0.5 seconds to solve. For very small problems, the pre-processing still takes time, but very little improvement can be gained in the actual solving time. In fact, a second of pre-processing time for a problem that only takes a few seconds to solve will worsen IPC score. 
+
+On the other hand, big problems experience significant improvement, enough to make problems solvable within the time limit where they were previously too memory or time intensive. We can see that difference in domains like Rover and Barman-BDI, where there is significant space to improve on coverage/speed.
+
+\input{figures/Allows_retry_table.tex}
+\input{figures/Forbids_retry_table.tex}
+
+Table~\ref{tabsummary1} and Table~\ref{tabsummary2} summarises the results of our empirical evaluation on the IPC 2020 benchmarks. The \enquote{unsolvable} columns refer to problems that the solver determined to have no solutions. 
+Note that panda$_\pi$ planning system wants a grounded representation, while Lilotane wants a lifted representation. Therefore, while a linearized, lifted problem is fed to both, panda$_\pi$ works grounds the problem before solving.
+%\todo{Talk about difference between linearize $\to$ ground, and ground $\to$ linearize?}
+%\todo{Lilotane CAN prove unsolvable problems - update tables \ref{tabsummary1} and \ref{tabsummary2}  }
+%\todo{run HyperTensioN on lifted problems?}
+
+The PCP domain in particular was rendered unsolvable for all instances.  In Table~\ref{tabIPC} and Table~\ref{tabcoverage}, $\text{PCP}^{17}$ indicates that 17 PCP problems were unsolvable. So all 14 problems \enquote{solved} in the TO context was from re-running the planner on the original problem using the remaining time. Incidentally, the exact same problems were proven unsolvable for all planners.
+
+The PCP domain defines the post-correspondence problem, which is known to be undecidable. Totally ordered HTN planning problems are always decidable \cite{ErolHTNExpressivity}, meaning it's a direct consequence that these problem instances are unsolvable without task interleaving. In this specific case, the PCP problems designed for the IPC benchmark are known to be unsolvable without interleaving \cite{PCPDomain}. Table~\ref{tabsummary2} shows the results on the default setting, when allowing the planner to try solving the original problem as a back-up plan when the linearized problem fails. 
+
+%Lilotane \cite{Lilotane}, the runner-up for the totally ordered track in the 2020 IPC competition, can prove that a problem is unsolvable, \todo{though it is notably less successful at doing so
+%	than $panda_{pi}$ planner}
+
+%Lilotane is excluded from Table~\ref{tabsummary2} as it cannot prove a problem is unsolvable, and so cannot use the re-run policy. instead. Table~\ref{tabsummary1} shows results without the default back-up strategy.  % the planner moves on to the next problem immediately after the linearized approach for a problem fails.
+%  This means that if we could convert such that it retained a solution, we would be turning an undecidable problem into a decidable one -- in other words impossible. A totally ordered problem just does not have the expressive power.
+
+
+From Table ~\ref{tabsummary2} and \ref{tabsummary1} we can see that this processing means that many more problems can be solved in the time limit, where previously they were too computation-intensive, and very few problems (primarily problems for which interleaving is required for all solutions) become unsolvable due to the transformation. Despite the fact that none of the instances can be linearized without cycle-breaking, only 25/274 of linearized problems are unsolvable, 17 of which are from the PCP domain, where a solvable linearization does not exist.

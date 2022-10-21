@@ -1,8 +1,187 @@
 \chapter{Related Work}\label{chap:relatedWork}
 
-On the Efficient Inference of Preconditions and Effects of Compound Tasks in
-Partially Ordered HTN Planning Domains, Conny Olz (2022)
+% FROM (https://ojs.aaai.org/index.php/ICAPS/article/view/15944/15755) A Closer Look at Causal Links: Complexity Resultsfor Delete-Relaxation in Partial Order Causal Link (POCL) Planning
+
+\cite{ErolHTNExpressivity} proved that it is NP-complete to decide whether a partially ordered set of actions has an executable linearization. 
+Since our criteria would work on a problem where the only method is for the initial task and that all it's sub-tasks are actions, which is essentially just ordering a partially ordered plan, it also works to show that a partially ordered plan can be linearized in polynomial time. So our work is related in the sense that it finds a subset of problems for which is it polynomial-time to determine whether it has an executable linearization.
+
+\cite{NEBEL1994125} studied various questions regarding partially ordered plans, such as complexity of plan existence, plan optimisation, possible or necessary truth of properties before or after plan steps, given various constraints on the types of tasks allowed. 
+
+The first type of constraint it investigates is if preconditions and effects of tasks are unconditional, i.e.\ always executes. If this is true for all tasks in the plan, the plan is \enquote{unconditional}. Our criteria does not require this, but also requires other restrictions on preconditions and effects, and so is orthogonal.
+
+The second type requires among other things, that $\Add$ and $\Pre$ lists are singletons, which is clearly not required of our criteria. 
+
+The third type requires that the plan is unconditional, the initial state is a singleton, the precondition, add and delete lists are singletons and $\Pre = \Del$. This is similar to the first criteria in \cite{TanGruningerPOPlanComplexity}, and is also not required of ours, as discussed later. % and  as seen in the Figure~\ref{fig:TanGruningerCriteria}.
+
+Simple planning tasks are be planning tasks that have unconditional tasks and for precondition, add and delete lists to be singletons and $\Pre = \Del$. Orthogonal to our criteria for reasons discussed for the results in \cite{TanGruningerPOPlanComplexity}.
 
 
-New Advances in GraphHTN: Identifying Independent Subproblems in Large HTN Domains,
-Amnon Lotem and Dana S. Nau 
+\cite{KambhampatiModalTruth1996} studied related questions under different assumptions. The authors, quote, “believe that the  results  in  this  paper  complement  [the  ones  by \cite{NEBEL1994125}]  and  together  provide  a  coherent  interpretation of the role of modal truth criteria in planning”. As a result, all criteria presented in the paper are also orthogonal to ours.
+
+The paper by \cite{DeleteRelaxation} generalised \cite{NEBEL1994125}'s as well as \cite{ErolHTNExpressivity}'s result (deciding whether a partially ordered
+set of actions possesses an executable linearization) by showing that this problem does not become easier when one is allowed to insert delete-relaxed  actions  (cf.  Prop.  2). 
+
+
+% FROM Tan+Gruninger
+In the paper by \cite{TanGruningerPOPlanComplexity}, the authors refine \cite{NEBEL1994125}'s results and show the impact of the interaction of preconditions and effects thereby giving a more detailed picture for when finding a linearization for a partially-ordered plan is possible in polynomial time, and when it remains NP-hard.
+
+The first case is for \enquote{almost-simple event systems}. Given a planning problem, we can decide in polynomial time whether a partial order plan has a linearization that makes a state variable p true if the following three conditions hold:
+\begin{itemize}
+	\item The initial state contains only one state variable.
+	\item For every action $a = (\Pre(a), \Add(a), \Del(a))$, $|\Pre(a)| = |\Add(a)| = |\Del(a)|$ = 1, i.e., the precondition, add list, and delete list of $a$ contains only one state variable, and $\Pre(a) = \Del(a)$, i.e., the action deletes it's own precondition state variable after execution.
+	\item The causal-and-effect graph (CEG) of the planning problem is a directed acyclic graph (DAG). A CEG is such that the set of all state variables in the planning problem forms the vertex set, and an edge $(p, p')$ exists if and only if there exists an action a with $\Pre(a) = \{p\}$ and $\Add(a) = \{p'\}$. (Note that by (2), $\Pre(a)$ = $\Del(a)$.)
+\end{itemize}
+% The initial state contains only one state variable. And any action that can be executed deletes that state variable and adds another, and so on for actions afterwards. This means only one state variable is true at a time, and the structure of the CEG shows the line of state variables that become true, from initial state to end state.
+
+The second case is \enquote{simple event systems}, which must satisfy all requirements of an almost-simple event system, but also that the partial order plan is totally *unordered*.
+
+
+Suppose a task that satisfies the conditions has effects $\{b, \neg a\}$, while the other has effects $\{c, \neg a\}$. The CEG will have a edge from a to b, and from a to c. No cycle is detected in this case, proving it is polynomial-time to determine whether a solution exists. For our criteria, the graph will draw an edge from $t$ to $t'$, owing to $t'$ deleting a precondition of t, and an edge from $t$ to $t'$, owing to $t'$ deleting a precondition of $t$. This results in a loop, and thus it cannot prove that partial-order plan viability is solvable in polynomial time. You can see this example illustrated in Figure~\ref{fig:TanGruningerCriteria}. % This example obviously has no viable linearization, as whichever is executed first prevents execution of the other task. The difference is that \cite{TanGruningerPOPlanComplexity} shows that it can easily be determined in polynomial time if it can be linearized or not. Whereas ours detects it does not match criteria for a viable linearization.
+
+
+\begin{figure}	
+	\caption{} \label{fig:TanGruningerCriteria}	
+	\begin{subfigure}{5cm}
+		\caption{Criteria from \cite{TanGruningerPOPlanComplexity} is met}	
+		\scalebox{0.7}{
+			\begin{tikzpicture}[->,auto,node distance=1.5cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries},
+			square node/.style={rectangle,draw,font=\sffamily\Large\bfseries}]
+			
+			\node[main node] (a)  {a};
+			\node[main node] (b) [below of=a, right=2cm of a] {b};
+			\node[main node] (c) [above of=a, right=2cm of a] {c};	
+			
+			\path[every node/.style={font=\sffamily\small}]
+			(a) edge node [left] {} (b)
+			(a) edge node [left] {} (c);
+			\end{tikzpicture}
+		}
+	\end{subfigure}	
+	\hspace{2em}			
+	\begin{subfigure}{5cm}
+		\caption{Criteria from this paper not met}	
+		\scalebox{0.8}{
+			\begin{tikzpicture}[->,auto,node distance=1.5cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries},
+			square node/.style={rectangle,draw,font=\sffamily\Large\bfseries}]
+			
+			\action{A1}{RelatedA1,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 2em,
+				eff length = 2em
+			};			
+			
+			\action{A2}{RelatedA2,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 2em,
+				eff length = 2em,
+				body = {right = 5em of A1} 
+			};			
+			
+			\path[every node/.style={font=\sffamily\small}]
+			(A1) edge[dashed, bend left] node [above] {} (A2)
+			(A2) edge[dashed, bend left] node [above] {} (A1);
+			\end{tikzpicture}
+		}
+	\end{subfigure}	
+	
+\end{figure}
+
+On the other hand, ours can prove a linearization exists in polynomial-time for actions with $|\Pre(a)|, |\Add(a)|, |\Del(a)|$ of any size, which the criteria in \cite{TanGruningerPOPlanComplexity}'s cannot.
+
+
+
+
+% FROM POP ≡ POCL, Right? Complexity Results for Partial Order (Causal Link) Makespan Minimization
+
+This criteria is also orthogonal to the solution criteria for POCL plans. Our criteria does not require *every* precondition to be supported, so it is not subsumed by the idea of causal links and threats. For example, a precondition can be met by the initial state. On the other hand, our criteria does not does not subsume the POCL solution criteria, as seen in Figure~\ref{fig:POCLPlan}. For two actions $\Add(TT)=a, \Pre(T1)=a, \Del(T1)=a$, the POCL solution criteria can detect that the plan is viable, whereas ours cannot. 
+
+\begin{figure}	
+	\caption{} \label{fig:POCLPlan}	
+	\begin{subfigure}{5cm}
+		\caption{POCL Solution Criteria is met}	
+		\scalebox{0.7}{
+			\begin{tikzpicture}[->,auto,node distance=1.5cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries},
+			square node/.style={rectangle,draw,font=\sffamily\Large\bfseries}]
+			
+			\action{A1}{MinExampleA2,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 1.5em,
+				eff length = 1.5em
+			};			
+			
+			\action{A2}{MinExampleA1,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 1.5em,
+				eff length = 1.5em,
+				body = {right = 5em of A1} 
+			};	
+			
+			\path[every node/.style={font=\sffamily\small}]
+			(A1) edge[dashed, bend left] node [above] {} (A2);
+			\end{tikzpicture}
+		}
+	\end{subfigure}	
+	\hspace{2em}			
+	\begin{subfigure}{5cm}
+		\caption{Criteria from this paper not met}	
+		\scalebox{0.8}{
+			\begin{tikzpicture}[->,auto,node distance=1.5cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries},
+			square node/.style={rectangle,draw,font=\sffamily\Large\bfseries}]
+			
+			\action{A1}{MinExampleA2,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 1.5em,
+				eff length = 1.5em
+			};			
+			
+			\action{A2}{MinExampleA1,
+				width  = 2.5em, 
+				height = 2.5em, 
+				pre length = 1.5em,
+				eff length = 1.5em,
+				body = {right = 5em of A1} 
+			};			
+			
+			\path[every node/.style={font=\sffamily\small}]
+			(A1) edge[dashed, bend left] node [above] {} (A2)
+			(A2) edge[dashed, bend left] node [above] {} (A1);
+			\end{tikzpicture}
+		}
+	\end{subfigure}	
+	
+\end{figure}
+
+
+
+%Ours criteria subsumes theirs. It works on problem where the only method is for the initial task and that method only has actions. So then it also works to show that a partially ordered plan can be linearized in polynomial time.
+
+%If theirs confirms some plan as linearizable, then the graph consists of floating nodes, and unbroken lines of propositions connected by an edge. Such a line has the property that no precondition can ever become true twice. If a precondition becomes true twice, then there exists a task $t$ that has precondition, add and delete effect = $\{a, b, \neg a\}$, where a and b are any state variable, and there exists another task $t'$ with preconditions and effects $\{c, a, \neg c\}$ such that there is a path in the CEG from $a$ to $c$. Formally, $a \implies a_0 \implies a_1 \implies ... \implies a_n \implies c$ in the CEG. Then there is a cycle as $a \implies a_0 \implies a_1 \implies ... \implies a_n \implies c \implies a$.
+
+%For our case, such a plan will also be detected as linearizable in polynomial-time.
+%(Self-loops are not counted by our criteria.) Each task has a precondition that is met by tasks that do not rely on it (as established above). This the graph our criteria draws will connect tasks, but not have loops there. 
+
+%The delete effect may interact with other tasks. This cannot be due to interacting with a precondition hypothetical other tasks must have $add a$, meaning it and no other 
+
+%Finally no loops can occur from interaction between other propositions of the task, because $|\Pre(a)| = |\Add(a)| = |\Del(a)|$ = 1,
+
+
+%So the only ordering is that it is placed behind some task that 
+
+%On the other hand, ours can prove a linearization exists in polynomial-time for actions with $|\Pre(a)|, |\Add(a)|, |\Del(a)|$ of any size, meaning it finds a larger class of problems that can be linearized in polynomial-time.
+
+
+%New Advances in GraphHTN: Identifying Independent Subproblems in Large HTN Domains, Amnon Lotem and Dana S. Nau.
+%This related work considers identifying sections in the planning tree (namely, compound tasks) that
+%don't 'touch' (as in, the set of variables required by/affected preconditions and effects of the two tasks have no intersection)
+%and solving these independently. Once these independent sub-problems are solved (using any planner of your choice) they can then be merged to produce 
+%a solution for the problem. The algorithm is both sound and complete.  This is similar to our work in the sense that it solves sections of the domain at a time
+%though it produces sub-solutions instead of methods.

@@ -1,29 +1,28 @@
 \chapter{Introduction}
 
-\section{Introduction to HTN Planning}
-I have no idea what to write here that isn't already covered somewhere else.
+Hierarchical Task Network (HTN) planning is a hierarchical approach to planning. As defined in \cite{HTNSurvey},  %  and \cite{IntroGhallab},
+tasks in HTN planning are either primitive, corresponding to an action that can be taken, or compound. HTN problems have a set of methods that specify how one might achieve a given compound task, by decomposing it into a set of sub-tasks. A compound task may even decompose into itself, either directly via a method, or indirectly via a sequence of method applications. If decomposition leads to a sequence of primitive tasks executable from the initial state, then this sequence of actions is a solution to the problem, also known as a \enquote{plan}. 
 
-\section{Motivation}
-There are several advantages to a totally ordered planning problem:
-    \begin{itemize}
-   		\item computational complexity is lower (fewer worst-case solving time)
-        \item we can exploit specialised algorithms for totally ordered problems, as well as heuristics. Heuristic design is comparably easy for total-order problems due to the missing interaction between tasks.
-   	\end{itemize}
+In totally ordered HTN planning, or TOHTN planning, methods specify a total order on the sub-tasks. In partially ordered HTN planning, or POHTN planning, methods might only specify a partial order on the sub-tasks. 
 
-Having a compilation of PO into TO plans allows us to apply the advantages of a totally ordered planning problem to partially ordered problems. Also, we get another class of decidable partially ordered problems that's orthogonal to tail-recursive ones. %Because if the cri 
+%Existing problems must be modelled in HTN planning formalism in order to be solved by %existing planners, but the order in which tasks can be done is often unknown.
+%This observation the forms the basis -- if a partially ordered problem could be quickly and %automatically analysed, then reduced to a decidable form without losing all solutions.
 
-On the other hand, advantages of partial order:
-\begin{itemize}
-	\item plan recognition: independent goals can be described in parallel (Daniel should be able to write something about that)
-	\item partial order is more expressive (both in terms of plan existence and in terms of computational complexity) meaning that more problems can be expressed
-	\item Domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered)
-\end{itemize}
-% \subsection{POCL} 
+Certain kinds of problems might be naturally more suited to being modelled as a partially ordered problem, for example, the actions \enquote{deliver package 1 to city A} and \enquote{deliver package 2 to city B} -- these are essentially unrelated goals in a real transport scenario, and so modelling the problem to require that one task be completed before the other would be unnecessarily limiting the possible solution space. In some cases, such over-specification may remove all valid solutions. Thus many problems might be \emph{modelled} as POHTN problems. However, for \emph{solving} the problem, it is desirable to have additional constraints that reduces the search space, while still preserving at least some of the actual solutions.
 
-\section{Contributions} 
-Though the algorithm was implemented in the old PANDA-3 planner, and was used to produce many of the totally ordered domains in IPC benchmark, there does not exist empirical analysis of it's performance, or specification of it's formal properties. This paper provides both.
-It also investigates possible improvements to the original algorithm.
-% Dr. Gregor Behnke already implemented a technique for 'this' available in the PANDA-3 planner. It was used to create many IPC TO domains, though it was never published, i.e., neither described nor properties like preserving of solutions were investigated.
+This paper presents a method to transform a POHTN problem to a TOHTN problem in order to reduce the search space. Converting the problem to a TOHTN problem allows us to exploit the fact that as proven in \cite{ErolHTNExpressivity},  TOHTN planning as a class of problems has lower computational complexity, resulting in lower worst-case solving time. 
+Thus, transforming a POHTN problem to a TOHTN problem could allow us to solve the problem more quickly and deploy specialised algorithms and heuristics.
+
+The drawback to this approach is that, due to the greater expressivity of POHTN planning, there may exist POHTN problems that cannot be solved when converted to a TOHTN problem. For example, \cite{ErolHTNExpressivity} proved that HTN planning is expressive enough to model undecidable problems, such as the language intersection problem of two context-free languages. Fortunately, not every POHTN problem is guaranteed to be undecidable, and so could still be transformed while preserving at least one solution.
+
+% This is beneficial because heuristic design is comparably easy for total-order problems due to the missing interaction between tasks. Also, we get another class of decidable partially ordered problems that's orthogonal to recursive ones. 
+
+% Also, the domain model might be more intuitive: if a task is independent of some others it might be counter-intuitive to demand a certain position of it (if artificially made totally ordered). Plan recognition: independent goals can be described in parallel with POHTN planning but not with TOHTN, as per \cite{DanielPlanRecognition}.
+
+%\subsubsection{Contributions}
+In this paper we present and investigate an algorithm for converting POHTN problems to TOHTN problems. We prove that when certain criteria are met, it guarantees that at least one solution will be preserved. 
+Also, we obtain a new class of decidable problems, namely those that satisfy the above mentioned criterion. Finally, we show that, even when these criteria are not met, very few problems are rendered unsolvable by the transformation, and that it greatly reduces solving time for problems, with gains being bigger for more difficult problems. 
+
 
 
 

@@ -1,0 +1,188 @@
+__top[]
+=== Preconditions === 
+=== Possible positive effects ===
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
+=== Guaranteed negative effects ===
+__top_method
+=== Preconditions === 
+=== Possible positive effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
+=== Guaranteed negative effects ===
+
+do_observation[Phenomenon4,thermograph0]
+=== Preconditions === 
+=== Possible positive effects ===
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
+=== Guaranteed negative effects ===
+method1
+=== Preconditions === 
++pointing[satellite0,Phenomenon6]
++power_on[instrument0]
++calibrated[instrument0]
+=== Possible positive effects ===
++pointing[satellite0,Phenomenon4]
+=== Possible negative effects ===
++pointing[satellite0,Phenomenon6]
+=== Guaranteed positive effects ===
++pointing[satellite0,Phenomenon4]
+=== Guaranteed negative effects ===
++pointing[satellite0,Phenomenon6]
+method1
+=== Preconditions === 
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Possible positive effects ===
++pointing[satellite0,Phenomenon4]
+=== Possible negative effects ===
++pointing[satellite0,GroundStation2]
+=== Guaranteed positive effects ===
++pointing[satellite0,Phenomenon4]
+=== Guaranteed negative effects ===
++pointing[satellite0,GroundStation2]
+method3
+=== Preconditions === 
++power_on[instrument0]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible positive effects ===
+=== Possible negative effects ===
+=== Guaranteed positive effects ===
+=== Guaranteed negative effects ===
+<method0;activate_instrument[satellite0,instrument0];method5;0;-1,-2,1,2>
+=== Preconditions === 
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
+=== Possible positive effects ===
++power_avail[satellite0]
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
+=== Guaranteed positive effects ===
++power_on[instrument0]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Guaranteed negative effects ===
++pointing[satellite0,Phenomenon6]
+<method0;activate_instrument[satellite0,instrument0];method5;0;-1,-2,1,2>
+=== Preconditions === 
++power_avail[satellite0]
+=== Possible positive effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++power_on[instrument0]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,GroundStation2]
+=== Guaranteed positive effects ===
++power_on[instrument0]
++pointing[satellite0,Phenomenon4]
++calibrated[instrument0]
+=== Guaranteed negative effects ===
++pointing[satellite0,GroundStation2]
+<method2;activate_instrument[satellite0,instrument0];method5;0;-1,-2,1>
+=== Preconditions === 
++power_avail[satellite0]
++pointing[satellite0,Phenomenon4]
+=== Possible positive effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Possible negative effects ===
++power_avail[satellite0]
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
++power_on[instrument0]
++calibrated[instrument0]
+=== Guaranteed negative effects ===
+
+auto_calibrate[satellite0,instrument0]
+=== Preconditions === 
++power_on[instrument0]
+=== Possible positive effects ===
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Possible negative effects ===
++pointing[satellite0,Phenomenon6]
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
++calibrated[instrument0]
+=== Guaranteed negative effects ===
+method6
+=== Preconditions === 
++pointing[satellite0,Phenomenon6]
++power_on[instrument0]
+=== Possible positive effects ===
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Possible negative effects ===
++pointing[satellite0,Phenomenon6]
+=== Guaranteed positive effects ===
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Guaranteed negative effects ===
++pointing[satellite0,Phenomenon6]
+method6
+=== Preconditions === 
++power_on[instrument0]
++pointing[satellite0,Phenomenon4]
+=== Possible positive effects ===
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Possible negative effects ===
++pointing[satellite0,Phenomenon4]
+=== Guaranteed positive effects ===
++pointing[satellite0,GroundStation2]
++calibrated[instrument0]
+=== Guaranteed negative effects ===
++pointing[satellite0,Phenomenon4]
+method7
+=== Preconditions === 
++power_on[instrument0]
++pointing[satellite0,GroundStation2]
+=== Possible positive effects ===
++calibrated[instrument0]
+=== Possible negative effects ===
+=== Guaranteed positive effects ===
++calibrated[instrument0]
+=== Guaranteed negative effects ===
+

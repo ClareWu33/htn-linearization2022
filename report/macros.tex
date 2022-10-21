@@ -3,11 +3,14 @@
 
 \newcommand{\Eff} {\ensuremath{\mathit{eff}}}  % example command without arguments
 \newcommand{\Pre} {\ensuremath{\mathit{pre}}}  % (again)
+
 \newcommand{\Add} {\ensuremath{\mathit{add}}}
 \newcommand{\Del} {\ensuremath{\mathit{del}}}
 \newcommand{\PreS} {\ensuremath{\mathit{pre^{*}}}}
 \newcommand{\AddS} {\ensuremath{\mathit{add^{*}}}}
 \newcommand{\DelS} {\ensuremath{\mathit{del^{*}}}}
+\newcommand{\singlePrec} {\ensuremath{\mathit{ \mathord{\prec} }}}
+\newcommand{\tasks} {\ensuremath{\mathit{tasks}}}
 
 \newcommand{\EffPlus} {\ensuremath{\mathit{eff^{+}_{*}}}}
 \newcommand{\EffMinus} {\ensuremath{\mathit{eff^{-}_{*}}}}
@@ -18,9 +21,214 @@
 \newcommand{\RelEffMinus} {\ensuremath{\mathit{eff^{\emptyset -}_{*}}}}
 \newcommand{\RelPossEffPlus} {\ensuremath{\mathit{poss-eff^{\emptyset +}_{*}}}}
 \newcommand{\RelPossEffMinus} {\ensuremath{\mathit{poss-eff^{\emptyset -}_{*}}}}
-	
+
+\scheme{RelatedA1}{0}{
+	text = {\textbf{T1}},
+	pre  = {a},
+	effs = { {{$\neg$}a}, {b} }
+}
+
+\scheme{RelatedA2}{0}{
+	text = {\textbf{T2}},
+	pre  = {a},
+	effs = { {{$\neg$}a}, {c} }
+}
+
+
+\scheme{MinExampleA1}{0}{
+	text = {\textbf{T1}},
+	pre  = {a},
+	effs = { {{$\neg$}a} }
+}
+
+\scheme{MinExampleA2}{0}{
+	text = {\textbf{T2}},
+	eff = {a}
+}
+
+
+\scheme{MinExampleA3}{0}{
+	text = {\textbf{T1}},
+	pre  = {a},
+	effs = {a}
+}
+
+\scheme{MinExampleA4}{0}{
+	text = {\textbf{T2}},
+	eff = {{{$\neg$}a}  }
+}
+
+
+\scheme{MinExampleA11}{0}{
+	text = {\textbf{T1}},
+	eff = {a}  
+}
+
+\scheme{MinExampleA12}{0}{
+	text = {\textbf{T2}},
+	eff = {{{$\neg$}a}  }
+}
+
+\scheme{MinExampleA13}{0}{
+	text = {\textbf{T3}},
+	pre  = {a}
+}
+
+\scheme{PrimitiveE}{0}{
+	text = {\textbf{e}},
+	eff  = {{$\neg$}a}
+}
+
+\scheme{PrimitiveF}{0}{
+	text = {\textbf{f}},
+	eff  = {a}
+}
+
+\scheme{PrimitiveG}{0}{
+	text = {\textbf{g}},
+	eff  = {{$\neg$}b}
+}
+
+
+
+\scheme{SubTaskA}{0}{
+	text = {\textbf{A}},
+	pre  = {a}
+}
+
+\scheme{SubTaskB}{0}{
+	text = {\textbf{B}},
+	eff = {a}
+}
+
+\scheme{SubTaskC}{0}{
+	text = {\textbf{C}},
+	effs = {{b}, 
+		{{$\neg$}a}, 
+		{{$\neg$}b}
+	}
+}
+
+\scheme{AltSubTaskC}{0}{
+	text = {\textbf{C}}
+}
+
+\scheme{SubTaskD}{0}{
+	text = {\textbf{D}}
+}
+
+
+\scheme{CollectSoil2}{2}{
+	text = {\textbf{CollectSoil(#1, #2)}},
+	pre={at(pt0, #1)},
+	effs = { {{$\neg$}at(pt0, #1)},{at(#2, #1)}, {HaveSoil(#2)}}
+}
+
+\scheme{CollectSoil1}{2}{
+	text = {\textbf{CollectSoil(#1, #2)}},
+}
+\scheme{CollectSoilNavigate}{3}{
+	text = {\textbf{Navigate(#1, #2, #3)}},
+	pre={at(#1, #3)},
+	effs = { {{$\neg$}at(#1, #3)}, {at(#2, #3)} }
+}
+
+\scheme{CollectSoilGetSoil}{1}{
+	text = {\textbf{GetSoil(#1)}},
+	eff = {HaveSoil(#1)}
+}
+
+\scheme{LiftedAltSubTaskC}{0}{
+	text = {\textbf{C}}
+}
+
+\scheme{LiftedSubTaskD}{0}{
+	text = {\textbf{D}}
+}
+
+
+\scheme{PrimitiveA}{0}{
+	text = {\textbf{A}},
+	pre  = {a},
+	effs = { {{$\neg$}a}, {b} }
+}
+
+\scheme{PrimitiveB}{0}{
+	text = {\textbf{B}},
+	pre = {b},
+	effs = {{{$\neg$}b}, {c}}
+}
+
+\scheme{PrimitiveC}{0}{
+	text = {\textbf{C}},
+	pre = {c},
+	eff = {{$\neg$}c}
+}
+
+
+\scheme{SolutionA}{0}{
+	text = {\textbf{A}},
+	pre  = {a},
+	effs = { {{$\neg$}a}, {b} }
+}
+
+\scheme{SolutionB}{0}{
+	text = {\textbf{B}},
+	effs = {{{$\neg$}b}, {c}}
+}
+
+\scheme{SolutionC}{0}{
+	text = {\textbf{C}},
+	eff = {{$\neg$}c}
+}
+
+
+\scheme{Navigate}{3}{
+	text = {\textbf{navigate}(#1,#2,#3)},
+	pre  = {at(#1,#3)},
+	effs  = {
+		{{$\neg$}at(#1,#3)},
+		{at(#2,#3)}
+	}
+}
+
+
+\newtheorem{theorem}{Theorem}
+
 \SetKwRepeat{Do}{do}{while}
+% \newtheorem{theorem}{Theorem}
 
 % Note that you can easily specify arguments:
 % \newcommand{\someMacro}[2] {Argument 1: #1, Argument 2: #2} % example command with two arguments
 % you use it via \someMacro{Hello}{World!}
+% Note that you can easily specify arguments:
+% \newcommand{\someMacro}[2] {Argument 1: #1, Argument 2: #2} % example command with two arguments
+% you use it via \someMacro{Hello}{World!}
+
+
+% the following commands are being provided by the amsthm package
+% the first parameter states the new environmet's name that can be
+% used (due to this definition here) and the second the name that
+% will appear in the PDF document
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}   % well, a formal definition!
+\theoremstyle{plain}
+\newtheorem{prop}{Proposition} % like a theorem, but less important or evolved
+\newtheorem{lem}{Lemma}        % used within a proof of a theorem
+%\newtheorem{thm}{Theorem}      % well, a theorem! :) important and evolved
+\newtheorem{cor}{Corollary}    % basically either a proposition or theorem,
+                               %  but one that follows from another theorem.
+% There's a lot you can configure about the appearance. If interested,
+% open the manual of amsthm or google for tutorials etc. on that package
+
+% the following add a symbol to the definition environment to make it more
+% clear when a definition ends (as there is no difference in fonts!). From:
+% https://tex.stackexchange.com/questions/226334/change-a-amsthm-theorem-ending
+\newcommand{\xqed}[1]{%
+    \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+    \quad\hbox{\ensuremath{#1}}}
+\newcommand{\Endofdef}{\xqed{\blacksquare}}
+\newenvironment{defn}[1]{%
+    \begin{definition}#1}{%
+    \Endofdef\end{definition}%
+}

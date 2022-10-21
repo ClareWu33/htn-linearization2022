@@ -1,9 +1,7 @@
 \chapter*{Abstract}
 
+Solving partially ordered hierarchical planning problems is more computationally expensive compared to solving totally ordered ones. Therefore, automatically transforming partially ordered problem domains into totally ordered ones, such that the totally ordered problem still retains at least one solution, would be a desired capability as it would reduce complexity and thus make it easier for planning systems to solve the problem. This is a complex endeavour, because even creating \emph{all} possible linearizations of all methods in the original domain does not guarantee that solutions are preserved. 
+It also allows the planner to use algorithms and heuristics specialised for the totally ordered case to solve the transformed problem. 
+In this paper, we propose an algorithm for converting partially ordered problems into totally ordered ones and give criterion for when this is possible. We test our techniques on the partially-ordered track of the bench-mark set of the IPC 2020 and solve both the linearized and the original partially-ordered problems using state-of-the-art planning systems. We find that in the majority of problems across a variety of domains, the linearized problem remains solvable, and can always be solved faster than the without our proposed pre-processing technique.
 
-After the decomposition of a partially ordered HTN planning problem into k plan steps, in the worst case scenario there are k! possible solutions to consider when searching for a executable refinement of the plan steps.
-A large search space can be an advantage in case not enough is known about the domain to sensibly ensure a smaller search space will hold solutions,
-but also a disadvantage in the case that the search space is too large to efficiently search through. We attempt to linearize partially ordered HTN planning problems in 
-order to reduce this disadvantage, while attempting to preserve at least one solution in the reduced search space.
-We test our techniques on the partially-ordered track of the bench-mark set of the IPC 2020. We use the Panda progression search planner on both linearised and partially-ordered problem. 
-We find that in the majority of domains, the linearized problem can be solved faster. We also find that for the majority of problems, the linearized problem remains solvable.
+% \keywords{Partially ordered HTN planning \and  Hierarchical planning \and Totally ordered HTN planning }

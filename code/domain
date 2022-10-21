@@ -1,0 +1,1215 @@
+(define (domain rc)
+  (:predicates (pat_packagem0_citymlocm0_)
+               (pat_packagem1_citymlocm1_)
+               (pat_packagem2_citymlocm3_)
+               (pat_packagem3_citymlocm2_)
+               (pat_truckm0_citymlocm0_)
+               (pcapacity_truckm0_capacitym3_)
+               (pat_truckm0_citymlocm3_)
+               (pin_packagem0_truckm0_)
+               (pcapacity_truckm0_capacitym2_)
+               (pat_truckm0_citymlocm2_)
+               (pin_packagem2_truckm0_)
+               (pcapacity_truckm0_capacitym1_)
+               (pat_packagem0_citymlocm3_)
+               (pat_truckm0_citymlocm1_)
+               (pin_packagem3_truckm0_)
+               (pcapacity_truckm0_capacitym0_)
+               (pin_packagem1_truckm0_)
+               (pat_packagem2_citymlocm1_)
+               (pat_packagem3_citymlocm0_)
+               (pat_packagem1_citymlocm0_)
+  )
+
+  (:task x__top__ :parameters ())
+  (:task unload_truckm0_citymlocm0_packagem3_ :parameters ())
+  (:task mmdeliver_splitted_1_truckm0_packagem3_ :parameters ())
+  (:task load_truckm0_citymlocm0_packagem3_ :parameters ())
+  (:task getmto_truckm0_citymlocm0_ :parameters ())
+  (:task getmto_truckm0_citymlocm3_ :parameters ())
+  (:task getmto_truckm0_citymlocm2_ :parameters ())
+  (:task getmto_truckm0_citymlocm1_ :parameters ())
+  (:task load_truckm0_citymlocm2_packagem3_ :parameters ())
+  (:task unload_truckm0_citymlocm1_packagem2_ :parameters ())
+  (:task mmdeliver_splitted_1_truckm0_packagem2_ :parameters ())
+  (:task load_truckm0_citymlocm3_packagem2_ :parameters ())
+  (:task load_truckm0_citymlocm1_packagem2_ :parameters ())
+  (:task unload_truckm0_citymlocm0_packagem1_ :parameters ())
+  (:task mmdeliver_splitted_1_truckm0_packagem1_ :parameters ())
+  (:task load_truckm0_citymlocm0_packagem1_ :parameters ())
+  (:task load_truckm0_citymlocm1_packagem1_ :parameters ())
+  (:task unload_truckm0_citymlocm3_packagem0_ :parameters ())
+  (:task mmdeliver_splitted_1_truckm0_packagem0_ :parameters ())
+  (:task load_truckm0_citymlocm3_packagem0_ :parameters ())
+  (:task load_truckm0_citymlocm0_packagem0_ :parameters ())
+
+  (:method x______top_method_deliver_packagem3_citymlocm0__mmdeliver_3_0_1_2_m1_m2_m3__deliver_packagem2_citymlocm1__mmdeliver_2_0_1_m1_m2_m3_3_4_5__deliver_packagem1_citymlocm0__mmdeliver_1_0_m1_m2_m3_2_3_4_5_6_7__deliver_packagem0_citymlocm3__mmdeliver_0_m1_m2_m3_1_2_3_4_5_6_7_8_9__0
+     :parameters ()
+     :task (x__top__)
+     :subtasks (and
+        (task0 (mmdeliver_splitted_1_truckm0_packagem0_))
+        (task1 (getmto_truckm0_citymlocm3_))
+        (task2 (unload_truckm0_citymlocm3_packagem0_))
+        (task3 (mmdeliver_splitted_1_truckm0_packagem1_))
+        (task4 (getmto_truckm0_citymlocm0_))
+        (task5 (unload_truckm0_citymlocm0_packagem1_))
+        (task6 (mmdeliver_splitted_1_truckm0_packagem2_))
+        (task7 (getmto_truckm0_citymlocm1_))
+        (task8 (unload_truckm0_citymlocm1_packagem2_))
+        (task9 (mmdeliver_splitted_1_truckm0_packagem3_))
+        (task10 (getmto_truckm0_citymlocm0_))
+        (task11 (unload_truckm0_citymlocm0_packagem3_))
+     )
+     :ordering (and
+        (task0 < task1)
+        (task1 < task2)
+        (task3 < task4)
+        (task4 < task5)
+        (task5 < task0)
+        (task6 < task7)
+        (task7 < task8)
+        (task8 < task3)
+        (task9 < task10)
+        (task10 < task11)
+        (task11 < task6)
+     )
+  )
+  (:method mmunload_1
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem3_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmunload_2
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem3_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmunload_3
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem3_capacitym2_capacitym3_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_4
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem3_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm0_))
+        (task1 (load_truckm0_citymlocm0_packagem3_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_5
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem3_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmload_6
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem3_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_7
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem3_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmdrivemto_8
+     :parameters ()
+     :task (getmto_truckm0_citymlocm0_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm3_citymlocm0_))
+     )
+  )
+  (:method mmimammthere_9
+     :parameters ()
+     :task (getmto_truckm0_citymlocm0_)
+     :subtasks (and
+        (task0 (noop_truckm0_citymlocm0_))
+     )
+  )
+  (:method mmdrivemtomvia_10
+     :parameters ()
+     :task (getmto_truckm0_citymlocm0_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm3_))
+        (task1 (drive_truckm0_citymlocm3_citymlocm0_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemto_11
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm0_citymlocm3_))
+     )
+  )
+  (:method mmdrivemto_12
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm3_citymlocm3_))
+     )
+  )
+  (:method mmdrivemto_13
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm2_citymlocm3_))
+     )
+  )
+  (:method mmimammthere_14
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (noop_truckm0_citymlocm3_))
+     )
+  )
+  (:method mmdrivemtomvia_15
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm3_))
+        (task1 (drive_truckm0_citymlocm3_citymlocm3_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemtomvia_16
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm0_))
+        (task1 (drive_truckm0_citymlocm0_citymlocm3_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemtomvia_17
+     :parameters ()
+     :task (getmto_truckm0_citymlocm3_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm2_))
+        (task1 (drive_truckm0_citymlocm2_citymlocm3_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemto_18
+     :parameters ()
+     :task (getmto_truckm0_citymlocm2_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm3_citymlocm2_))
+     )
+  )
+  (:method mmdrivemto_19
+     :parameters ()
+     :task (getmto_truckm0_citymlocm2_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm1_citymlocm2_))
+     )
+  )
+  (:method mmimammthere_20
+     :parameters ()
+     :task (getmto_truckm0_citymlocm2_)
+     :subtasks (and
+        (task0 (noop_truckm0_citymlocm2_))
+     )
+  )
+  (:method mmdrivemtomvia_21
+     :parameters ()
+     :task (getmto_truckm0_citymlocm2_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm3_))
+        (task1 (drive_truckm0_citymlocm3_citymlocm2_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemtomvia_22
+     :parameters ()
+     :task (getmto_truckm0_citymlocm2_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm1_))
+        (task1 (drive_truckm0_citymlocm1_citymlocm2_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmdrivemto_23
+     :parameters ()
+     :task (getmto_truckm0_citymlocm1_)
+     :subtasks (and
+        (task0 (drive_truckm0_citymlocm2_citymlocm1_))
+     )
+  )
+  (:method mmimammthere_24
+     :parameters ()
+     :task (getmto_truckm0_citymlocm1_)
+     :subtasks (and
+        (task0 (noop_truckm0_citymlocm1_))
+     )
+  )
+  (:method mmdrivemtomvia_25
+     :parameters ()
+     :task (getmto_truckm0_citymlocm1_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm2_))
+        (task1 (drive_truckm0_citymlocm2_citymlocm1_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_26
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem3_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm2_))
+        (task1 (load_truckm0_citymlocm2_packagem3_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_27
+     :parameters ()
+     :task (load_truckm0_citymlocm2_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm2_packagem3_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmload_28
+     :parameters ()
+     :task (load_truckm0_citymlocm2_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm2_packagem3_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_29
+     :parameters ()
+     :task (load_truckm0_citymlocm2_packagem3_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm2_packagem3_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmunload_30
+     :parameters ()
+     :task (unload_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm1_packagem2_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmunload_31
+     :parameters ()
+     :task (unload_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm1_packagem2_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmunload_32
+     :parameters ()
+     :task (unload_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm1_packagem2_capacitym2_capacitym3_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_33
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem2_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm3_))
+        (task1 (load_truckm0_citymlocm3_packagem2_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_34
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem2_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_35
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem2_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmload_36
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem2_capacitym0_capacitym1_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_37
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem2_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm1_))
+        (task1 (load_truckm0_citymlocm1_packagem2_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_38
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem2_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmload_39
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem2_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_40
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem2_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem2_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmunload_41
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem1_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmunload_42
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem1_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmunload_43
+     :parameters ()
+     :task (unload_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm0_packagem1_capacitym2_capacitym3_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_44
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem1_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm0_))
+        (task1 (load_truckm0_citymlocm0_packagem1_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_45
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem1_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmload_46
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem1_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_47
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem1_capacitym2_capacitym3_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_48
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem1_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm1_))
+        (task1 (load_truckm0_citymlocm1_packagem1_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_49
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem1_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmload_50
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem1_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_51
+     :parameters ()
+     :task (load_truckm0_citymlocm1_packagem1_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm1_packagem1_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmunload_52
+     :parameters ()
+     :task (unload_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm3_packagem0_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmunload_53
+     :parameters ()
+     :task (unload_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm3_packagem0_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmunload_54
+     :parameters ()
+     :task (unload_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (drop_truckm0_citymlocm3_packagem0_capacitym0_capacitym1_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_55
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem0_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm3_))
+        (task1 (load_truckm0_citymlocm3_packagem0_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_56
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem0_capacitym0_capacitym1_))
+     )
+  )
+  (:method mmload_57
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem0_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_58
+     :parameters ()
+     :task (load_truckm0_citymlocm3_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm3_packagem0_capacitym2_capacitym3_))
+     )
+  )
+  (:method x_splitting_method_mmdeliver_splitted_1_59
+     :parameters ()
+     :task (mmdeliver_splitted_1_truckm0_packagem0_)
+     :subtasks (and
+        (task0 (getmto_truckm0_citymlocm0_))
+        (task1 (load_truckm0_citymlocm0_packagem0_))
+     )
+     :ordering (and
+        (task0 < task1)
+     )
+  )
+  (:method mmload_60
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem0_capacitym2_capacitym3_))
+     )
+  )
+  (:method mmload_61
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem0_capacitym1_capacitym2_))
+     )
+  )
+  (:method mmload_62
+     :parameters ()
+     :task (load_truckm0_citymlocm0_packagem0_)
+     :subtasks (and
+        (task0 (pickmup_truckm0_citymlocm0_packagem0_capacitym0_capacitym1_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem3_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem3_truckm0_)
+         (pcapacity_truckm0_capacitym0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pat_packagem3_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym0_))
+         (not(pin_packagem3_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem3_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem3_truckm0_)
+         (pcapacity_truckm0_capacitym1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pat_packagem3_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pin_packagem3_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem3_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem3_truckm0_)
+         (pcapacity_truckm0_capacitym2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym3_)
+         (pat_packagem3_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pin_packagem3_truckm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem3_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm0_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem3_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem3_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm0_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem3_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem3_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm0_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem3_citymlocm0_))
+     )
+  )
+
+  (:action drive_truckm0_citymlocm3_citymlocm0_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm0_)
+         (not(pat_truckm0_citymlocm3_))
+     )
+  )
+
+  (:action noop_truckm0_citymlocm0_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+     )
+  )
+
+  (:action drive_truckm0_citymlocm0_citymlocm3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm3_)
+         (not(pat_truckm0_citymlocm0_))
+     )
+  )
+
+  (:action drive_truckm0_citymlocm3_citymlocm3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm3_)
+     )
+  )
+
+  (:action drive_truckm0_citymlocm2_citymlocm3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm2_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm3_)
+         (not(pat_truckm0_citymlocm2_))
+     )
+  )
+
+  (:action noop_truckm0_citymlocm3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+     )
+  )
+
+  (:action drive_truckm0_citymlocm3_citymlocm2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm2_)
+         (not(pat_truckm0_citymlocm3_))
+     )
+  )
+
+  (:action drive_truckm0_citymlocm1_citymlocm2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm2_)
+         (not(pat_truckm0_citymlocm1_))
+     )
+  )
+
+  (:action noop_truckm0_citymlocm2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm2_)
+     )
+  )
+
+  (:action drive_truckm0_citymlocm2_citymlocm1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm2_)
+     )
+     :effect (and 
+         (pat_truckm0_citymlocm1_)
+         (not(pat_truckm0_citymlocm2_))
+     )
+  )
+
+  (:action noop_truckm0_citymlocm1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm1_)
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm2_packagem3_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm2_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem3_citymlocm2_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm2_packagem3_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm2_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem3_citymlocm2_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm2_packagem3_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem3_citymlocm2_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem3_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem3_citymlocm2_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm1_packagem2_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm1_)
+         (pin_packagem2_truckm0_)
+         (pcapacity_truckm0_capacitym0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pat_packagem2_citymlocm1_)
+         (not(pcapacity_truckm0_capacitym0_))
+         (not(pin_packagem2_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm1_packagem2_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm1_)
+         (pin_packagem2_truckm0_)
+         (pcapacity_truckm0_capacitym1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pat_packagem2_citymlocm1_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pin_packagem2_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm1_packagem2_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pin_packagem2_truckm0_)
+         (pat_truckm0_citymlocm1_)
+         (pcapacity_truckm0_capacitym2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym3_)
+         (pat_packagem2_citymlocm1_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pin_packagem2_truckm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem2_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm3_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem2_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem2_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm3_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem2_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem2_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm3_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem2_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem2_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm1_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem2_citymlocm1_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem2_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm1_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem2_citymlocm1_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem2_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem2_citymlocm1_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem2_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem2_citymlocm1_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem1_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem1_truckm0_)
+         (pcapacity_truckm0_capacitym0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pat_packagem1_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym0_))
+         (not(pin_packagem1_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem1_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem1_truckm0_)
+         (pcapacity_truckm0_capacitym1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pat_packagem1_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pin_packagem1_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm0_packagem1_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm0_)
+         (pin_packagem1_truckm0_)
+         (pcapacity_truckm0_capacitym2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym3_)
+         (pat_packagem1_citymlocm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pin_packagem1_truckm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem1_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pat_packagem1_citymlocm0_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem1_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem1_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pat_packagem1_citymlocm0_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem1_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem1_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pcapacity_truckm0_capacitym3_)
+         (pat_packagem1_citymlocm0_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem1_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem1_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem1_citymlocm1_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem1_citymlocm1_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem1_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem1_citymlocm1_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem1_citymlocm1_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm1_packagem1_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem1_citymlocm1_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem1_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem1_citymlocm1_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm3_packagem0_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+         (pin_packagem0_truckm0_)
+         (pcapacity_truckm0_capacitym2_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym3_)
+         (pat_packagem0_citymlocm3_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pin_packagem0_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm3_packagem0_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pin_packagem0_truckm0_)
+         (pat_truckm0_citymlocm3_)
+         (pcapacity_truckm0_capacitym1_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pat_packagem0_citymlocm3_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pin_packagem0_truckm0_))
+     )
+  )
+
+  (:action drop_truckm0_citymlocm3_packagem0_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_truckm0_citymlocm3_)
+         (pin_packagem0_truckm0_)
+         (pcapacity_truckm0_capacitym0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pat_packagem0_citymlocm3_)
+         (not(pcapacity_truckm0_capacitym0_))
+         (not(pin_packagem0_truckm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem0_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm3_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem0_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem0_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm3_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem0_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm3_packagem0_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm3_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm3_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem0_citymlocm3_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem0_capacitym2_capacitym3_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm0_)
+         (pcapacity_truckm0_capacitym3_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym2_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym3_))
+         (not(pat_packagem0_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem0_capacitym1_capacitym2_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm0_)
+         (pcapacity_truckm0_capacitym2_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym1_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym2_))
+         (not(pat_packagem0_citymlocm0_))
+     )
+  )
+
+  (:action pickmup_truckm0_citymlocm0_packagem0_capacitym0_capacitym1_
+     :parameters ()
+     :precondition (and 
+         (pat_packagem0_citymlocm0_)
+         (pcapacity_truckm0_capacitym1_)
+         (pat_truckm0_citymlocm0_)
+     )
+     :effect (and 
+         (pcapacity_truckm0_capacitym0_)
+         (pin_packagem0_truckm0_)
+         (not(pcapacity_truckm0_capacitym1_))
+         (not(pat_packagem0_citymlocm0_))
+     )
+  )
+)

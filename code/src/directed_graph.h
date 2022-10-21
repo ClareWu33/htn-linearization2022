@@ -8,7 +8,6 @@ public:
        int start;
        int end;
        int weight;
-       edge(int s, int e);
        edge(int s, int e, int w);
 
        bool operator<(const edge &rhs) const;
@@ -30,7 +29,8 @@ public:
     adj_edge(int v, int p);
     bool operator==(const adj_edge &rhs) const;
 };
-
+void print(list<adj_edge> s);
+void print(list<adj_edge> *s, int V);
 
 class Graph
 {
